@@ -1,0 +1,9 @@
+﻿description,author,year,journal,function,ghz,jkp,hxz,cz,my chars
+Idiosyncratic volatility (GHZ),"Ali, Hwang, and Trombley",2003,JFE,idiovol,idiovol,,,,
+"Idiosyncratic volatility (Org, JKP)","Ali, Hwang, and Trombley",2003,JFE,ivol_capm_252d,,ivol_capm_252d,Iv,IdioVolAHT,ivol
+Illiquidity ,Amihud,2002,JFM,ami_126d,ill,ami_126d,Ami,Illiquidity,illq
+Bid-ask spread,Amihud and Mendelson,1986,JFE,baspread,baspread,,,BidAskSpread,
+Three-year investment growth,Anderson and Garcia-Feijoo,2006,JF,capx_gr3,,capx_gr3,3Ig,grcapx3y,
+Two-year investment growth,Anderson and Garcia-Feijoo,2006,JF,capx_gr2,grcapx,capx_gr2,2Ig,grcapx,
+Dispersion in analyst long-term growth forecasts,"Anderson, Ghysels, and Juergens",2005,RFS,,,,Dlg,ForecastDispersionLT,
+Downside beta,"Ang, Chen, and Xing",2006,RFS,betadown_252d,,betadown_252d,beta-1,DownsideBeta,

@@ -1,0 +1,37 @@
+Bulding Your Own
+================
+
+PyAnomaly is highly configurable and customizable, and you can easily add new firm characteristics or functions.
+When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary. 
+This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you 
+update the library.
+
+Making your own list of characteristics
+---------------------------------------
+
+If you want generate a subset of all available firm characteristics, you can add a new acronym column in 'mapping.xlsx'.
+Alternatively, you can simply define a list of characteristics in a python module and use it as input to panel.create_chars().
+In this case, you need to use the method names and cannot define aliases for the firm characteristics.
+
+
+Adding a new characteristic
+---------------------------
+Where to add a method to define a new characteristic depends on what data it requires. If it only requires data from FUNDA (plus market equity from CRSPM), 
+you can define a class inheriting FUNDA class and add the method in it. Similary, if the characteristic only requires data from CRSPM, you can define a class 
+inheriting CRSPM. If the characteristic requires data from multiple data sources, you can inherit Merged class.
+
+Example:
+
+.. code-block::
+
+	class myFUNDA(FUNDA):
+		self.c_my_char(self):
+			fa = self.data
+			char = fa.x + fa.y
+			
+			return char
+			
+Note that the method's name starts with 'c_'. This is one of few coding rules you need to follow. 
+
+
+

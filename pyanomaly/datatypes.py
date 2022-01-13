@@ -1,14 +1,18 @@
 
 class struct(dict):
     """dict that allows '.' expression.
-    Eg:
-        x = struct(
-            a='py',
-            b='anomaly'
-            )
-        x['a'] and x.a both return 'py'.
 
+    Examples:
+        >>> x = struct(
+        ...    a='py',
+        ...    b='anomaly'
+        ...    )
+        >>> x['a']
+        py
+        >>> x.a
+        py
     """
+
     def __init__(self, *args, **kwargs):
         if len(args) and type(args[0]) == dict:
             self.update(args[0])
@@ -39,6 +43,7 @@ class struct(dict):
 
 class iterstruct(struct):
     """Iterable struct."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._idx = 0

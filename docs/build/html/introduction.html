@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About &mdash; PyAnomaly 0.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="getting_started.html" />
+    <link rel="prev" title="PyAnomaly" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PyAnomaly
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#main-features">Main Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#coverage">Coverage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#markets">Markets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#firm-characteristics">Firm Characteristics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#structure">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#system-requirement">System Requirement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#comparison-to-other-sources">Comparison to Other Sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#comparison-to-the-sas-code-of-jensen-et-al-2021">Comparison to the SAS code of Jensen et al. (2021)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#featured-in">Featured In</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#generating-characteristics">Generating Characteristics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html#bulding-your-own">Bulding Your Own</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyanomaly_edited.html">pyanomaly</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyAnomaly</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>About</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="about">
+<span id="id1"></span><h1>About<a class="headerlink" href="#about" title="Permalink to this headline"></a></h1>
+<p>PyAnomaly is a comprehensive python library for asset pricing research with a focus on firm characteristic and factor generation.
+It covers the majority of the firm characteristics published in the literature and contains various analytic tools that are
+commonly used in asset pricing research, such as quantile portfolio construction, factor regression, and cross-sectional regression.
+The purpose of PyAnomaly is <em>NOT</em> to generate firm characteristics in a fixed manner. Rather, we aim to build
+a package that can serve as a standard library for asset pricing research and help reduce <em>non-standard errors</em> <a class="footnote-reference brackets" href="#id13" id="id2">5</a>.</p>
+<p>The current list of firm characteristics supported by PyAnomaly can be found in <a class="reference internal" href="#coverage">Coverage</a>.
+PyAnomaly is a live project and we plan to add more firm characteristics and functionalities going forward. We also welcome contributions
+from other scholars.</p>
+<p>PyAnomaly is very efficient, comprehensive, and flexible.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Efficiency</dt><dd><p>PyAnomaly can generate over 200 characteristics from 1950 in around one hour including the time to download data from WRDS.
+To achieve this, PyAnomaly utilizes numba, multiprocessing, and asyncio packages when possible, but not too heavily to maximize readability of the code.</p>
+</dd>
+<dt>Comprehensiveness</dt><dd><p>PyAnomaly supports over 200 firm characteristics published in the literature. It covers most characteristics in
+Green et al. (2017)<a class="footnote-reference brackets" href="#id10" id="id3">2</a> and Jensen et al. (2021)<a class="footnote-reference brackets" href="#id12" id="id4">4</a>, except those that use IBES data. It also provides
+various tools for asset pricing research.</p>
+</dd>
+<dt>Flexibility</dt><dd><p>PyAnomaly adopts the object-oriented programming design philosophy and is easy to customize or add functionalities.
+This means users can easily change the definition of an existing characteristic, add a new characteristic, or
+change configurations to run the program. For instance, a user can choose whether to update annual accounting
+variables quarterly (using Compustat.fundq) or annually (using Compustat.funda), or whether
+to use the latest market equity or the year-end market equity, when generating firm characteristics.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="main-features">
+<h1>Main Features<a class="headerlink" href="#main-features" title="Permalink to this headline"></a></h1>
+<ul>
+<li><p>Efficient data download from WRDS using asynco.</p></li>
+<li><p>Over 200 firm characteristics generation. You can choose which firm characteristics to generate.</p></li>
+<li><p>Fama-French 3-factor and Hou-Zhou-Zhang 4-factor portfolios.</p></li>
+<li><p>Analytics</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Cross-section regression</p></li>
+<li><p>1-D sort</p></li>
+<li><p>2-D sort</p></li>
+<li><p>Rolling regression</p></li>
+<li><p>Quantile portfolio</p></li>
+<li><p>Long-short portfolio</p></li>
+<li><p>Portfolio performance analysis</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Data tools</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Data filtering</p></li>
+<li><p>Winsorizing</p></li>
+<li><p>Trimming</p></li>
+<li><p>Data population</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="coverage">
+<h1>Coverage<a class="headerlink" href="#coverage" title="Permalink to this headline"></a></h1>
+<section id="markets">
+<h2>Markets<a class="headerlink" href="#markets" title="Permalink to this headline"></a></h2>
+<p>PyAnomaly currently supports analysis of the firms listed in the US stock market.</p>
+</section>
+<section id="firm-characteristics">
+<h2>Firm Characteristics<a class="headerlink" href="#firm-characteristics" title="Permalink to this headline"></a></h2>
+<p>The table below lists firm characteristics that are currently supported by PyAnomaly. The characteristics without a function
+are not yet available but may be added in the future. For a mapping between the functions and the firm characteristics in
+Chen and Zimmermann (2020)<a class="footnote-reference brackets" href="#id9" id="id5">1</a>, Green et al. (2017)<a class="footnote-reference brackets" href="#id10" id="id6">2</a>, Hou et al. (2020)<a class="footnote-reference brackets" href="#id11" id="id7">3</a>, and Jensen et al. (2021)<a class="footnote-reference brackets" href="#id12" id="id8">4</a>,
+refer to the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a>,</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 45%" />
+<col style="width: 15%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Author(s)</p></th>
+<th class="head"><p>Year</p></th>
+<th class="head"><p>Journal</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Effective Tax Rate</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Gross margin growth to sales growth</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td><p>dgp_dsale</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Industry-adjusted change in capital investment</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td><p>pchcapx_ia</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Labor force efficiency</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td><p>sale_emp_gr1</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Sales growth to inventory growth</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td><p>dsale_dinv</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Sales growth to receivable growth</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td><p>dsale_drec</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Sales growth to SG&amp;A growth</p></td>
+<td><p>Abarbanell and Bushee</p></td>
+<td><p>1998</p></td>
+<td><p>AR</p></td>
+<td><p>dsale_dsga</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Liquidity beta (illiquidity-illiquidity)</p></td>
+<td><p>Acharya and Pedersen</p></td>
+<td><p>2005</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Liquidity beta (illiquidity-return)</p></td>
+<td><p>Acharya and Pedersen</p></td>
+<td><p>2005</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>Liquidity beta (return-illiquidity)</p></td>
+<td><p>Acharya and Pedersen</p></td>
+<td><p>2005</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>Liquidity beta (return-return)</p></td>
+<td><p>Acharya and Pedersen</p></td>
+<td><p>2005</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>Net liquidity beta</p></td>
+<td><p>Acharya and Pedersen</p></td>
+<td><p>2005</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>Leverage beta</p></td>
+<td><p>Adrian, Etula and Muir</p></td>
+<td><p>2014</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>Idiosyncratic volatility (GHZ)</p></td>
+<td><p>Ali, Hwang, and Trombley</p></td>
+<td><p>2003</p></td>
+<td><p>JFE</p></td>
+<td><p>idiovol</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>Idiosyncratic volatility (Org, JKP)</p></td>
+<td><p>Ali, Hwang, and Trombley</p></td>
+<td><p>2003</p></td>
+<td><p>JFE</p></td>
+<td><p>ivol_capm_252d</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>Illiquidity</p></td>
+<td><p>Amihud</p></td>
+<td><p>2002</p></td>
+<td><p>JFM</p></td>
+<td><p>ami_126d</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>Bid-ask spread</p></td>
+<td><p>Amihud and Mendelson</p></td>
+<td><p>1986</p></td>
+<td><p>JFE</p></td>
+<td><p>baspread</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>Three-year investment growth</p></td>
+<td><p>Anderson and Garcia-Feijoo</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>capx_gr3</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>Two-year investment growth</p></td>
+<td><p>Anderson and Garcia-Feijoo</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>capx_gr2</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>Dispersion in analyst long-term growth forecasts</p></td>
+<td><p>Anderson, Ghysels, and Juergens</p></td>
+<td><p>2005</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>Idiosyncratic volatility (CAPM)</p></td>
+<td><p>Ang et al.</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>ivol_capm_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>22</p></td>
+<td><p>Idiosyncratic volatility (FF3)</p></td>
+<td><p>Ang et al.</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>ivol_ff3_21d</p></td>
+</tr>
+<tr class="row-even"><td><p>23</p></td>
+<td><p>Idiosyncratic volatility (q-factor)</p></td>
+<td><p>Ang et al.</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>ivol_hxz4_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>24</p></td>
+<td><p>Return volatility</p></td>
+<td><p>Ang et al.</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>retvol</p></td>
+</tr>
+<tr class="row-even"><td><p>25</p></td>
+<td><p>Systematic volatility</p></td>
+<td><p>Ang et al.</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>26</p></td>
+<td><p>Downside beta</p></td>
+<td><p>Ang, Chen, and Xing</p></td>
+<td><p>2006</p></td>
+<td><p>RFS</p></td>
+<td><p>betadown_252d</p></td>
+</tr>
+<tr class="row-even"><td><p>27</p></td>
+<td><p>Industry-adjusted book-to-market</p></td>
+<td><p>Asness, Porter, and Stevens</p></td>
+<td><p>2000</p></td>
+<td><p>WP</p></td>
+<td><p>bm_ia</p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>Industry-adjusted cash flow-to-price</p></td>
+<td><p>Asness, Porter, and Stevens</p></td>
+<td><p>2000</p></td>
+<td><p>WP</p></td>
+<td><p>cfp_ia</p></td>
+</tr>
+<tr class="row-even"><td><p>29</p></td>
+<td><p>Industry-adjusted change in employees</p></td>
+<td><p>Asness, Porter, and Stevens</p></td>
+<td><p>2000</p></td>
+<td><p>WP</p></td>
+<td><p>chempia</p></td>
+</tr>
+<tr class="row-odd"><td><p>30</p></td>
+<td><p>Industry-adjusted firm size</p></td>
+<td><p>Asness, Porter, and Stevens</p></td>
+<td><p>2000</p></td>
+<td><p>WP</p></td>
+<td><p>mve_ia</p></td>
+</tr>
+<tr class="row-even"><td><p>31</p></td>
+<td><p>Book-to-market (June ME)</p></td>
+<td><p>Asnesss and Frazzini</p></td>
+<td><p>2013</p></td>
+<td><p>JPM</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>32</p></td>
+<td><p>Highest 5 days of return to volatility</p></td>
+<td><p>Assness et al.</p></td>
+<td><p>2020</p></td>
+<td><p>JFE</p></td>
+<td><p>rmax5_rvol_21d</p></td>
+</tr>
+<tr class="row-even"><td><p>33</p></td>
+<td><p>Market correlation</p></td>
+<td><p>Assness et al.</p></td>
+<td><p>2020</p></td>
+<td><p>JFE</p></td>
+<td><p>corr_1260d</p></td>
+</tr>
+<tr class="row-odd"><td><p>34</p></td>
+<td><p>Quality minus Junk: Composite</p></td>
+<td><p>Assness, Frazzini, and Pedersen</p></td>
+<td><p>2018</p></td>
+<td><p>RAS</p></td>
+<td><p>qmj</p></td>
+</tr>
+<tr class="row-even"><td><p>35</p></td>
+<td><p>Quality minus Junk: Growth</p></td>
+<td><p>Assness, Frazzini, and Pedersen</p></td>
+<td><p>2018</p></td>
+<td><p>RAS</p></td>
+<td><p>qmj_growth</p></td>
+</tr>
+<tr class="row-odd"><td><p>36</p></td>
+<td><p>Quality minus Junk: Profitability</p></td>
+<td><p>Assness, Frazzini, and Pedersen</p></td>
+<td><p>2018</p></td>
+<td><p>RAS</p></td>
+<td><p>qmj_prof</p></td>
+</tr>
+<tr class="row-even"><td><p>37</p></td>
+<td><p>Quality minus Junk: Safety</p></td>
+<td><p>Assness, Frazzini, and Pedersen</p></td>
+<td><p>2018</p></td>
+<td><p>RAS</p></td>
+<td><p>qmj_safety</p></td>
+</tr>
+<tr class="row-odd"><td><p>38</p></td>
+<td><p>Change in quarterly return on assets</p></td>
+<td><p>Balakrishnan, Bartov, and Faurel</p></td>
+<td><p>2010</p></td>
+<td><p>JAE</p></td>
+<td><p>niq_at_chg1</p></td>
+</tr>
+<tr class="row-even"><td><p>39</p></td>
+<td><p>Change in quarterly return on equity</p></td>
+<td><p>Balakrishnan, Bartov, and Faurel</p></td>
+<td><p>2010</p></td>
+<td><p>JAE</p></td>
+<td><p>niq_be_chg1</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>Quarterly return on assets</p></td>
+<td><p>Balakrishnan, Bartov, and Faurel</p></td>
+<td><p>2010</p></td>
+<td><p>JAE</p></td>
+<td><p>niq_at</p></td>
+</tr>
+<tr class="row-even"><td><p>41</p></td>
+<td><p>Highest 5 days of return</p></td>
+<td><p>Bali, Brown, and Tang</p></td>
+<td><p>2017</p></td>
+<td><p>JFE</p></td>
+<td><p>rmax5_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>42</p></td>
+<td><p>Maximum daily return</p></td>
+<td><p>Bali, Cakici, and Whitelaw</p></td>
+<td><p>2011</p></td>
+<td><p>JFE</p></td>
+<td><p>rmax1_21d</p></td>
+</tr>
+<tr class="row-even"><td><p>43</p></td>
+<td><p>Idiosyncratic skewness (CAPM)</p></td>
+<td><p>Bali, Engle, and Murray</p></td>
+<td><p>2016</p></td>
+<td><p>BOOK</p></td>
+<td><p>iskew_capm_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>44</p></td>
+<td><p>Idiosyncratic skewness (FF3)</p></td>
+<td><p>Bali, Engle, and Murray</p></td>
+<td><p>2016</p></td>
+<td><p>BOOK</p></td>
+<td><p>iskew_ff3_21d</p></td>
+</tr>
+<tr class="row-even"><td><p>45</p></td>
+<td><p>Idiosyncratic skewness (q-factor)</p></td>
+<td><p>Bali, Engle, and Murray</p></td>
+<td><p>2016</p></td>
+<td><p>BOOK</p></td>
+<td><p>iskew_hxz4_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>46</p></td>
+<td><p>Return skewness</p></td>
+<td><p>Bali, Engle, and Murray</p></td>
+<td><p>2016</p></td>
+<td><p>BOOK</p></td>
+<td><p>rskew_21d</p></td>
+</tr>
+<tr class="row-even"><td><p>47</p></td>
+<td><p>Cash-based operating profitablility</p></td>
+<td><p>Ball et al.</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td><p>cop_at</p></td>
+</tr>
+<tr class="row-odd"><td><p>48</p></td>
+<td><p>Cash-based operating profits to lagged assets</p></td>
+<td><p>Ball et al.</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td><p>cop_atl1</p></td>
+</tr>
+<tr class="row-even"><td><p>49</p></td>
+<td><p>Cash-based operating profits to lagged assets (quarterly)</p></td>
+<td><p>Ball et al.</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>50</p></td>
+<td><p>Operating profits-to-assets</p></td>
+<td><p>Ball et al.</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td><p>op_at</p></td>
+</tr>
+<tr class="row-even"><td><p>51</p></td>
+<td><p>Operating profits-to-lagged assets</p></td>
+<td><p>Ball et al.</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td><p>op_atl1</p></td>
+</tr>
+<tr class="row-odd"><td><p>52</p></td>
+<td><p>Operating profits-to-lagged assets (quarterly)</p></td>
+<td><p>Ball et al.</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>53</p></td>
+<td><p>Absolute accruals</p></td>
+<td><p>Bandyopadhyay, Huang, and Wirjanto</p></td>
+<td><p>2010</p></td>
+<td><p>WP</p></td>
+<td><p>absacc</p></td>
+</tr>
+<tr class="row-odd"><td><p>54</p></td>
+<td><p>Accrual volatility</p></td>
+<td><p>Bandyopadhyay, Huang, and Wirjanto</p></td>
+<td><p>2010</p></td>
+<td><p>WP</p></td>
+<td><p>stdacc</p></td>
+</tr>
+<tr class="row-even"><td><p>55</p></td>
+<td><p>Market equity</p></td>
+<td><p>Banz</p></td>
+<td><p>1981</p></td>
+<td><p>JFE</p></td>
+<td><p>market_equity</p></td>
+</tr>
+<tr class="row-odd"><td><p>56</p></td>
+<td><p>Sales to price</p></td>
+<td><p>Barbee, Mukherji, and Raines</p></td>
+<td><p>1996</p></td>
+<td><p>FAJ</p></td>
+<td><p>sale_me</p></td>
+</tr>
+<tr class="row-even"><td><p>57</p></td>
+<td><p>Sales to price (quarterly)</p></td>
+<td><p>Barbee, Mukherji, and Raines</p></td>
+<td><p>1996</p></td>
+<td><p>FAJ</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>58</p></td>
+<td><p>Number of consecutive quarters with earnings increases</p></td>
+<td><p>Barth, Elliott, and Finn</p></td>
+<td><p>1999</p></td>
+<td><p>JAR</p></td>
+<td><p>ni_inc8q</p></td>
+</tr>
+<tr class="row-even"><td><p>59</p></td>
+<td><p>Earnings to price</p></td>
+<td><p>Basu</p></td>
+<td><p>1983</p></td>
+<td><p>JFE</p></td>
+<td><p>ni_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>60</p></td>
+<td><p>Earnings to price (quarterly)</p></td>
+<td><p>Basu</p></td>
+<td><p>1983</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>61</p></td>
+<td><p>Forecasted growth in 5-year EPS</p></td>
+<td><p>Bauman and Dowen</p></td>
+<td><p>1988</p></td>
+<td><p>FAJ</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>62</p></td>
+<td><p>Inventory growth</p></td>
+<td><p>Belo and Lin</p></td>
+<td><p>2012</p></td>
+<td><p>RFS</p></td>
+<td><p>inv_gr1</p></td>
+</tr>
+<tr class="row-even"><td><p>63</p></td>
+<td><p>Brand capital to assets</p></td>
+<td><p>Belo, Lin and Vitorino</p></td>
+<td><p>2014</p></td>
+<td><p>RED</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>64</p></td>
+<td><p>Employment growth</p></td>
+<td><p>Belo, Lin, and Bazdresch</p></td>
+<td><p>2014</p></td>
+<td><p>JPE</p></td>
+<td><p>emp_gr1</p></td>
+</tr>
+<tr class="row-even"><td><p>65</p></td>
+<td><p>Debt to market</p></td>
+<td><p>Bhandari</p></td>
+<td><p>1988</p></td>
+<td><p>JFE</p></td>
+<td><p>debt_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>66</p></td>
+<td><p>Debt to market (quarterly)</p></td>
+<td><p>Bhandari</p></td>
+<td><p>1988</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>67</p></td>
+<td><p>12 month residual momentum</p></td>
+<td><p>Blitz, Huij, and Martens</p></td>
+<td><p>2011</p></td>
+<td><p>JEF</p></td>
+<td><p>resff3_12_1</p></td>
+</tr>
+<tr class="row-odd"><td><p>68</p></td>
+<td><p>6 month residual momentum</p></td>
+<td><p>Blitz, Huij, and Martens</p></td>
+<td><p>2011</p></td>
+<td><p>JEF</p></td>
+<td><p>resff3_6_1</p></td>
+</tr>
+<tr class="row-even"><td><p>69</p></td>
+<td><p>Change in operating cash flow to assets</p></td>
+<td><p>Bouchard et al.</p></td>
+<td><p>2019</p></td>
+<td><p>JF</p></td>
+<td><p>ocf_at_chg1</p></td>
+</tr>
+<tr class="row-odd"><td><p>70</p></td>
+<td><p>Operating cash flow to assets</p></td>
+<td><p>Bouchard et al.</p></td>
+<td><p>2019</p></td>
+<td><p>JF</p></td>
+<td><p>ocf_at</p></td>
+</tr>
+<tr class="row-even"><td><p>71</p></td>
+<td><p>Net payout yield</p></td>
+<td><p>Boudoukh et al.</p></td>
+<td><p>2007</p></td>
+<td><p>JF</p></td>
+<td><p>eqnpo_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>72</p></td>
+<td><p>Net payout yield (quarterly)</p></td>
+<td><p>Boudoukh et al.</p></td>
+<td><p>2007</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>73</p></td>
+<td><p>Payout yield</p></td>
+<td><p>Boudoukh et al.</p></td>
+<td><p>2007</p></td>
+<td><p>JF</p></td>
+<td><p>eqpo_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>74</p></td>
+<td><p>Payout yield (quarterly)</p></td>
+<td><p>Boudoukh et al.</p></td>
+<td><p>2007</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>75</p></td>
+<td><p>Net debt finance</p></td>
+<td><p>Bradshaw, Richardson, and Sloan</p></td>
+<td><p>2006</p></td>
+<td><p>JAE</p></td>
+<td><p>dbnetis_at</p></td>
+</tr>
+<tr class="row-odd"><td><p>76</p></td>
+<td><p>Net equity finance</p></td>
+<td><p>Bradshaw, Richardson, and Sloan</p></td>
+<td><p>2006</p></td>
+<td><p>JAE</p></td>
+<td><p>eqnetis_at</p></td>
+</tr>
+<tr class="row-even"><td><p>77</p></td>
+<td><p>Net external finance</p></td>
+<td><p>Bradshaw, Richardson, and Sloan</p></td>
+<td><p>2006</p></td>
+<td><p>JAE</p></td>
+<td><p>netis_at</p></td>
+</tr>
+<tr class="row-odd"><td><p>78</p></td>
+<td><p>Dollar trading volume (JKP)</p></td>
+<td><p>Brennan, Chordia, and Subrahmanyam</p></td>
+<td><p>1998</p></td>
+<td><p>JFE</p></td>
+<td><p>dolvol_126d</p></td>
+</tr>
+<tr class="row-even"><td><p>79</p></td>
+<td><p>Dollar trading volume (Org, GHZ)</p></td>
+<td><p>Brennan, Chordia, and Subrahmanyam</p></td>
+<td><p>1998</p></td>
+<td><p>JFE</p></td>
+<td><p>dolvol</p></td>
+</tr>
+<tr class="row-odd"><td><p>80</p></td>
+<td><p>Return on invested capital</p></td>
+<td><p>Brown and Rowe</p></td>
+<td><p>2007</p></td>
+<td><p>WP</p></td>
+<td><p>roic</p></td>
+</tr>
+<tr class="row-even"><td><p>81</p></td>
+<td><p>Failure probability, monthly</p></td>
+<td><p>Campbell, Hilscher, and Szilagyi</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>82</p></td>
+<td><p>Failure probaility</p></td>
+<td><p>Campbell, Hilscher, and Szilagyi</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>83</p></td>
+<td><p>Earnings announcement return (Chan et al.)</p></td>
+<td><p>Chan, Jegadeesh, and Lakonishok</p></td>
+<td><p>1996</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>84</p></td>
+<td><p>Advertising expense to market</p></td>
+<td><p>Chan, Lakonishok, and Sougiannis</p></td>
+<td><p>2001</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>85</p></td>
+<td><p>R&amp;D to market</p></td>
+<td><p>Chan, Lakonishok, and Sougiannis</p></td>
+<td><p>2001</p></td>
+<td><p>JF</p></td>
+<td><p>rd_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>86</p></td>
+<td><p>R&amp;D to market (quarterly)</p></td>
+<td><p>Chan, Lakonishok, and Sougiannis</p></td>
+<td><p>2001</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>87</p></td>
+<td><p>R&amp;D to sales</p></td>
+<td><p>Chan, Lakonishok, and Sougiannis</p></td>
+<td><p>2001</p></td>
+<td><p>JF</p></td>
+<td><p>rd_sale</p></td>
+</tr>
+<tr class="row-odd"><td><p>88</p></td>
+<td><p>R&amp;D to sales (quarterly)</p></td>
+<td><p>Chan, Lakonishok, and Sougiannis</p></td>
+<td><p>2001</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>89</p></td>
+<td><p>Cash productivity</p></td>
+<td><p>Chandrashekar and Rao</p></td>
+<td><p>2009</p></td>
+<td><p>WP</p></td>
+<td><p>cashpr</p></td>
+</tr>
+<tr class="row-odd"><td><p>90</p></td>
+<td><p>CAPEX and inventory</p></td>
+<td><p>Chen and Zhang</p></td>
+<td><p>2010</p></td>
+<td><p>JF</p></td>
+<td><p>invest</p></td>
+</tr>
+<tr class="row-even"><td><p>91</p></td>
+<td><p>Volatility of dollar trading volume (GHZ)</p></td>
+<td><p>Chordia, Subrahmanyam, and Anshuman</p></td>
+<td><p>2001</p></td>
+<td><p>JFE</p></td>
+<td><p>std_dolvol</p></td>
+</tr>
+<tr class="row-odd"><td><p>92</p></td>
+<td><p>Volatility of dollar trading volume (JKP)</p></td>
+<td><p>Chordia, Subrahmanyam, and Anshuman</p></td>
+<td><p>2001</p></td>
+<td><p>JFE</p></td>
+<td><p>dolvol_var_126d</p></td>
+</tr>
+<tr class="row-even"><td><p>93</p></td>
+<td><p>Volatility of share turnover (GHZ)</p></td>
+<td><p>Chordia, Subrahmanyam, and Anshuman</p></td>
+<td><p>2001</p></td>
+<td><p>JFE</p></td>
+<td><p>std_turn</p></td>
+</tr>
+<tr class="row-odd"><td><p>94</p></td>
+<td><p>Volatility of share turnover (JKP)</p></td>
+<td><p>Chordia, Subrahmanyam, and Anshuman</p></td>
+<td><p>2001</p></td>
+<td><p>JFE</p></td>
+<td><p>turnover_var_126d</p></td>
+</tr>
+<tr class="row-even"><td><p>95</p></td>
+<td><p>Customer momentum</p></td>
+<td><p>Cohen and Frazzini</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>96</p></td>
+<td><p>Segment momentum</p></td>
+<td><p>Cohen and Lou</p></td>
+<td><p>2012</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>97</p></td>
+<td><p>Asset growth</p></td>
+<td><p>Cooper, Gulen, and Schill</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td><p>at_gr1</p></td>
+</tr>
+<tr class="row-odd"><td><p>98</p></td>
+<td><p>Asset growth (quarterly)</p></td>
+<td><p>Cooper, Gulen, and Schill</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>99</p></td>
+<td><p>High-low bid-ask spread</p></td>
+<td><p>Corwin and Schultz</p></td>
+<td><p>2012</p></td>
+<td><p>JF</p></td>
+<td><p>bidaskhl_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>100</p></td>
+<td><p>Disparing between long- and short-term earnings growth forecasts</p></td>
+<td><p>Da and Warachka</p></td>
+<td><p>2011</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>101</p></td>
+<td><p>Composite equity issuance (Org)</p></td>
+<td><p>Daniel and Titman</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>eqnpo_60m</p></td>
+</tr>
+<tr class="row-odd"><td><p>102</p></td>
+<td><p>Composite equity issuance (JKP, 12 months)</p></td>
+<td><p>Daniel and Titman</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>eqnpo_12m</p></td>
+</tr>
+<tr class="row-even"><td><p>103</p></td>
+<td><p>Intangible return</p></td>
+<td><p>Daniel and Titman</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>104</p></td>
+<td><p>Share turnover (JKP)</p></td>
+<td><p>Datar, Naik, and Radcliffe</p></td>
+<td><p>1998</p></td>
+<td><p>JFM</p></td>
+<td><p>turnover_126d</p></td>
+</tr>
+<tr class="row-even"><td><p>105</p></td>
+<td><p>Share turnover (Org, GHZ)</p></td>
+<td><p>Datar, Naik, and Radcliffe</p></td>
+<td><p>1998</p></td>
+<td><p>JFM</p></td>
+<td><p>turn</p></td>
+</tr>
+<tr class="row-odd"><td><p>106</p></td>
+<td><p>Long-term reversal (12-36)</p></td>
+<td><p>De Bondt and Thaler</p></td>
+<td><p>1985</p></td>
+<td><p>JF</p></td>
+<td><p>ret_36_12</p></td>
+</tr>
+<tr class="row-even"><td><p>107</p></td>
+<td><p>Long-term reversal (12-60)</p></td>
+<td><p>De Bondt and Thaler</p></td>
+<td><p>1985</p></td>
+<td><p>JF</p></td>
+<td><p>ret_60_12</p></td>
+</tr>
+<tr class="row-odd"><td><p>108</p></td>
+<td><p>Equity duration</p></td>
+<td><p>Dechow, Sloan, and Soliman</p></td>
+<td><p>2004</p></td>
+<td><p>RAS</p></td>
+<td><p>eq_dur</p></td>
+</tr>
+<tr class="row-even"><td><p>109</p></td>
+<td><p>Operating Cash flows to price (JKP)</p></td>
+<td><p>Desai, Rajgopal, and Venkatachalam</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>ocf_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>110</p></td>
+<td><p>Operating Cash flows to price (Org, GHZ)</p></td>
+<td><p>Desai, Rajgopal, and Venkatachalam</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>cfp</p></td>
+</tr>
+<tr class="row-even"><td><p>111</p></td>
+<td><p>Operating Cash flows to price (quarterly)</p></td>
+<td><p>Desai, Rajgopal, and Venkatachalam</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>112</p></td>
+<td><p>Altman Z-score</p></td>
+<td><p>Dichev</p></td>
+<td><p>1998</p></td>
+<td><p>JF</p></td>
+<td><p>z_score</p></td>
+</tr>
+<tr class="row-even"><td><p>113</p></td>
+<td><p>Altman Z-score (quarterly)</p></td>
+<td><p>Dichev</p></td>
+<td><p>1998</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>114</p></td>
+<td><p>Ohlson O-score</p></td>
+<td><p>Dichev</p></td>
+<td><p>1998</p></td>
+<td><p>JF</p></td>
+<td><p>o_score</p></td>
+</tr>
+<tr class="row-even"><td><p>115</p></td>
+<td><p>Ohlson O-Score (quarterly)</p></td>
+<td><p>Dichev</p></td>
+<td><p>1998</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>116</p></td>
+<td><p>Credit Rating Downgrade</p></td>
+<td><p>Dichev and Piotroski</p></td>
+<td><p>2001</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>117</p></td>
+<td><p>Dispersion in analysts’ earnings forecasts</p></td>
+<td><p>Diether, Malloy, and
+Scherbina</p></td>
+<td><p>2002</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>118</p></td>
+<td><p>Dimson Beta</p></td>
+<td><p>Dimson</p></td>
+<td><p>1979</p></td>
+<td><p>JFE</p></td>
+<td><p>beta_dimson_21d</p></td>
+</tr>
+<tr class="row-even"><td><p>119</p></td>
+<td><p>Probability of informed trading</p></td>
+<td><p>Easley, Hvidkjaer, and O’Hara</p></td>
+<td><p>2002</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>120</p></td>
+<td><p>Unexpected R&amp;D increase</p></td>
+<td><p>Eberhart, Maxwell, and Siddique</p></td>
+<td><p>2004</p></td>
+<td><p>JF</p></td>
+<td><p>rd</p></td>
+</tr>
+<tr class="row-even"><td><p>121</p></td>
+<td><p>Industry-adjusted organizational capital</p></td>
+<td><p>Eisfeldt and Papanikolaou</p></td>
+<td><p>2013</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>122</p></td>
+<td><p>Organization capital/assets</p></td>
+<td><p>Eisfeldt and Papanikolaou</p></td>
+<td><p>2013</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>123</p></td>
+<td><p>Analysts coverage</p></td>
+<td><p>Elgers, Lo, and Pfeiffer</p></td>
+<td><p>2001</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>124</p></td>
+<td><p>Analysts’ earnings forecast-to-price</p></td>
+<td><p>Elgers, Lo, and Pfeiffer</p></td>
+<td><p>2001</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>125</p></td>
+<td><p>Change in long-term net operating assets</p></td>
+<td><p>Fairfield, Whisenant, and Yohn</p></td>
+<td><p>2003</p></td>
+<td><p>AR</p></td>
+<td><p>lnoa_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>126</p></td>
+<td><p>Assets-to-market</p></td>
+<td><p>Fama and French</p></td>
+<td><p>1992</p></td>
+<td><p>JF</p></td>
+<td><p>at_me</p></td>
+</tr>
+<tr class="row-even"><td><p>127</p></td>
+<td><p>Assets-to-market (quarterly)</p></td>
+<td><p>Fama and French</p></td>
+<td><p>1992</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>128</p></td>
+<td><p>Book leverage</p></td>
+<td><p>Fama and French</p></td>
+<td><p>1992</p></td>
+<td><p>JF</p></td>
+<td><p>at_be</p></td>
+</tr>
+<tr class="row-even"><td><p>129</p></td>
+<td><p>Book leverage (quarterly)</p></td>
+<td><p>Fama and French</p></td>
+<td><p>1992</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>130</p></td>
+<td><p>Operating profits to book equity (JKP)</p></td>
+<td><p>Fama and French</p></td>
+<td><p>2015</p></td>
+<td><p>JFE</p></td>
+<td><p>ope_be</p></td>
+</tr>
+<tr class="row-even"><td><p>131</p></td>
+<td><p>Operating profits to book equity (GHZ, Org)</p></td>
+<td><p>Fama and French</p></td>
+<td><p>2015</p></td>
+<td><p>JFE</p></td>
+<td><p>operprof</p></td>
+</tr>
+<tr class="row-odd"><td><p>132</p></td>
+<td><p>Operating profits to lagged book equity</p></td>
+<td><p>Fama and French</p></td>
+<td><p>2015</p></td>
+<td><p>JFE</p></td>
+<td><p>ope_bel1</p></td>
+</tr>
+<tr class="row-even"><td><p>133</p></td>
+<td><p>Operating profits to lagged equity (quarterly)</p></td>
+<td><p>Fama and French</p></td>
+<td><p>2015</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>134</p></td>
+<td><p>Beta squared (GHZ)</p></td>
+<td><p>Fama and MacBeth</p></td>
+<td><p>1973</p></td>
+<td><p>JPE</p></td>
+<td><p>betasq</p></td>
+</tr>
+<tr class="row-even"><td><p>135</p></td>
+<td><p>Market beta  (GHZ)</p></td>
+<td><p>Fama and MacBeth</p></td>
+<td><p>1973</p></td>
+<td><p>JPE</p></td>
+<td><p>beta</p></td>
+</tr>
+<tr class="row-odd"><td><p>136</p></td>
+<td><p>Market beta (Org, JKP)</p></td>
+<td><p>Fama and MacBeth</p></td>
+<td><p>1973</p></td>
+<td><p>JPE</p></td>
+<td><p>beta_60m</p></td>
+</tr>
+<tr class="row-even"><td><p>137</p></td>
+<td><p>Earnings surprise</p></td>
+<td><p>Foster, Olsen, and Shevlin</p></td>
+<td><p>1984</p></td>
+<td><p>AR</p></td>
+<td><p>niq_su</p></td>
+</tr>
+<tr class="row-odd"><td><p>138</p></td>
+<td><p>Earnings conservatism</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>139</p></td>
+<td><p>Earnings persistence</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>ni_ar1</p></td>
+</tr>
+<tr class="row-odd"><td><p>140</p></td>
+<td><p>Earnings predictability</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>ni_ivol</p></td>
+</tr>
+<tr class="row-even"><td><p>141</p></td>
+<td><p>Earnings smoothness</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>earnings_variability</p></td>
+</tr>
+<tr class="row-odd"><td><p>142</p></td>
+<td><p>Earnings timeliness</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>143</p></td>
+<td><p>ROA volatility</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>roavol</p></td>
+</tr>
+<tr class="row-odd"><td><p>144</p></td>
+<td><p>Value relevance of earnings</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>145</p></td>
+<td><p>Accrual quality</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>146</p></td>
+<td><p>Accrual quality (quarterly)</p></td>
+<td><p>Francis et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>147</p></td>
+<td><p>Analysts optimism</p></td>
+<td><p>Frankel and Lee</p></td>
+<td><p>1998</p></td>
+<td><p>JAE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>148</p></td>
+<td><p>Analysts-based intrinsic value-to-market</p></td>
+<td><p>Frankel and Lee</p></td>
+<td><p>1998</p></td>
+<td><p>JAE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>149</p></td>
+<td><p>Intrinsic value-to-market</p></td>
+<td><p>Frankel and Lee</p></td>
+<td><p>1998</p></td>
+<td><p>JAE</p></td>
+<td><p>intrinsic_value</p></td>
+</tr>
+<tr class="row-odd"><td><p>150</p></td>
+<td><p>Predicted analysts focecast error</p></td>
+<td><p>Frankel and Lee</p></td>
+<td><p>1998</p></td>
+<td><p>JAE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>151</p></td>
+<td><p>Pension funding rate (scaled by market equity)</p></td>
+<td><p>Franzoni and Marin</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>152</p></td>
+<td><p>Persion funding rate (scaled by assets)</p></td>
+<td><p>Franzoni and Marin</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>153</p></td>
+<td><p>Frazzini-Pedersen beta</p></td>
+<td><p>Frazzini and Pedersen</p></td>
+<td><p>2014</p></td>
+<td><p>JFE</p></td>
+<td><p>betabab_1260d</p></td>
+</tr>
+<tr class="row-odd"><td><p>154</p></td>
+<td><p>52-week high</p></td>
+<td><p>George and Hwang</p></td>
+<td><p>2004</p></td>
+<td><p>JF</p></td>
+<td><p>prc_highprc_252d</p></td>
+</tr>
+<tr class="row-even"><td><p>155</p></td>
+<td><p>Change in 6-month momentum</p></td>
+<td><p>Gettleman and Marks</p></td>
+<td><p>2006</p></td>
+<td><p>WP</p></td>
+<td><p>chmom</p></td>
+</tr>
+<tr class="row-odd"><td><p>156</p></td>
+<td><p>Corporate governance index</p></td>
+<td><p>Gompers, Ishii, and Metrick</p></td>
+<td><p>2003</p></td>
+<td><p>QJE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>157</p></td>
+<td><p>Percent discretionary accruals</p></td>
+<td><p>Hafzalla, Lundholm, and Van Winkle</p></td>
+<td><p>2011</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>158</p></td>
+<td><p>Percent operating accruals (JKP)</p></td>
+<td><p>Hafzalla, Lundholm, and Van Winkle</p></td>
+<td><p>2011</p></td>
+<td><p>AR</p></td>
+<td><p>oaccruals_ni</p></td>
+</tr>
+<tr class="row-even"><td><p>159</p></td>
+<td><p>Percent operating accruals (GHZ, Org)</p></td>
+<td><p>Hafzalla, Lundholm, and Van Winkle</p></td>
+<td><p>2011</p></td>
+<td><p>AR</p></td>
+<td><p>pctacc</p></td>
+</tr>
+<tr class="row-odd"><td><p>160</p></td>
+<td><p>Percent total accruals</p></td>
+<td><p>Hafzalla, Lundholm, and Van Winkle</p></td>
+<td><p>2011</p></td>
+<td><p>AR</p></td>
+<td><p>taccruals_ni</p></td>
+</tr>
+<tr class="row-even"><td><p>161</p></td>
+<td><p>Tangibility</p></td>
+<td><p>Hahn and Lee</p></td>
+<td><p>2009</p></td>
+<td><p>JF</p></td>
+<td><p>tangibility</p></td>
+</tr>
+<tr class="row-odd"><td><p>162</p></td>
+<td><p>Tangibility (quarterly)</p></td>
+<td><p>Hahn and Lee</p></td>
+<td><p>2009</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>163</p></td>
+<td><p>Coskewness</p></td>
+<td><p>Harvey and Siddique</p></td>
+<td><p>2000</p></td>
+<td><p>JF</p></td>
+<td><p>coskew_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>164</p></td>
+<td><p>Capital turnover</p></td>
+<td><p>Haugen and Baker</p></td>
+<td><p>1996</p></td>
+<td><p>JFE</p></td>
+<td><p>at_turnover</p></td>
+</tr>
+<tr class="row-even"><td><p>165</p></td>
+<td><p>Capital turnover (quarterly)</p></td>
+<td><p>Haugen and Baker</p></td>
+<td><p>1996</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>166</p></td>
+<td><p>Return on equity</p></td>
+<td><p>Haugen and Baker</p></td>
+<td><p>1996</p></td>
+<td><p>JFE</p></td>
+<td><p>ni_be</p></td>
+</tr>
+<tr class="row-even"><td><p>167</p></td>
+<td><p>Analysts’ forecast change</p></td>
+<td><p>Hawkins, Chamberlin, and Daniel</p></td>
+<td><p>1984</p></td>
+<td><p>FAJ</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>168</p></td>
+<td><p>Revisions in analyst’s’ earnings forecasts</p></td>
+<td><p>Hawkins, Chamberlin, and Daniel</p></td>
+<td><p>1984</p></td>
+<td><p>FAJ</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>169</p></td>
+<td><p>Year 1-lagged return, annual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_1_1an</p></td>
+</tr>
+<tr class="row-odd"><td><p>170</p></td>
+<td><p>Year 1-lagged return, nonannual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_1_1na</p></td>
+</tr>
+<tr class="row-even"><td><p>171</p></td>
+<td><p>Years 2-5 lagged returns, annual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_2_5an</p></td>
+</tr>
+<tr class="row-odd"><td><p>172</p></td>
+<td><p>Years 2-5 lagged returns, nonannual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_2_5na</p></td>
+</tr>
+<tr class="row-even"><td><p>173</p></td>
+<td><p>Years 6-10 lagged returns, annual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_6_10an</p></td>
+</tr>
+<tr class="row-odd"><td><p>174</p></td>
+<td><p>Years 6-10 lagged returns, nonannual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_6_10na</p></td>
+</tr>
+<tr class="row-even"><td><p>175</p></td>
+<td><p>Years 11-15 lagged returns, annual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_11_15an</p></td>
+</tr>
+<tr class="row-odd"><td><p>176</p></td>
+<td><p>Years 11-15 lagged returns, nonannual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_11_15na</p></td>
+</tr>
+<tr class="row-even"><td><p>177</p></td>
+<td><p>Years 16-20 lagged returns, annual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_16_20an</p></td>
+</tr>
+<tr class="row-odd"><td><p>178</p></td>
+<td><p>Years 16-20 lagged returns, nonannual</p></td>
+<td><p>Heston and Sadka</p></td>
+<td><p>2008</p></td>
+<td><p>JFE</p></td>
+<td><p>seas_16_20na</p></td>
+</tr>
+<tr class="row-even"><td><p>179</p></td>
+<td><p>Citations to R&amp;D expenses</p></td>
+<td><p>Hirschleifer, Hsu, and Li</p></td>
+<td><p>2013</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>180</p></td>
+<td><p>Patents to R&amp;D expenses</p></td>
+<td><p>Hirschleifer, Hsu, and Li</p></td>
+<td><p>2013</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>181</p></td>
+<td><p>Change in net operating assets</p></td>
+<td><p>Hirshleifer et al.</p></td>
+<td><p>2004</p></td>
+<td><p>JAE</p></td>
+<td><p>noa_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>182</p></td>
+<td><p>Net operating assets</p></td>
+<td><p>Hirshleifer et al.</p></td>
+<td><p>2004</p></td>
+<td><p>JAE</p></td>
+<td><p>noa_at</p></td>
+</tr>
+<tr class="row-even"><td><p>183</p></td>
+<td><p>Change in depreciation to PP&amp;E</p></td>
+<td><p>Holthausen and Larcker</p></td>
+<td><p>1992</p></td>
+<td><p>JAE</p></td>
+<td><p>pchdepr</p></td>
+</tr>
+<tr class="row-odd"><td><p>184</p></td>
+<td><p>Depreciation to PP&amp;E</p></td>
+<td><p>Holthausen and Larcker</p></td>
+<td><p>1992</p></td>
+<td><p>JAE</p></td>
+<td><p>depr</p></td>
+</tr>
+<tr class="row-even"><td><p>185</p></td>
+<td><p>Sin stock</p></td>
+<td><p>Hong and Kacperczyk</p></td>
+<td><p>2009</p></td>
+<td><p>JFE</p></td>
+<td><p>sin</p></td>
+</tr>
+<tr class="row-odd"><td><p>186</p></td>
+<td><p>Industry lead-lag effect in earnings surprises</p></td>
+<td><p>Hou</p></td>
+<td><p>2007</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>187</p></td>
+<td><p>Industry lead-lag effect in prior returns</p></td>
+<td><p>Hou</p></td>
+<td><p>2007</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>188</p></td>
+<td><p>Bid-ask spread (TAQ)</p></td>
+<td><p>Hou and Loh</p></td>
+<td><p>2016</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>189</p></td>
+<td><p>Price delay based on R-squared</p></td>
+<td><p>Hou and Moskowitz</p></td>
+<td><p>2005</p></td>
+<td><p>RFS</p></td>
+<td><p>pricedelay</p></td>
+</tr>
+<tr class="row-odd"><td><p>190</p></td>
+<td><p>Price delay based on SE-adjusted slopes</p></td>
+<td><p>Hou and Moskowitz</p></td>
+<td><p>2005</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>191</p></td>
+<td><p>Price delay based on slopes</p></td>
+<td><p>Hou and Moskowitz</p></td>
+<td><p>2005</p></td>
+<td><p>RFS</p></td>
+<td><p>pricedelay_slope</p></td>
+</tr>
+<tr class="row-odd"><td><p>192</p></td>
+<td><p>Industry concentration (book equity)</p></td>
+<td><p>Hou and Robinson</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>herf_be</p></td>
+</tr>
+<tr class="row-even"><td><p>193</p></td>
+<td><p>Industry concentration (sales)</p></td>
+<td><p>Hou and Robinson</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>herf_sale</p></td>
+</tr>
+<tr class="row-odd"><td><p>194</p></td>
+<td><p>Industry concentration (total assets)</p></td>
+<td><p>Hou and Robinson</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>herf_at</p></td>
+</tr>
+<tr class="row-even"><td><p>195</p></td>
+<td><p>Return on equity (quarterly)</p></td>
+<td><p>Hou, Xue, and Zhang</p></td>
+<td><p>2015</p></td>
+<td><p>RFS</p></td>
+<td><p>niq_be</p></td>
+</tr>
+<tr class="row-odd"><td><p>196</p></td>
+<td><p>Cash flow volatility</p></td>
+<td><p>Huang</p></td>
+<td><p>2009</p></td>
+<td><p>JEF</p></td>
+<td><p>ocfq_saleq_std</p></td>
+</tr>
+<tr class="row-even"><td><p>197</p></td>
+<td><p>Short-term reversal</p></td>
+<td><p>Jegadeesh</p></td>
+<td><p>1990</p></td>
+<td><p>JF</p></td>
+<td><p>ret_1_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>198</p></td>
+<td><p>Revenue surprise</p></td>
+<td><p>Jegadeesh and Livnat</p></td>
+<td><p>2006</p></td>
+<td><p>JFE</p></td>
+<td><p>saleq_su</p></td>
+</tr>
+<tr class="row-even"><td><p>199</p></td>
+<td><p>Momentum (12 month)</p></td>
+<td><p>Jegadeesh and Titman</p></td>
+<td><p>1993</p></td>
+<td><p>JF</p></td>
+<td><p>ret_12_1</p></td>
+</tr>
+<tr class="row-odd"><td><p>200</p></td>
+<td><p>Momentum (3 month)</p></td>
+<td><p>Jegadeesh and Titman</p></td>
+<td><p>1993</p></td>
+<td><p>JF</p></td>
+<td><p>ret_3_1</p></td>
+</tr>
+<tr class="row-even"><td><p>201</p></td>
+<td><p>Momentum (6 month)</p></td>
+<td><p>Jegadeesh and Titman</p></td>
+<td><p>1993</p></td>
+<td><p>JF</p></td>
+<td><p>ret_6_1</p></td>
+</tr>
+<tr class="row-odd"><td><p>202</p></td>
+<td><p>Momentum (9 month)</p></td>
+<td><p>Jegadeesh and Titman</p></td>
+<td><p>1993</p></td>
+<td><p>JF</p></td>
+<td><p>ret_9_1</p></td>
+</tr>
+<tr class="row-even"><td><p>203</p></td>
+<td><p>Firm age</p></td>
+<td><p>Jiang, Lee, and Zhang</p></td>
+<td><p>2005</p></td>
+<td><p>RAS</p></td>
+<td><p>age</p></td>
+</tr>
+<tr class="row-odd"><td><p>204</p></td>
+<td><p>Revenue surprise (Karma)</p></td>
+<td><p>Karma</p></td>
+<td><p>2009</p></td>
+<td><p>JBFA</p></td>
+<td><p>rsup</p></td>
+</tr>
+<tr class="row-even"><td><p>205</p></td>
+<td><p>Tail risk</p></td>
+<td><p>Kelly and Jiang</p></td>
+<td><p>2014</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>206</p></td>
+<td><p>Earnings announcement return (Kishore et al.)</p></td>
+<td><p>Kishore et al.</p></td>
+<td><p>2008</p></td>
+<td><p>WP</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>207</p></td>
+<td><p>Long-term EPS forecast</p></td>
+<td><p>La Porta</p></td>
+<td><p>1996</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>208</p></td>
+<td><p>Long-term EPS forecast (monthly sort)</p></td>
+<td><p>La Porta</p></td>
+<td><p>1996</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>209</p></td>
+<td><p>Annual sales growth</p></td>
+<td><p>Lakonishok, Shleifer, and Vishny</p></td>
+<td><p>1994</p></td>
+<td><p>JF</p></td>
+<td><p>sale_gr1</p></td>
+</tr>
+<tr class="row-odd"><td><p>210</p></td>
+<td><p>Annual sales growth (quarterly)</p></td>
+<td><p>Lakonishok, Shleifer, and Vishny</p></td>
+<td><p>1994</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>211</p></td>
+<td><p>Cash flow-to-price</p></td>
+<td><p>Lakonishok, Shleifer, and Vishny</p></td>
+<td><p>1994</p></td>
+<td><p>JF</p></td>
+<td><p>fcf_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>212</p></td>
+<td><p>Cash flow-to-price (quarterly)</p></td>
+<td><p>Lakonishok, Shleifer, and Vishny</p></td>
+<td><p>1994</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>213</p></td>
+<td><p>Five-year sales growth rank</p></td>
+<td><p>Lakonishok, Shleifer, and Vishny</p></td>
+<td><p>1994</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>214</p></td>
+<td><p>Three-year sales growth</p></td>
+<td><p>Lakonishok, Shleifer, and Vishny</p></td>
+<td><p>1994</p></td>
+<td><p>JF</p></td>
+<td><p>sale_gr3</p></td>
+</tr>
+<tr class="row-even"><td><p>215</p></td>
+<td><p>Kaplan-Zingales index</p></td>
+<td><p>Lamont, Polk, and Saa-Requejo</p></td>
+<td><p>2001</p></td>
+<td><p>RFS</p></td>
+<td><p>kz_index</p></td>
+</tr>
+<tr class="row-odd"><td><p>216</p></td>
+<td><p>Kaplan-Zingales index (quarterly)</p></td>
+<td><p>Lamont, Polk, and Saa-Requejo</p></td>
+<td><p>2001</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>217</p></td>
+<td><p>Abnormal volume in earnings announcement month</p></td>
+<td><p>Lerman, Livnat, and Mendenhall</p></td>
+<td><p>2008</p></td>
+<td><p>WP</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>218</p></td>
+<td><p>Taxable income to income (JKP)</p></td>
+<td><p>Lev and Nissim</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>pi_nix</p></td>
+</tr>
+<tr class="row-even"><td><p>219</p></td>
+<td><p>Taxable income to income (Org, GHZ)</p></td>
+<td><p>Lev and Nissim</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td><p>tb</p></td>
+</tr>
+<tr class="row-odd"><td><p>220</p></td>
+<td><p>Taxable income to income (quarterly)</p></td>
+<td><p>Lev and Nissim</p></td>
+<td><p>2004</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>221</p></td>
+<td><p>R&amp;D capital-to-assets</p></td>
+<td><p>Li</p></td>
+<td><p>2011</p></td>
+<td><p>RFS</p></td>
+<td><p>rd5_at</p></td>
+</tr>
+<tr class="row-odd"><td><p>222</p></td>
+<td><p>Dividend yield (JKP)</p></td>
+<td><p>Litzenberger and Ramaswamy</p></td>
+<td><p>1979</p></td>
+<td><p>JF</p></td>
+<td><p>div12m_me</p></td>
+</tr>
+<tr class="row-even"><td><p>223</p></td>
+<td><p>Dividend yield (GHZ)</p></td>
+<td><p>Litzenberger and Ramaswamy</p></td>
+<td><p>1979</p></td>
+<td><p>JF</p></td>
+<td><p>dy</p></td>
+</tr>
+<tr class="row-odd"><td><p>224</p></td>
+<td><p>Dividend yield (quarterly)</p></td>
+<td><p>Litzenberger and Ramaswamy</p></td>
+<td><p>1979</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>225</p></td>
+<td><p>Zero-trading days (1 month)</p></td>
+<td><p>Liu</p></td>
+<td><p>2006</p></td>
+<td><p>JFE</p></td>
+<td><p>zero_trades_21d</p></td>
+</tr>
+<tr class="row-odd"><td><p>226</p></td>
+<td><p>Zero-trading days (6 months)</p></td>
+<td><p>Liu</p></td>
+<td><p>2006</p></td>
+<td><p>JFE</p></td>
+<td><p>zero_trades_126d</p></td>
+</tr>
+<tr class="row-even"><td><p>227</p></td>
+<td><p>Zero-trading days (12 months)</p></td>
+<td><p>Liu</p></td>
+<td><p>2006</p></td>
+<td><p>JFE</p></td>
+<td><p>zero_trades_252d</p></td>
+</tr>
+<tr class="row-odd"><td><p>228</p></td>
+<td><p>Growth in advertising expenses</p></td>
+<td><p>Lou</p></td>
+<td><p>2014</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>229</p></td>
+<td><p>Initial public offerings</p></td>
+<td><p>Loughran and Ritter</p></td>
+<td><p>1995</p></td>
+<td><p>JF</p></td>
+<td><p>ipo</p></td>
+</tr>
+<tr class="row-odd"><td><p>230</p></td>
+<td><p>Enterprise multiple</p></td>
+<td><p>Loughran and Wellman</p></td>
+<td><p>2011</p></td>
+<td><p>JFQA</p></td>
+<td><p>ebitda_mev</p></td>
+</tr>
+<tr class="row-even"><td><p>231</p></td>
+<td><p>Enterprise multiple (quarterly)</p></td>
+<td><p>Loughran and Wellman</p></td>
+<td><p>2011</p></td>
+<td><p>JFQA</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>232</p></td>
+<td><p>Changes in PPE and inventory/assets</p></td>
+<td><p>Lyandres, Sun, and Zhang</p></td>
+<td><p>2008</p></td>
+<td><p>RFS</p></td>
+<td><p>ppeinv_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>233</p></td>
+<td><p>Composite debt issuance</p></td>
+<td><p>Lyandres, Sun, and Zhang</p></td>
+<td><p>2008</p></td>
+<td><p>RFS</p></td>
+<td><p>debt_gr3</p></td>
+</tr>
+<tr class="row-odd"><td><p>234</p></td>
+<td><p>Customer industries momentum</p></td>
+<td><p>Menzly and Ozbas</p></td>
+<td><p>2010</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>235</p></td>
+<td><p>Supplier industries momentum</p></td>
+<td><p>Menzly and Ozbas</p></td>
+<td><p>2010</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>236</p></td>
+<td><p>Dividend initiation</p></td>
+<td><p>Michaely, Thaler, and Womack</p></td>
+<td><p>1995</p></td>
+<td><p>JF</p></td>
+<td><p>divi</p></td>
+</tr>
+<tr class="row-even"><td><p>237</p></td>
+<td><p>Dividend omission</p></td>
+<td><p>Michaely, Thaler, and Womack</p></td>
+<td><p>1995</p></td>
+<td><p>JF</p></td>
+<td><p>divo</p></td>
+</tr>
+<tr class="row-odd"><td><p>238</p></td>
+<td><p>Share price</p></td>
+<td><p>Miller and Scholes</p></td>
+<td><p>1982</p></td>
+<td><p>JPE</p></td>
+<td><p>prc</p></td>
+</tr>
+<tr class="row-even"><td><p>239</p></td>
+<td><p>Mohanram G-score</p></td>
+<td><p>Mohanram</p></td>
+<td><p>2005</p></td>
+<td><p>RAS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>240</p></td>
+<td><p>Quarterly sales growth</p></td>
+<td><p>Mohanram</p></td>
+<td><p>2005</p></td>
+<td><p>RAS</p></td>
+<td><p>saleq_gr1</p></td>
+</tr>
+<tr class="row-even"><td><p>241</p></td>
+<td><p>Industry momentum</p></td>
+<td><p>Moskowitz and Grinblatt</p></td>
+<td><p>1999</p></td>
+<td><p>JFE</p></td>
+<td><p>indmom</p></td>
+</tr>
+<tr class="row-odd"><td><p>242</p></td>
+<td><p>Operating leverage</p></td>
+<td><p>Novy-Marx</p></td>
+<td><p>2011</p></td>
+<td><p>JFE</p></td>
+<td><p>opex_at</p></td>
+</tr>
+<tr class="row-even"><td><p>243</p></td>
+<td><p>Operating leverage (quarterly)</p></td>
+<td><p>Novy-Marx</p></td>
+<td><p>2011</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>244</p></td>
+<td><p>Intermediate momentum (7-12)</p></td>
+<td><p>Novy-Marx</p></td>
+<td><p>2012</p></td>
+<td><p>ROF</p></td>
+<td><p>ret_12_6</p></td>
+</tr>
+<tr class="row-even"><td><p>245</p></td>
+<td><p>Gross profits-to-assets</p></td>
+<td><p>Novy-Marx</p></td>
+<td><p>2013</p></td>
+<td><p>JFE</p></td>
+<td><p>gp_at</p></td>
+</tr>
+<tr class="row-odd"><td><p>246</p></td>
+<td><p>Gross profits-to-lagged assets</p></td>
+<td><p>Novy-Marx</p></td>
+<td><p>2013</p></td>
+<td><p>JFE</p></td>
+<td><p>gp_atl1</p></td>
+</tr>
+<tr class="row-even"><td><p>247</p></td>
+<td><p>Gross profits-to-lagged assets (quarterly)</p></td>
+<td><p>Novy-Marx</p></td>
+<td><p>2013</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>248</p></td>
+<td><p>Asset liquidity to book assets</p></td>
+<td><p>Ortiz-Molina and Phillips</p></td>
+<td><p>2014</p></td>
+<td><p>JFQA</p></td>
+<td><p>aliq_at</p></td>
+</tr>
+<tr class="row-even"><td><p>249</p></td>
+<td><p>Asset liquidity to book assets (quarterly)</p></td>
+<td><p>Ortiz-Molina and Phillips</p></td>
+<td><p>2014</p></td>
+<td><p>JFQA</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>250</p></td>
+<td><p>Asset liquidity to market assets</p></td>
+<td><p>Ortiz-Molina and Phillips</p></td>
+<td><p>2014</p></td>
+<td><p>JFQA</p></td>
+<td><p>aliq_mat</p></td>
+</tr>
+<tr class="row-even"><td><p>251</p></td>
+<td><p>Asset liquidity to market assets (quarterly)</p></td>
+<td><p>Ortiz-Molina and Phillips</p></td>
+<td><p>2014</p></td>
+<td><p>JFQA</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>252</p></td>
+<td><p>Cash flow-to-debt</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>cashdebt</p></td>
+</tr>
+<tr class="row-even"><td><p>253</p></td>
+<td><p>Change in current ratio</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>pchcurrat</p></td>
+</tr>
+<tr class="row-odd"><td><p>254</p></td>
+<td><p>Change in quick ratio</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>pchquick</p></td>
+</tr>
+<tr class="row-even"><td><p>255</p></td>
+<td><p>Change in sales to inventory</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>pchsaleinv</p></td>
+</tr>
+<tr class="row-odd"><td><p>256</p></td>
+<td><p>Current ratio</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>currat</p></td>
+</tr>
+<tr class="row-even"><td><p>257</p></td>
+<td><p>Quick ratio</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>quick</p></td>
+</tr>
+<tr class="row-odd"><td><p>258</p></td>
+<td><p>Sales-to-cash</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>salecash</p></td>
+</tr>
+<tr class="row-even"><td><p>259</p></td>
+<td><p>Sales-to-inventory</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>saleinv</p></td>
+</tr>
+<tr class="row-odd"><td><p>260</p></td>
+<td><p>Sales-to-receivables</p></td>
+<td><p>Ou and Penman</p></td>
+<td><p>1989</p></td>
+<td><p>JAR</p></td>
+<td><p>salerec</p></td>
+</tr>
+<tr class="row-even"><td><p>261</p></td>
+<td><p>Cash-to-assets</p></td>
+<td><p>Palazzo</p></td>
+<td><p>2012</p></td>
+<td><p>JFE</p></td>
+<td><p>cash_at</p></td>
+</tr>
+<tr class="row-odd"><td><p>262</p></td>
+<td><p>Pastor-Stambaugh liquidity beta</p></td>
+<td><p>Pastor and Stambaugh</p></td>
+<td><p>2003</p></td>
+<td><p>JPE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>263</p></td>
+<td><p>Book-to-market enterprise value</p></td>
+<td><p>Penman, Richardson, and Tuna</p></td>
+<td><p>2007</p></td>
+<td><p>JAR</p></td>
+<td><p>bev_mev</p></td>
+</tr>
+<tr class="row-odd"><td><p>264</p></td>
+<td><p>Book-to-market enterprise value (quarterly)</p></td>
+<td><p>Penman, Richardson, and Tuna</p></td>
+<td><p>2007</p></td>
+<td><p>JAR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>265</p></td>
+<td><p>Net debt-to-price</p></td>
+<td><p>Penman, Richardson, and Tuna</p></td>
+<td><p>2007</p></td>
+<td><p>JAR</p></td>
+<td><p>netdebt_me</p></td>
+</tr>
+<tr class="row-odd"><td><p>266</p></td>
+<td><p>Net debt-to-price (quarterly)</p></td>
+<td><p>Penman, Richardson, and Tuna</p></td>
+<td><p>2007</p></td>
+<td><p>JAR</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>267</p></td>
+<td><p>Piotroski F-score (JKP)</p></td>
+<td><p>Piotroski</p></td>
+<td><p>2000</p></td>
+<td><p>AR</p></td>
+<td><p>f_score</p></td>
+</tr>
+<tr class="row-odd"><td><p>268</p></td>
+<td><p>Piotroski F-score (GHZ, Org)</p></td>
+<td><p>Piotroski</p></td>
+<td><p>2000</p></td>
+<td><p>AR</p></td>
+<td><p>ps</p></td>
+</tr>
+<tr class="row-even"><td><p>269</p></td>
+<td><p>Piotroski F-score (quarterly)</p></td>
+<td><p>Piotroski</p></td>
+<td><p>2000</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>270</p></td>
+<td><p>Net stock issues (JKP, Org)</p></td>
+<td><p>Pontiff and Woodgate</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td><p>chcsho_12m</p></td>
+</tr>
+<tr class="row-even"><td><p>271</p></td>
+<td><p>Net stock issues (GHZ)</p></td>
+<td><p>Pontiff and Woodgate</p></td>
+<td><p>2008</p></td>
+<td><p>JF</p></td>
+<td><p>chcsho</p></td>
+</tr>
+<tr class="row-odd"><td><p>272</p></td>
+<td><p>Order backlog</p></td>
+<td><p>Rajgopal, Shevlin, and Venkatachalam</p></td>
+<td><p>2003</p></td>
+<td><p>RAS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>273</p></td>
+<td><p>Unexpected quarterly earnings</p></td>
+<td><p>Rendelman, Jones, and Latane</p></td>
+<td><p>1982</p></td>
+<td><p>JFE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>274</p></td>
+<td><p>Chage in common equity</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>be_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>275</p></td>
+<td><p>Chagne in long-term investments</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>lti_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>276</p></td>
+<td><p>Change in current Ooperating liabilities</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>col_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>277</p></td>
+<td><p>Change in current operating assets</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>coa_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>278</p></td>
+<td><p>Change in financial liabilities</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>fnl_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>279</p></td>
+<td><p>Change in long-term debt</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>lgr</p></td>
+</tr>
+<tr class="row-odd"><td><p>280</p></td>
+<td><p>Change in net financial assets</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>nfna_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>281</p></td>
+<td><p>Change in net non-cash working capital</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>cowc_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>282</p></td>
+<td><p>Change in net non-current operating assets</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>nncoa_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>283</p></td>
+<td><p>Change in non-current operating assets</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>ncoa_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>284</p></td>
+<td><p>Change in non-current operating liabilities</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>ncol_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>285</p></td>
+<td><p>Change in short-term investments</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>sti_gr1a</p></td>
+</tr>
+<tr class="row-odd"><td><p>286</p></td>
+<td><p>Total accruals</p></td>
+<td><p>Richardson et al.</p></td>
+<td><p>2005</p></td>
+<td><p>JAE</p></td>
+<td><p>taccruals_at</p></td>
+</tr>
+<tr class="row-even"><td><p>287</p></td>
+<td><p>Book to market (December ME, quarterly)</p></td>
+<td><p>Rosenberg, Reid, and Lanstein</p></td>
+<td><p>1985</p></td>
+<td><p>JF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>288</p></td>
+<td><p>Book-to-market (December ME)</p></td>
+<td><p>Rosenberg, Reid, and Lanstein</p></td>
+<td><p>1985</p></td>
+<td><p>JF</p></td>
+<td><p>be_me</p></td>
+</tr>
+<tr class="row-even"><td><p>289</p></td>
+<td><p>Change in analyst coverage</p></td>
+<td><p>Scherbina</p></td>
+<td><p>2008</p></td>
+<td><p>ROF</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>290</p></td>
+<td><p>Operating accruals (JKP)</p></td>
+<td><p>Sloan</p></td>
+<td><p>1996</p></td>
+<td><p>AR</p></td>
+<td><p>oaccruals_at</p></td>
+</tr>
+<tr class="row-even"><td><p>291</p></td>
+<td><p>Operating accruals (GHZ, Org)</p></td>
+<td><p>Sloan</p></td>
+<td><p>1996</p></td>
+<td><p>AR</p></td>
+<td><p>acc</p></td>
+</tr>
+<tr class="row-odd"><td><p>292</p></td>
+<td><p>Asset turnover</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td><p>sale_bev</p></td>
+</tr>
+<tr class="row-even"><td><p>293</p></td>
+<td><p>Asset turnover (quarterly)</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>294</p></td>
+<td><p>Change in asset turnover</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td><p>chatoia</p></td>
+</tr>
+<tr class="row-even"><td><p>295</p></td>
+<td><p>Change in profit margin</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td><p>chpmia</p></td>
+</tr>
+<tr class="row-odd"><td><p>296</p></td>
+<td><p>Profit margin</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td><p>ebit_sale</p></td>
+</tr>
+<tr class="row-even"><td><p>297</p></td>
+<td><p>Profit margin (quarterly)</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>298</p></td>
+<td><p>Return on net operating assets</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td><p>ebit_bev</p></td>
+</tr>
+<tr class="row-even"><td><p>299</p></td>
+<td><p>Return on net operating assets (quarterly)</p></td>
+<td><p>Soliman</p></td>
+<td><p>2008</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>300</p></td>
+<td><p>Mispricing factor: Management</p></td>
+<td><p>Stambaugh and Yuan</p></td>
+<td><p>2016</p></td>
+<td><p>RFS</p></td>
+<td><p>mispricing_mgmt</p></td>
+</tr>
+<tr class="row-even"><td><p>301</p></td>
+<td><p>Mispricing factor: Performance</p></td>
+<td><p>Stambaugh and Yuan</p></td>
+<td><p>2016</p></td>
+<td><p>RFS</p></td>
+<td><p>mispricing_perf</p></td>
+</tr>
+<tr class="row-odd"><td><p>302</p></td>
+<td><p>Inventory change</p></td>
+<td><p>Thomas and Zhang</p></td>
+<td><p>2002</p></td>
+<td><p>RAS</p></td>
+<td><p>inv_gr1a</p></td>
+</tr>
+<tr class="row-even"><td><p>303</p></td>
+<td><p>Tax expense surprise</p></td>
+<td><p>Thomas and Zhang</p></td>
+<td><p>2011</p></td>
+<td><p>JAR</p></td>
+<td><p>chtx</p></td>
+</tr>
+<tr class="row-odd"><td><p>304</p></td>
+<td><p>Abnormal corporate investment</p></td>
+<td><p>Titman, Wei, and Xie</p></td>
+<td><p>2004</p></td>
+<td><p>JFQA</p></td>
+<td><p>capex_abn</p></td>
+</tr>
+<tr class="row-even"><td><p>305</p></td>
+<td><p>Real estate holdings</p></td>
+<td><p>Tuzel</p></td>
+<td><p>2010</p></td>
+<td><p>RFS</p></td>
+<td><p>realestate</p></td>
+</tr>
+<tr class="row-odd"><td><p>306</p></td>
+<td><p>Convertible debt indicator</p></td>
+<td><p>Valta</p></td>
+<td><p>2016</p></td>
+<td><p>JFQA</p></td>
+<td><p>convind</p></td>
+</tr>
+<tr class="row-even"><td><p>307</p></td>
+<td><p>Convertible debt-to-total debt</p></td>
+<td><p>Valta</p></td>
+<td><p>2016</p></td>
+<td><p>JFQA</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>308</p></td>
+<td><p>Secured debt indicator</p></td>
+<td><p>Valta</p></td>
+<td><p>2016</p></td>
+<td><p>JFQA</p></td>
+<td><p>securedind</p></td>
+</tr>
+<tr class="row-even"><td><p>309</p></td>
+<td><p>Secured debt-to-total debt</p></td>
+<td><p>Valta</p></td>
+<td><p>2016</p></td>
+<td><p>JFQA</p></td>
+<td><p>secured</p></td>
+</tr>
+<tr class="row-odd"><td><p>310</p></td>
+<td><p>Whited-Wu index</p></td>
+<td><p>Whited and Wu</p></td>
+<td><p>2006</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>311</p></td>
+<td><p>Whited-Wu index (quarterly)</p></td>
+<td><p>Whited and Wu</p></td>
+<td><p>2006</p></td>
+<td><p>RFS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>312</p></td>
+<td><p>CAPEX growth (1 year)</p></td>
+<td><p>Xie</p></td>
+<td><p>2001</p></td>
+<td><p>AR</p></td>
+<td><p>capx_gr1</p></td>
+</tr>
+<tr class="row-even"><td><p>313</p></td>
+<td><p>Discretionay accruals</p></td>
+<td><p>Xie</p></td>
+<td><p>2001</p></td>
+<td><p>AR</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="structure">
+<h1>Structure<a class="headerlink" href="#structure" title="Permalink to this headline"></a></h1>
+<p>PyAnomaly consists of various modules and the core modules you are likely to use are as follows.
+The full list of the modules and their details can be found in the API documentation (<a class="reference internal" href="pyanomaly_edited.html#pyanomaly"><span class="std std-ref">pyanomaly</span></a>).</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">wrdsdata.py</span></code>: <code class="docutils literal notranslate"><span class="pre">WRDS</span></code>, a class to handle data downloading from WRDS is defined here.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.py</span></code>: <code class="docutils literal notranslate"><span class="pre">Panel</span></code>, a base class to handle panel data is defined here.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.py</span></code>: Classes to generate firm characteristics are defined here. These classes are derived from <code class="docutils literal notranslate"><span class="pre">Panel</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>: A class to generate firm characteristics from funda.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>: A class to generate firm characteristics from fundq.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>: A class to generate firm characteristics from crspm.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>: A class to generate firm characteristics from crspd.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Merge</span></code>: A class to generate firm characteristics from a merged dataset of funda, fundq, crspm, and crspd.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">analytics.py</span></code>: A module that defines functions for analytics, such as 1-D sort, cross-sectional regression, and time-series regression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.py</span></code>: A module that defines functions for data handling, such as data filtering, trimming, and winsorizing.</p></li>
+</ul>
+</section>
+<section id="system-requirement">
+<h1>System Requirement<a class="headerlink" href="#system-requirement" title="Permalink to this headline"></a></h1>
+<dl class="simple">
+<dt>Recommendation</dt><dd><ul class="simple">
+<li><p>Disc space: minimum 100 GB</p></li>
+<li><p>Memory: minimum 64 GB</p></li>
+</ul>
+</dd>
+</dl>
+<p>The minimum system requirement depends on the configuration, e.g., what characteristics to generate or the sample period.</p>
+<dl class="simple">
+<dt>Disc space</dt><dd><p>The raw data downloaded from WRDS take up about 27GB of the disc space. The final output file can take
+up to 15GB if all characteristics are generated and the raw data are saved together.
+The size of the output file can be significantly reduced if only the firm characteristics are saved (less than 5 GB).
+In general, 100GB should be sufficient in all types of tasks and even when interim results are saved.</p>
+</dd>
+<dt>Memory</dt><dd><p>Generating firm characteristics from daily data such as crspd consumes a significant amount of memory. The memory
+usage can be as much as 50 GB at a peak. This does not mean you need a physical
+memory of this size. Most OS will use Paging File to allocate some of the disc space as memory,
+although using Paging File will increase the running time.</p>
+</dd>
+</dl>
+</section>
+<section id="comparison-to-other-sources">
+<h1>Comparison to Other Sources<a class="headerlink" href="#comparison-to-other-sources" title="Permalink to this headline"></a></h1>
+<p>PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2021).
+We generally follow the SAS codes and validate our code against them, but when their implementation is
+significantly different from the original definition, we try to follow the original definition.
+We also found several mistakes in these codes. For those mistakes we found and the differences between our implementation
+and theirs, we make a note in the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and comments in the code.
+The SAS code of Jensen et al. (2021) has been updated several times
+while we develop PyAnomaly and some</p>
+<section id="comparison-to-the-sas-code-of-jensen-et-al-2021">
+<h2>Comparison to the SAS code of Jensen et al. (2021)<a class="headerlink" href="#comparison-to-the-sas-code-of-jensen-et-al-2021" title="Permalink to this headline"></a></h2>
+<p>PyAnomaly can be configured so that it replicates JKP’s SAS code as closely as possible.
+However, Having said that…</p>
+<ul class="simple">
+<li><p>Market equity</p></li>
+<li><p>Merging FUNDA with FUNDQ</p></li>
+</ul>
+<p>The code is mainly based on the SAS codes of GHZ and JKP: when the implementation of a firm characteristic is significantly different between the two sources, we implement both implementations.</p>
+</section>
+</section>
+<section id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h1>
+<dl class="footnote brackets">
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
+<dd><p><a class="reference external" href="https://cfr.pub/forthcoming/papers/chen2021open.pdf">Chen, A.Y. and Zimmermann, T., 2020. Open source cross-sectional asset pricing. Critical Finance Review, Forthcoming.</a></p>
+</dd>
+<dt class="label" id="id10"><span class="brackets">2</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id6">2</a>)</span></dt>
+<dd><p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2262374">Green, J., Hand, J.R. and Zhang, X.F., 2017. The characteristics that provide independent information about average US monthly stock returns. The Review of Financial Studies, 30(12), pp.4389-4436.</a></p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id7">3</a></span></dt>
+<dd><p><a class="reference external" href="http://theinvestmentcapm.com/uploads/1/2/2/6/122679606/houxuezhang2020rfs.pdf">Hou, K., Xue, C. and Zhang, L., 2020. Replicating anomalies. The Review of Financial Studies, 33(5), pp.2019-2133.</a></p>
+</dd>
+<dt class="label" id="id12"><span class="brackets">4</span><span class="fn-backref">(<a href="#id4">1</a>,<a href="#id8">2</a>)</span></dt>
+<dd><p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3774514">Jensen, T.I., Kelly, B.T. and Pedersen, L.H., 2021. Is There A Replication Crisis In Finance? Journal of Finance, Forthcoming.</a></p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id2">5</a></span></dt>
+<dd><p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3961574">Menkveld, A.J., Dreber, A., Holzmeister, F., Huber, J., Johannesson, M., Kirchler, M., Neusüss, S., Razen, M. and Weitzel, U., 2021. Non-standard errors.</a></p>
+</dd>
+</dl>
+</section>
+<section id="useful-links">
+<h1>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p>PyAnomaly repository: <a class="reference external" href="https://github.com/chulwoohan/pyanomaly">https://github.com/chulwoohan/pyanomaly</a></p></li>
+<li><p>JKP’s SAS code: <a class="reference external" href="https://github.com/bkelly-lab/ReplicationCrisis">https://github.com/bkelly-lab/ReplicationCrisis</a></p></li>
+<li><p>openassetpricing: <a class="reference external" href="https://www.openassetpricing.com/">https://www.openassetpricing.com/</a></p></li>
+<li><p>GHZ’ SAS code: <a class="reference external" href="https://sites.google.com/site/jeremiahrgreenacctg/home">https://sites.google.com/site/jeremiahrgreenacctg/home</a></p></li>
+</ul>
+</section>
+<section id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><strong>crspd</strong>: CRSP daily data created from dsf, dsenames, and dseall.</p></li>
+<li><p><strong>crspm</strong>: CRSP monthly data created from msf, msenames, and mseall.</p></li>
+<li><p><strong>funda</strong>: Compustat annual accounting data created from funda.</p></li>
+<li><p><strong>fundq</strong>: Compustat quarterly accounting data created from fundq.</p></li>
+<li><p><strong>CZ</strong>: Either the paper or the R/Stata code of Chen and Zimmermann (2020).</p></li>
+<li><p><strong>GHZ</strong>: Either the paper or the SAS code of Green, Hand, and Zhang (2017).</p></li>
+<li><p><strong>HXZ</strong>: Hou, Xue, and Zhang (2020).</p></li>
+<li><p><strong>JKP</strong>: Either the paper or the SAS code of Jensen, Kelly, and Pedersen (2021).</p></li>
+</ul>
+</section>
+<section id="featured-in">
+<h1>Featured In<a class="headerlink" href="#featured-in" title="Permalink to this headline"></a></h1>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="PyAnomaly" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

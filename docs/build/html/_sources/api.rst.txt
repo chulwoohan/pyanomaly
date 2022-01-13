@@ -1,0 +1,11 @@
+API
+===
+
+.. .. autosummary::
+   :toctree: generated
+
+.. 	pyanomaly.wrdsdata.WRDS
+	pyanomaly.characteristics
+	pyanomaly.characteristics.FUNDQ
+	
+	

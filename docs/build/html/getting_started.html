@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; PyAnomaly 0.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cookbook" href="cookbook.html" />
+    <link rel="prev" title="About" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PyAnomaly
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#main-features">Main Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#coverage">Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#structure">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#system-requirement">System Requirement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#comparison-to-other-sources">Comparison to Other Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#references">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#useful-links">Useful Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#generating-characteristics">Generating Characteristics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#process-flow">Process Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mapping-file">Mapping File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-files">Output Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html#bulding-your-own">Bulding Your Own</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyanomaly_edited.html">pyanomaly</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyAnomaly</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<p>You can install PyAnomaly either  using <code class="docutils literal notranslate"><span class="pre">pip</span></code> or from the source.
+If you intend to use PyAnomaly ‘’as-is’’, we recommend <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+If you need to refer to the source code frequently, e.g., to add new firm characteristics or functions,
+you may want to have the source in your project directory.</p>
+<ul class="simple">
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyanomaly</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><dl class="simple">
+<dt>From the source</dt><dd><p>Download the source</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="generating-characteristics">
+<h1>Generating Characteristics<a class="headerlink" href="#generating-characteristics" title="Permalink to this headline"></a></h1>
+<section id="process-flow">
+<h2>Process Flow<a class="headerlink" href="#process-flow" title="Permalink to this headline"></a></h2>
+<p>A high-level process to generate firm characteristics is as follows.</p>
+<ol class="arabic simple">
+<li><p>Download data from WRDS and save them to files.</p></li>
+<li><p>Generate factor portfolios: the factors will be used to generate firm characteristics based on factor regression.</p></li>
+<li><p>Generate firm characteristics from each dataset (funda, fundq, crspm, crspd).</p></li>
+<li><p>Merge the data and generate firm characteristics that require data from multiple datasets.</p></li>
+<li><p>Save the result to a file.</p></li>
+</ol>
+<a class="reference internal image-reference" href="_images/process.png"><img alt="_images/process.png" class="align-center" src="_images/process.png" style="width: 700px;" /></a>
+<p>It is worth noting that:</p>
+<ul class="simple">
+<li><p>Data need to be downloaded only once. The data are saved in files and can be loaded later to generate firm characteristics.</p></li>
+<li><p>The results can be saved in each step. This can save processing time when you test new characteristics.
+Consider a scenario where you add a new characteristic in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and need to generate it
+many times to validate the result. You can generate other firm characteristics only once and save them.
+Then, you can load them from files instead of generating them every time you generate the new characteristic.</p></li>
+</ul>
+</section>
+<section id="mapping-file">
+<h2>Mapping File<a class="headerlink" href="#mapping-file" title="Permalink to this headline"></a></h2>
+<p>The <a class="reference internal" href="#mapping-file">mapping file</a> defines the mapping between firm characteristics and functions, and functions and characteristic names
+used in other papers. The file can be used to select the characteristics you want to generate and give them aliases.
+A part of the file is shown below.</p>
+<dl class="simple">
+<dt>description</dt><dd><p>This is a short description of the characteristics. When there are multiple versions of implementation, it is indicated
+in the description. For example, ‘Idiosyncratic volatility (GHZ)’ is GHZ’s implementation of idiosyncratic volatility
+and ‘Idiosyncratic volatility (Org, JKP)’ is JKP’s implementation. ‘Org’ indicates this version is closer to the
+original definition.</p>
+</dd>
+<dt>function</dt><dd><p>This column shows the associated functions. If function is ‘idiovol’, the firm characteristic is implemented in
+the function <code class="docutils literal notranslate"><span class="pre">c_idiovol()</span></code>: the actual function name always starts with <code class="docutils literal notranslate"><span class="pre">c_</span></code>.
+If function is missing, it means the corresponding firm characteristic is not yet available.</p>
+</dd>
+<dt>ghz, jkp, hxz, cz</dt><dd><p>These columns respectively show the aliases of the firm characteristics used in GHZ, JKP, HXZ, and CZ.
+If you set <code class="docutils literal notranslate"><span class="pre">alias='ghz'</span></code> when initializing <code class="docutils literal notranslate"><span class="pre">Panel</span></code> or its derived class, only the characteristics defined
+in ‘ghz’ column will be generated. Similarly, setting <code class="docutils literal notranslate"><span class="pre">alias</span></code> to ‘jkp’, ‘hxz’, or ‘cz’ will generate firm
+characteristics defined in these columns.
+If you set <code class="docutils literal notranslate"><span class="pre">alias=None</span></code>, all available characteristics will be generated.</p>
+</dd>
+<dt>my chars</dt><dd><p>You can add a new column in the file to define what characteristics to generate and their aliases.
+For example, if you add a column ‘my chars’ as shown in the table and set <code class="docutils literal notranslate"><span class="pre">alias='my</span> <span class="pre">chars</span></code>, only
+‘Idiosyncratic volatility (Org, JKP)’ and ‘Illiquidity’ will be generated.</p>
+</dd>
+</dl>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 20%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>description</p></th>
+<th class="head"><p>author</p></th>
+<th class="head"><p>year</p></th>
+<th class="head"><p>journal</p></th>
+<th class="head"><p>function</p></th>
+<th class="head"><p>ghz</p></th>
+<th class="head"><p>jkp</p></th>
+<th class="head"><p>hxz</p></th>
+<th class="head"><p>cz</p></th>
+<th class="head"><p>my chars</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Idiosyncratic volatility (GHZ)</p></td>
+<td><p>Ali, Hwang, and Trombley</p></td>
+<td><p>2003</p></td>
+<td><p>JFE</p></td>
+<td><p>idiovol</p></td>
+<td><p>idiovol</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Idiosyncratic volatility (Org, JKP)</p></td>
+<td><p>Ali, Hwang, and Trombley</p></td>
+<td><p>2003</p></td>
+<td><p>JFE</p></td>
+<td><p>ivol_capm_252d</p></td>
+<td></td>
+<td><p>ivol_capm_252d</p></td>
+<td><p>Iv</p></td>
+<td><p>IdioVolAHT</p></td>
+<td><p>ivol</p></td>
+</tr>
+<tr class="row-even"><td><p>Illiquidity</p></td>
+<td><p>Amihud</p></td>
+<td><p>2002</p></td>
+<td><p>JFM</p></td>
+<td><p>ami_126d</p></td>
+<td><p>ill</p></td>
+<td><p>ami_126d</p></td>
+<td><p>Ami</p></td>
+<td><p>Illiquidity</p></td>
+<td><p>illq</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bid-ask spread</p></td>
+<td><p>Amihud and Mendelson</p></td>
+<td><p>1986</p></td>
+<td><p>JFE</p></td>
+<td><p>baspread</p></td>
+<td><p>baspread</p></td>
+<td></td>
+<td></td>
+<td><p>BidAskSpread</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Three-year investment growth</p></td>
+<td><p>Anderson and Garcia-Feijoo</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>capx_gr3</p></td>
+<td></td>
+<td><p>capx_gr3</p></td>
+<td><p>3Ig</p></td>
+<td><p>grcapx3y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Two-year investment growth</p></td>
+<td><p>Anderson and Garcia-Feijoo</p></td>
+<td><p>2006</p></td>
+<td><p>JF</p></td>
+<td><p>capx_gr2</p></td>
+<td><p>grcapx</p></td>
+<td><p>capx_gr2</p></td>
+<td><p>2Ig</p></td>
+<td><p>grcapx</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Dispersion in analyst long-term growth forecasts</p></td>
+<td><p>Anderson, Ghysels, and Juergens</p></td>
+<td><p>2005</p></td>
+<td><p>RFS</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>Dlg</p></td>
+<td><p>ForecastDispersionLT</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Downside beta</p></td>
+<td><p>Ang, Chen, and Xing</p></td>
+<td><p>2006</p></td>
+<td><p>RFS</p></td>
+<td><p>betadown_252d</p></td>
+<td></td>
+<td><p>betadown_252d</p></td>
+<td><p>beta-1</p></td>
+<td><p>DownsideBeta</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="output-files">
+<h2>Output Files<a class="headerlink" href="#output-files" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Panel</span></code> and its derived classes (<code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>) have an attribute
+<code class="docutils literal notranslate"><span class="pre">data</span></code>, which is a DataFrame that contains the raw data and the firm characteristics. An exception is <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>,
+which saves the firm characterisitcs in another attribute, <code class="docutils literal notranslate"><span class="pre">chars</span></code>. This is because the raw data have a daily frequency,
+whereas the firm characteristics have a monthly frequency.
+The column names of the firm characteristics are their function names (without <code class="docutils literal notranslate"><span class="pre">c_</span></code>). When <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code>
+is saved to a file by calling <code class="docutils literal notranslate"><span class="pre">Panel.save()</span></code>, the column names will be replaced with the aliases.
+When a saved file is loaded back to a class by calling <code class="docutils literal notranslate"><span class="pre">Panel.load()</span></code>, the column names will be replaced with
+the function names. In summary, the column names of the firm characteristics are the function names in <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code>,
+where as the column names are the aliases in saved files.</p>
+<p>The easiest way to get started is going through examples.
+The next section presents several examples to help you get familiarized with PyAnomaly.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cookbook.html" class="btn btn-neutral float-right" title="Cookbook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

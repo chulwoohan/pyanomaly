@@ -1,12 +1,14 @@
+"""This module defines functions for file IO."""
+
 from .globals import *
 
 def write_to_file(data, fname, fdir=None):
-    """Save data to a pickle file.
+    """Write `data` to a pickle file.
 
     Args:
-        data: data to save (Dataframe)
-        fname: file name
-        fdir: directory. If None, config.output_dir.
+        data (Dataframe): Data to save.
+        fname: File name without extension.
+        fdir: Directory. If None, `config.output_dir`.
 
     """
     fdir = fdir or config.output_dir
@@ -18,14 +20,14 @@ def write_to_file(data, fname, fdir=None):
 
 
 def read_from_file(fname, fdir=None):
-    """Read data from file.
+    """Read data from a pickle file.
 
     Args:
-        fname: file name
-        fdir: directory
+        fname: File name without extension.
+        fdir: Directory. If None, `config.output_dir`.
 
     Returns:
-        data read.
+        DataFrame read from `fdir/fname.pickle`.
     """
     fdir = fdir or config.output_dir
     fpath = fdir + ('' if fdir[-1] == '/' else '/') + fname + '.pickle'

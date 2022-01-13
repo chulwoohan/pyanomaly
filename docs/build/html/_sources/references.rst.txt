@@ -1,0 +1,36 @@
+References
+==========
+
+.. [1] `Chen, A.Y. and Zimmermann, T., 2020. Open source cross-sectional asset pricing. Critical Finance Review, Forthcoming. <https://cfr.pub/forthcoming/papers/chen2021open.pdf>`__
+.. [2] `Green, J., Hand, J.R. and Zhang, X.F., 2017. The characteristics that provide independent information about average US monthly stock returns. The Review of Financial Studies, 30(12), pp.4389-4436. <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2262374>`__
+.. [3] `Hou, K., Xue, C. and Zhang, L., 2020. Replicating anomalies. The Review of Financial Studies, 33(5), pp.2019-2133. <http://theinvestmentcapm.com/uploads/1/2/2/6/122679606/houxuezhang2020rfs.pdf>`__
+.. [4] `Jensen, T.I., Kelly, B.T. and Pedersen, L.H., 2021. Is There A Replication Crisis In Finance? Journal of Finance, Forthcoming. <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3774514>`__
+
+
+Useful Links
+============
+
+- PyAnomaly repository: https://github.com/chulwoohan/pyanomaly
+- JKP's SAS code: https://github.com/bkelly-lab/ReplicationCrisis
+- openassetpricing: https://www.openassetpricing.com/
+- GHZ' SAS code: https://sites.google.com/site/jeremiahrgreenacctg/home
+
+.. _PyAnomaly repository: https://github.com/chulwoohan/pyanomaly
+.. _mapping file: https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx
+.. _CZ's openassetpricing: https://www.openassetpricing.com/
+.. _GHZ' SAS code: https://sites.google.com/site/jeremiahrgreenacctg/home
+.. _JKP's SAS code: https://github.com/bkelly-lab/ReplicationCrisis
+
+Glossary
+=============
+
+* **crspd**: CRSP daily data created from dsf, dsenames, and dseall.
+* **crspm**: CRSP monthly data created from msf, msenames, and mseall.
+* **funda**: Compustat annual accounting data created from funda.
+* **fundq**: Compustat quarterly accounting data created from fundq.
+
+* **CZ**: Either the paper or the R/Stata code of Chen and Zimmermann (2020).
+* **GHZ**: Either the paper or the SAS code of Green, Hand, and Zhang (2017).
+* **HXZ**: Hou, Xue, and Zhang (2020).
+* **JKP**: Either the paper or the SAS code of Jensen, Kelly, and Pedersen (2021).
+

@@ -1,6 +1,7 @@
 from .datatypes import iterstruct
 from .config import *
 from .log import *
+from .util import *
 
 # weight_scheme
 VW = 'vw'  # value-weight
@@ -19,6 +20,7 @@ freq_map = {
     MONTHLY: 'M',
     DAILY: 'D'
 }
+
 # Colour codes
 # https://github.com/vega/vega/wiki/Scales#scale-range-literals
 COLOR10 = iterstruct(

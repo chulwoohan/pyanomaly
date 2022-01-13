@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pyanomaly.globals import *
 
 def process(i, module, fcn, data, *args, **kwargs):

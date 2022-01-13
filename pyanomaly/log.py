@@ -1,5 +1,6 @@
 import time as t
 import sys
+import os
 import pandas as pd
 
 log_path = None
@@ -8,6 +9,10 @@ log_path = None
 def set_log_path(fpath):
     global log_path
     log_path = fpath
+
+    fdir = fpath[:max(fpath.rfind('/'), fpath.rfind('\\'))]
+    if not os.path.isdir(fdir):
+        os.mkdir(fdir)
 
 
 def log(msg, headmsg=None, header=True):

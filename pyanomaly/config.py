@@ -8,10 +8,21 @@ from .datatypes import struct
 ########################################
 config = struct(
     input_dir='./input/',
-    rawdata_dir='./input/rawdata/',
     output_dir='./output/',
-    daily_factors_fname='daily_factors_jkp',
-    monthly_factors_fname='monthly_factors_jkp',
+    mapping_file_path='./mapping.xlsx',
+
+    factors_monthly_fname='factors_monthly',
+    factors_daily_fname='factors_daily',
+    # factor_name in pyanomaly: factor_name in monthly(daily)_factors file.
+    factor_names={
+        'rf': 'rf',
+        'mktrf': 'mktrf',
+        'smb_ff': 'smb_ff',
+        'hml': 'hml',
+        'inv': 'inv',
+        'roe': 'roe',
+        'smb_hxz': 'smb_hxz',
+    }
 )
 
 ########################################
@@ -36,3 +47,6 @@ np.seterr(divide='ignore', invalid='ignore')  # Silence divide by 0) or nan warn
 # Other configurations
 ########################################
 REPLICATE_JKP = True  # True to replicate JKP version (not completely)
+if REPLICATE_JKP:
+    config.factors_monthly_fname = 'factors_monthly_jkp'
+    config.factors_daily_fname = 'factors_daily_jkp'
