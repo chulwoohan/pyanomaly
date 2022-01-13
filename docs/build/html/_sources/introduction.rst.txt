@@ -159,12 +159,6 @@ Useful Links
 - openassetpricing: https://www.openassetpricing.com/
 - GHZ' SAS code: https://sites.google.com/site/jeremiahrgreenacctg/home
 
-.. _PyAnomaly repository: https://github.com/chulwoohan/pyanomaly
-.. _mapping file: https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx
-.. _CZ's openassetpricing: https://www.openassetpricing.com/
-.. _GHZ' SAS code: https://sites.google.com/site/jeremiahrgreenacctg/home
-.. _JKP's SAS code: https://github.com/bkelly-lab/ReplicationCrisis
-
 
 Glossary
 =============

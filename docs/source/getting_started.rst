@@ -5,16 +5,34 @@ Installation
 You can install PyAnomaly either  using ``pip`` or from the source.
 If you intend to use PyAnomaly ''as-is'', we recommend ``pip``.
 If you need to refer to the source code frequently, e.g., to add new firm characteristics or functions,
-you may want to have the source in your project directory.
+you may want to copy the source to your project directory.
 
-* Using ``pip``
+**Using pip**
 
 .. code-block::
 
     pip install pyanomaly
 
-* From the source
-    Download the source
+After installing pyanomaly, download the `mapping file`_ and the `examples`_.
+
+**From the source**
+
+Download the source from the link below to your project directory.
+
+    https://github.com/chulwoohan/pyanomaly
+
+You need to install the required packages:
+
+    - wrds
+    - pandas
+    - statsmodels
+    - numba
+    - openpyxl
+    - matplotlib
+
+You can install these packages one by one or run ``setup.bat`` to install them at once.
+
+We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes, please contact us.
 
 
 Generating Characteristics

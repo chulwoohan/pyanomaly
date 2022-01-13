@@ -35,7 +35,6 @@ If you use PyAnomaly for your research, please let us know (|email|).
    :maxdepth: 1 
       
    support
-   
    changelog
 
 

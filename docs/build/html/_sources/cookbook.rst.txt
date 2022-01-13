@@ -1,9 +1,7 @@
 Cookbook
 ========
 
-.. _here: https://github.com/chulwoohan/pyanomaly/blob/master/examples.py
-
-All the examples presented below can be found `here`_.
+All the examples presented below can be found in `examples`_.
 For the deatils of each function or class, refer to the API documentation (:ref:`pyanomaly`).
 
 
@@ -917,6 +915,9 @@ PyAnomaly is highly configurable and customizable, and you can easily add new fi
 When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary.
 This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you
 update the library.
+
+Coding Rule
+------------
 
 Making your own list of characteristics
 ---------------------------------------

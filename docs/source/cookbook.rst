@@ -1,9 +1,7 @@
 Cookbook
 ========
 
-.. _here: https://github.com/chulwoohan/pyanomaly/blob/master/examples.py
-
-All the examples presented below can be found `here`_.
+All the examples presented below can be found in `examples`_.
 For the deatils of each function or class, refer to the API documentation (:ref:`pyanomaly`).
 
 

@@ -1,5 +1,5 @@
 Support
 =======
-For support, inquiries, or bug report, email us at (|email|).
+For support, inquiries, bug report, or contributions, contact Chulwoo Han (|email|).
 
 
