@@ -2,16 +2,12 @@
 PyAnomaly
 ==========
 
-About
-============
-
-PyAnomaly is a comprehensive python library for asset pricing research with a focus on firm characteristic and factor generation. 
+PyAnomaly is a comprehensive python library for asset pricing research with a focus on firm characteristic and factor generation.
 It covers the majority of the firm characteristics published in the literature and contains various analytic tools that are 
 commonly used in asset pricing research, such as quantile portfolio construction, factor regression, and cross-sectional regression.
 The purpose of PyAnomaly is *NOT* to generate firm characteristics in a fixed manner. Rather, we aim to build
-a package that can serve as a standard library for asset pricing research and help reduce *non-standard errors* [5]_.
+a package that can serve as a standard library for asset pricing research and help reduce *non-standard errors*.
 
-The current list of firm characteristics supported by PyAnomaly can be found in `Coverage`_.
 PyAnomaly is a live project and we plan to add more firm characteristics and functionalities going forward. We also welcome contributions
 from other scholars.
 
@@ -23,7 +19,7 @@ PyAnomaly is very efficient, comprehensive, and flexible.
 
     Comprehensiveness
         PyAnomaly supports over 200 firm characteristics published in the literature. It covers most characteristics in
-        Green et al. (2017)\ [2]_ and Jensen et al. (2021)\ [4]_, except those that use IBES data. It also provides
+        Green et al. (2017) and Jensen et al. (2021), except those that use IBES data. It also provides
         various tools for asset pricing research.
 
     Flexibility
