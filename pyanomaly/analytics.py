@@ -69,8 +69,8 @@ def append_long_short(data, level=-1, l_label=None, s_label=None, ls_label=None)
         data: DataFrame with index = date/class1/class2/....
         level: Index level to make long-short on. Default to the last level.
         l_label: Label of the long class. If None, `l_label = 0`.
-        s_label: Label of the short class. If None, 's_label = num. classes - 1`.
-        ls_label: Label of the long-short: If None, `ls_label = num. classes`.
+        s_label: Label of the short class. If None, `s_label = num. classes - 1`.
+        ls_label: Label of the long-short. If None, `ls_label = num. classes`.
 
     Returns:
         `data` with long-short appended.
@@ -127,7 +127,7 @@ def one_dim_sort(data, class_col, target_cols=None, weight_col=None, function='m
         add_long_short (bool): Add long-short to the output.
 
     Returns:
-        Aggregated data with index=date/class, columns = `target_cols`.
+        Aggregated data with index = date/class, columns = `target_cols`.
     """
 
     date_col = data.index.names[0]
@@ -169,16 +169,16 @@ def two_dim_sort(data, class_col1, class_col2, target_cols=None, weight_col=None
         weight_col: Weight column. If given, weighted mean is returned.
         function: Aggregate function, e.g., 'sum', 'mean', 'count'. If it is other than 'mean', `weight_col` is ignored.
         add_long_short (bool): Add long-short to the output.
-        output_dim: If 1, output is a DataFrame with index=date/class1/class2; if 2, output is a DataFrame with
-            index=date/class1 and column=class2.
+        output_dim: If 1, output is a DataFrame with index = date/class1/class2; if 2, output is a DataFrame with
+            index = date/class1 and column = class2.
 
     Returns:
-        Aggregated data (DataFrame or dict of DataFrame).
+        Aggregated data (DataFrame or dict of DataFrames).
 
-        * If `output_dim` = 1, index = date/class1/class2, columns = `target_cols`
-        * If `output_dim` = 2 and `len(target_cols)` = 1, index = date/class1, columns = class2
+        * If `output_dim` = 1, index = date/class1/class2 and columns = `target_cols`.
+        * If `output_dim` = 2 and `len(target_cols)` = 1, index = date/class1 and columns = class2.
         * If `output_dim` = 2 and `len(target_cols)` > 1, output is dict with keys = `target_cols` and
-            values = DataFrames (as in the second case).
+          values = DataFrames (as in the second case).
     """
 
     date_col = data.index.names[0]
@@ -253,7 +253,7 @@ def t_value(data, cov_type='nonrobust', cov_kwds=None):
 def time_series_average(data, cov_type='nonrobust', cov_kwds=None):
     """Calculate time-series mean and t-value of each column (and for each group).
 
-    `data` can be either a time-series data (index=date) or a panel data (index=date/group).
+    `data` can be either a time-series data (index = date) or a panel data (index = date/group).
     If it is a panel, time-series mean and t-value are calculated for each group.
 
     Args:
@@ -264,8 +264,8 @@ def time_series_average(data, cov_type='nonrobust', cov_kwds=None):
     Returns:
         mean (DataFrame), t-value (DataFrame).
 
-        * If data has MultiIndex, mean (t-value) has index = `data.index[1:]`, columns = `data.columns`.
-        * Otherwise, mean (t-value) has index = `data.columns`, columns = 'mean' ('t-stat').
+        * If data has MultiIndex, mean (t-value) has index = `data.index[1:]` and columns = `data.columns`.
+        * Otherwise, mean (t-value) has index = `data.columns` and columns = 'mean' ('t-stat').
     """
     if not isinstance(data.index, pd.MultiIndex):  # single (date) index
         mean = data.mean().to_frame(name='mean')
@@ -285,7 +285,7 @@ def time_series_average(data, cov_type='nonrobust', cov_kwds=None):
 def rolling_beta(data, window, minobs=None, endo_col=None, exog_cols=None):
     """Run rolling OLS on a panel, `data`.
 
-    `data` must have index=date/id and Rolling OLS is applied to each id.
+    The `data` must have index = date/id and Rolling OLS is applied to each id.
     This is faster than `statsmodels.RollingOLS`, but the output is limited to
     coefficients, R2, and idiosyncratic volatility.
 
@@ -347,7 +347,7 @@ def crosssectional_regression(data, endo_col, exog_cols, add_constant=True, cov_
     """Run cross-sectional OLS on each date and calculate the time-series means and t-values of the coefficients.
 
     Args:
-        data: DataFrame with index=date/id
+        data: DataFrame with index = date/id.
         endo_col: y column.
         exog_cols: List of X columns.
         add_constant (bool): Add constant to x.
@@ -357,9 +357,9 @@ def crosssectional_regression(data, endo_col, exog_cols, add_constant=True, cov_
     Returns:
         mean, tval, coefs.
 
-        * mean (DataFrame): Time-series means of coefficients with index=('const') + `exog_cols`, columns='mean'.
-        * tval (DataFrame): t-values of coefficients with index=('const') + `exog_cols`, columns='t-stat'.
-        * coefs (DataFrame): Coefficient time-series with index=dates, columns=('const') + `exog_cols`.
+        * mean (DataFrame): Time-series means of coefficients with index = ('const') + `exog_cols` and columns = 'mean'.
+        * tval (DataFrame): t-values of coefficients with index = ('const') + `exog_cols` and columns = 't-stat'.
+        * coefs (DataFrame): Coefficient time-series with index = dates and columns = ('const') + `exog_cols`.
     """
     data = data.dropna(subset=[endo_col] + exog_cols)
 
@@ -397,7 +397,7 @@ def make_future_return(ret, period=1):
 
     Args:
         ret: Series of returns with index = date or date/id.
-        period: target period. Eg: If period=3, 3-period ahead (cumulative) returns. If `ret` contains monthly (daily)
+        period: target period. Eg: If `period` = 3, 3-period ahead (cumulative) returns are returned. If `ret` contains monthly (daily)
             returns, the output will be 3-month (day) ahead returns.
 
     Returns:
@@ -426,8 +426,12 @@ def weighted_mean(data, target_cols, weight_col, group_cols):
         group_cols: (List of) grouping column(s).
 
     Returns:
-        DataFrame of weighted mean with index = `group_cols`, columns = `target_cols`.
+        DataFrame of weighted mean with index = `group_cols` and columns = `target_cols`.
 
+    If `data` is a panel with index = 'date'/'permno' and column 'ret' contains returns
+    and 'me' contains market equity at t-1, weighted mean returns can be obtained as follows:
+
+    >>> wmean = weighted_mean(data, 'ret', 'me', 'permno')
     """
 
     target_cols = to_list(target_cols)
@@ -500,14 +504,15 @@ def make_position(data, ret_col, weight_col=None, pf_col=None, other_cols=None):
     This function makes the position data from the input data, which is a panel of securities.
     The position data is generated via the following operations:
 
-        - Shift dates forward so that the return at t is the return between between t-1 and t,
+        - Shift dates forward so that the return at t is the return between t-1 and t
           and other variables are as of t-1.
-        - Change column names as assumed in ``Portfolio``.
+        - Change column names as assumed in ``Portfolio``:
+
             - 'date': Date column.
             - 'id': Security id column.
             - 'ret': Return column.
             - 'wgt': Weight column.
-        - Generate portfolio weights by normalizing market equity.
+        - Generate portfolio weights by normalizing the values given in `weight_col`.
 
     Args:
         data: DataFrame with index = date/id.

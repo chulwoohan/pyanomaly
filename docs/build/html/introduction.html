@@ -105,7 +105,7 @@
 It covers the majority of the firm characteristics published in the literature and contains various analytic tools that are
 commonly used in asset pricing research, such as quantile portfolio construction, factor regression, and cross-sectional regression.
 The purpose of PyAnomaly is <em>NOT</em> to generate firm characteristics in a fixed manner. Rather, we aim to build
-a package that can serve as a standard library for asset pricing research and help reduce <em>non-standard errors</em> <a class="footnote-reference brackets" href="#id13" id="id2">5</a>.</p>
+a package that can serve as a standard library for asset pricing research and help reduce <em>non-standard errors</em><a class="footnote-reference brackets" href="#id13" id="id2">5</a>.</p>
 <p>The current list of firm characteristics supported by PyAnomaly can be found in <a class="reference internal" href="#coverage">Coverage</a>.
 PyAnomaly is a live project and we plan to add more firm characteristics and functionalities going forward. We also welcome contributions
 from other scholars.</p>
@@ -2433,22 +2433,37 @@ although using Paging File will increase the running time.</p>
 </section>
 <section id="comparison-to-other-sources">
 <h1>Comparison to Other Sources<a class="headerlink" href="#comparison-to-other-sources" title="Permalink to this headline"></a></h1>
-<p>PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2021).
-We generally follow the SAS codes and validate our code against them, but when their implementation is
+<p>PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2021), and also from the papers
+and documentations of Hou et al. (2020) and Chen and Zimmermann (2020).
+We generally follow the SAS codes of JKP and GHZ and validate our code against them, but when their implementation is
 significantly different from the original definition, we try to follow the original definition.
+When the implementation of a firm characteristic is significantly different between the two sources,
+we implement both implementations using different function names.
 We also found several mistakes in these codes. For those mistakes we found and the differences between our implementation
 and theirs, we make a note in the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and comments in the code.
 The SAS code of Jensen et al. (2021) has been updated several times
-while we develop PyAnomaly and some</p>
+while we develop PyAnomaly and some of the comments we documented may no longer be valid.</p>
 <section id="comparison-to-the-sas-code-of-jensen-et-al-2021">
 <h2>Comparison to the SAS code of Jensen et al. (2021)<a class="headerlink" href="#comparison-to-the-sas-code-of-jensen-et-al-2021" title="Permalink to this headline"></a></h2>
 <p>PyAnomaly can be configured so that it replicates JKP’s SAS code as closely as possible.
-However, Having said that…</p>
-<ul class="simple">
-<li><p>Market equity</p></li>
-<li><p>Merging FUNDA with FUNDQ</p></li>
-</ul>
-<p>The code is mainly based on the SAS codes of GHZ and JKP: when the implementation of a firm characteristic is significantly different between the two sources, we implement both implementations.</p>
+However, there are a few key differences that make our results differ from theirs.</p>
+<dl class="simple">
+<dt>Market equity</dt><dd><p>JKP use not only CRSP’s msf but also Compustat’s secm and secd to calculate market equity,
+and (roughly saying) choose the maximum market equity among those calculated from different sources.
+We only use the price and shares outstanding from CRSP to calculate the market equity.</p>
+</dd>
+<dt>Merging FUNDA with FUNDQ</dt><dd><p>JKP quarterly-update annual accounting variables using comp.fundq. More specifically,
+JKP create same characteristics in funda and fundq separately and merge them. On the other hand, we merge the raw data
+first and then generate characteristics. Since some variables in funda are not available in fundq, eg, ebitda,
+JKP make those unavailable variables from other variables and create characteristics, even when they are
+available in funda. We prefer to merge funda with fundq at the raw data level and create characteristics from
+the merged data.</p>
+</dd>
+<dt>Share code filtering</dt><dd><p>JKP do not filter data using CRSP share code (shrcd), whereas we only use ordinary common stocks
+(shrcd = 10, 11, or 12). We find that some stocks’ shrcd changes over time. Therefore, this difference does not
+only affect the cross-section but also affects time-series.</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="references">

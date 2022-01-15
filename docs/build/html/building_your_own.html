@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pyanomaly" href="pyanomaly_edited.html" />
-    <link rel="prev" title="Installation" href="getting_started.html" /> 
+    <link rel="prev" title="Cookbook" href="cookbook.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,20 +44,20 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#main-features">Main Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#coverage">Coverage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#structure">Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html#system-requirement">System requirement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#system-requirement">System Requirement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#comparison-to-other-sources">Comparison to Other Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#references">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#useful-links">Useful Links</a></li>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html#generating-characteristics">Generating characteristics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#generating-characteristics">Generating Characteristics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Bulding Your Own</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#making-your-own-list-of-characteristics">Making your own list of characteristics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adding-a-new-characteristic">Adding a new characteristic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coding-rule">Coding Rule</a></li>
 </ul>
 </li>
 </ul>
@@ -101,27 +101,75 @@
 When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary.
 This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you
 update the library.</p>
-<section id="making-your-own-list-of-characteristics">
-<h2>Making your own list of characteristics<a class="headerlink" href="#making-your-own-list-of-characteristics" title="Permalink to this headline"></a></h2>
-<p>If you want generate a subset of all available firm characteristics, you can add a new acronym column in ‘mapping.xlsx’.
-Alternatively, you can simply define a list of characteristics in a python module and use it as input to panel.create_chars().
-In this case, you need to use the method names and cannot define aliases for the firm characteristics.</p>
-</section>
-<section id="adding-a-new-characteristic">
-<h2>Adding a new characteristic<a class="headerlink" href="#adding-a-new-characteristic" title="Permalink to this headline"></a></h2>
-<p>Where to add a method to define a new characteristic depends on what data it requires. If it only requires data from FUNDA (plus market equity from CRSPM),
-you can define a class inheriting FUNDA class and add the method in it. Similary, if the characteristic only requires data from CRSPM, you can define a class
-inheriting CRSPM. If the characteristic requires data from multiple data sources, you can inherit Merged class.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">myFUNDA</span><span class="p">(</span><span class="n">FUNDA</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">c_my_char</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="n">fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
-                <span class="n">char</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">fa</span><span class="o">.</span><span class="n">y</span>
+<p>If you want some of your modules to be added to PyAnomaly, please contact us.</p>
+<section id="coding-rule">
+<h2>Coding Rule<a class="headerlink" href="#coding-rule" title="Permalink to this headline"></a></h2>
+<p>There are a few coding rules we follow and we suggest you follow them when developing your own library based on PyAnomaly.</p>
+<ol class="arabic">
+<li><dl>
+<dt>Methods for firm characteristics</dt><dd><ul class="simple">
+<li><p>A method (function) that generates a firm characteristic should have a name of the form <cite>c_[characteristic name]</cite>.</p></li>
+<li><p>Write a single-line docstring that describes the characteristic and its author(s) (year).
+The docstring content will be displayed when <code class="docutils literal notranslate"><span class="pre">Panel.show_available_functions()</span></code> is called.</p></li>
+<li><p>Do not make a method that generate multiple firm characteristics. For each firm characteristic, make one associated
+method. If for some reason, it is efficient to generate multiple firm characteristics in one method,
+make a private method for it and then make methods for each firm characteristic that calls the method.
+Below is an example of generating earnings persistence and predictability. <code class="docutils literal notranslate"><span class="pre">_ni_ar1_ivol()</span></code> generates both
+persistence and predictability and <code class="docutils literal notranslate"><span class="pre">c_ni_ar1()</span></code> and <code class="docutils literal notranslate"><span class="pre">c_ni_ivol()</span></code> call <code class="docutils literal notranslate"><span class="pre">_ni_ar1_ivol()</span></code> to generate
+persistence and predictability, respectively.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_ni_ar1_ivol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Earnings persistence and predictability&quot;&quot;&quot;</span>
 
-                <span class="k">return</span> <span class="n">char</span>
+    <span class="n">fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># window size</span>
+
+    <span class="n">reg</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">fa</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">reg</span><span class="p">[</span><span class="s1">&#39;ni_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">ib</span> <span class="o">/</span> <span class="n">fa</span><span class="o">.</span><span class="n">at_</span>
+    <span class="n">reg</span><span class="p">[</span><span class="s1">&#39;ni_at_lag1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">reg</span><span class="o">.</span><span class="n">ni_at</span><span class="p">)</span>
+
+    <span class="n">beta</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ivol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rolling_beta</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">fa</span><span class="p">[</span><span class="s1">&#39;ni_ar1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">fa</span><span class="p">[</span><span class="s1">&#39;ni_ivol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ivol</span>
+
+<span class="k">def</span> <span class="nf">c_ni_ar1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Earnings persistence. Francis et al. (2004)&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;ni_ar1&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ni_ar1_ivol</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ni_ar1&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">c_ni_ivol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Earnings predictability. Francis et al. (2004)&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;ni_ivol&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ni_ar1_ivol</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ni_ivol&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Note that the method’s name starts with ‘<a href="#id1"><span class="problematic" id="id2">c_</span></a>’. This is one of few coding rules you need to follow.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Temporary variables</dt><dd><p>If you need to add temporary variables to <code class="docutils literal notranslate"><span class="pre">Panel.data</span></code> attribute, use a name starting with underscore, e.g., ‘_temp’.
+Any column whose name starts with ‘_’ will be considered a temporary variable and deleted during postprocessing.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Date format</dt><dd><p>For date arguments, PyAnomaly uses a string of ‘yyyy-mm-dd’ format.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Naming convention</dt><dd><p>PyAnomaly uses UpperCamelCase for class names and lowercase_separated_by_underscores for other names (functions,
+methods, and attributes).</p>
+</dd>
+</dl>
+</li>
+</ol>
 </section>
 </section>
 
@@ -129,7 +177,7 @@ inheriting CRSPM. If the characteristic requires data from multiple data sources
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="getting_started.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cookbook.html" class="btn btn-neutral float-left" title="Cookbook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="pyanomaly_edited.html" class="btn btn-neutral float-right" title="pyanomaly" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

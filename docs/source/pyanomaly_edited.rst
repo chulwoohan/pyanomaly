@@ -3,9 +3,6 @@
 pyanomaly
 =========
 
-Module contents
----------------
-
 .. automodule:: pyanomaly
    :members:
    :undoc-members:

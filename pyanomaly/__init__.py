@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Python library for firm characteristics and factors
-
-pyanomaly is a library for generating firm characteristics and factors.
+Python library for asset pricing research.
 
 """
 

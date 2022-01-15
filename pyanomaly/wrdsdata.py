@@ -91,7 +91,7 @@ class WRDS():
         exchcd: https://wrds-www.wharton.upenn.edu/data-dictionary/form_metadata/crsp_a_stock_msf_identifyinginformation/exchcd/
 
     Attributes:
-        db: wrds object to connect to WRDS database.
+        db: A wrds object to connect to WRDS database.
     """
     def __init__(self, wrds_username=None):
         if wrds_username:
@@ -118,13 +118,13 @@ class WRDS():
 
         Args:
             library: WRDS library. e.g., crsp, comp, ...
-            table: table in library.
-            obs: see ``wrds.get_table()``.
-            offset: see ``wrds.get_table()``.
-            columns: see ``wrds.get_table()``.
-            coerce_float: see ``wrds.get_table()``.
-            index_col: see ``wrds.get_table()``.
-            date_cols: see ``wrds.get_table()``.
+            table: A table in `library`.
+            obs: See ``wrds.get_table()``.
+            offset: See ``wrds.get_table()``.
+            columns: See ``wrds.get_table()``.
+            coerce_float: See ``wrds.get_table()``.
+            index_col: See ``wrds.get_table()``.
+            date_cols: See ``wrds.get_table()``.
         """
 
         elapsed_time(f'Downloading {library}.{table}...')
@@ -213,7 +213,7 @@ class WRDS():
             type: Type for numeric fields: float or np.float32. For a large dataset, converting to float32 can save
                 disc space and read/write time.
             date_cols: List of date columns. The dtype of these columns will be converted to datetime.
-            run_in_executer: If True, download data concurrently using executer. Setting this to True will increase
+            run_in_executer: If True, download data concurrently using `executer`. Setting this to True will increase
                 download speed but can take up much memory.
 
         NOTE:
@@ -227,7 +227,7 @@ class WRDS():
 
             * To download data using a complete query, `library`, `table`, and `sql` should be given, where `table` is a table
               name for the data (can be any name), and `sql` is a query statement. The `sql` should contain
-              'WHERE [`date_col`] BETWEEN {} and {}'. See, e.g., ``WRDS.download_sf()``.
+              'WHERE [`date_col`] BETWEEN {} and {}'. See, e.g., the code of ``WRDS.download_sf()``.
         """
 
         elapsed_time(f'Asynchronous download: {table}')
@@ -318,7 +318,7 @@ class WRDS():
 
         Delist can be obtained from either mseall or msedelist. We use mseall since it contains exchcd, which is used
         when replacing missing dlret.
-        shrcd and exchcd in mseall are usually those before halting/suspension. If a stock in NYSE is halted, exchcd
+        The shrcd and exchcd in mseall are usually those before halting/suspension. If a stock in NYSE is halted, exchcd
         in msenames can be -2, whereas that in mseall is 1.
 
         Args:
@@ -471,14 +471,22 @@ class WRDS():
     def merge_sf_with_seall(sf, monthly=True, fill_method=1):
         """Merge m(d)sf with m(d)seall.
 
-        This method adjusts m(d)sf return ('ret') using m(d)seall delist return ('dlret'). The adjusted return is
-        saved in the same column, 'ret', and 'dlret' column is added to m(d)sf.
+        This method adjusts m(d)sf return ('ret') using m(d)seall delist return ('dlret'). The adjusted return replaces
+        'ret' and 'dlret' column is added to m(d)sf.
         For msf, this method also adds cash dividend columns, 'cash_div', to m(d)sf.
 
         Args:
             sf: m(d)sf DataFrame.
             monthly: `sf` = msf if True, else `sf` = dsf.
             fill_method: Method to fill missing dlret. 0: don't fill, 1: JKP code, or 2: GHZ code.
+
+                - fill_method = 1:
+
+                    - `dlret` = -0.30 if `dlstcd` is 500 or between 520 and 584.
+                - fill_method = 2:
+
+                    - `dlret` = -0.35 if `dlstcd` is 500 or between 520 and 584, and `exchcd` is 1 or 2.
+                    - `dlret` = -0.55 if `dlstcd` is 500 or between 520 and 584, and `exchcd` is 3.
 
         Returns:
             m(d)sf with adjusted return (and cash dividend).
@@ -655,11 +663,11 @@ class WRDS():
         Args:
             sdate: Start date.
             edate: End date.
-            src: data source. 'mstc': crsp.mcti, 'ff': ff.factors_monthly.
+            src: data source. 'mcti': crsp.mcti, 'ff': ff.factors_monthly.
             month_end: Shift dates to the end of the month.
 
         Returns:
-            Dataframe of risk-free rates with index = 'date' and columns = 'rf'.
+            Dataframe of risk-free rates with index = 'date' and columns = ['rf'].
         """
 
         if src == 'mcti':
@@ -688,10 +696,10 @@ class WRDS():
 
         Args:
             fund: funda(q) DataFrame with index = 'datadate'/'gvkey'.
-            table: 'funda' or 'fundq': indicator whether fund is funda or fundq.
+            table: 'funda' or 'fundq': indicator whether `fund` is funda or fundq.
 
         Returns:
-            Converted fund DataFrame.
+            Converted `fund` DataFrame.
         """
 
         curcol = 'curcd' if table == 'funda' else 'curcdq'
@@ -718,7 +726,7 @@ class WRDS():
 
         We use pickle file format to store data as a pickle file preserves data types and is much faster to read
         compared to a csv file. To convert a pickle file to a csv file, ``WRDS.save_as_csv()`` can be used.
-        `data` is saved in the following location:
+        The `data` is saved in the following location:
 
             * If `library` = None, config.input_dir/`table`.pickle
             * Otherwise, config.input_dir/`library`/`table`.pickle

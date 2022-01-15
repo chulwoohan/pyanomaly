@@ -42,20 +42,24 @@ class Panel:
         self.base_freq = base_freq or freq
 
         # alias -> function
-        if alias is None:  # Use function names as the aliases.
-            self.char_map = {fcn[2:]: fcn[2:] for fcn in dir(self) if callable(getattr(self, fcn)) and fcn[:2] == 'c_'}
-        else:
-            char_map = pd.read_excel(config.mapping_file_path)
-            char_map.dropna(subset=[alias], inplace=True)
-            self.char_map = char_map.set_index(alias, drop=False)['function'].to_dict()
+        alias_ = alias or 'function'
+        char_map = pd.read_excel(config.mapping_file_path)
+        char_map.dropna(subset=[alias_], inplace=True)
+        self.char_map = char_map.set_index(alias_, drop=False)['function'].to_dict()
+
+        if alias is None:  # Add new characteristic functions not in the mapping file yet.
+            char_fncs = [fcn[2:] for fcn in dir(self) if callable(getattr(self, fcn)) and fcn[:2] == 'c_']
+            for fcn in char_fncs:
+                self.char_map[fcn] = fcn
+
         # function -> alias
         self.reverse_map = {v: k for k, v in self.char_map.items()}
 
     def rename(self, to_alias=True):
-        """Rename data columns.
+        """Rename `data` columns.
 
         Args:
-            to_alias: If True, rename alias columns with functions, otherwise, rename function columns with aliases.
+            to_alias: If True, rename firm characteristic columns from function names to aliases, and vice-versa.
         """
 
         if to_alias:  # function -> alias
@@ -96,13 +100,13 @@ class Panel:
     def save(self, fname=None, fdir=None, other_columns=None):
         """Save this object.
 
-        Parameters are saved to a json file and `data` are saved to a pickle file.
+        Parameters are saved to a json file and `data` is saved to a pickle file.
 
         Args:
             fname: File name without extension. If None, `fname` = class name.
             fdir: Directory to save the file. If None, `fdir` = `config.output_dir`.
             other_columns: List of columns to save other than firm characteristics. If given, characteristic columns
-                plus `other_columns` are save. If None, all columns are saved. Note that unsaved columns will be deleted
+                plus `other_columns` are saved. If None, all columns are saved. Note that unsaved columns will be deleted
                 from `self.data`.
         """
 
@@ -130,7 +134,7 @@ class Panel:
             json.dump(params, fh, indent=4)
 
     def load(self, fname=None, fdir=None):
-        """Load data and parameters.
+        """Load this object from a file.
 
         Args:
             fname: File name without extension. If None, `fname` = class name.
@@ -267,11 +271,13 @@ class Panel:
 
         char_list = char_list or self.get_available_chars()
 
-        for char in char_list:
+        for i, char in enumerate(char_list):
             try:
                 fcn = self.char_map[char]
                 self.data[fcn] = eval(f'self.c_{fcn}()')
                 elapsed_time(f"[{char}] created.")
+                if i and (i % 30 == 0):
+                    self.data = self.data.copy()
             except Exception as e:
                 log(f'Error occured while creating {char}: {e}')
                 raise e
@@ -559,7 +565,7 @@ class Panel:
             from one year ago can be calculated (with a condition of at least two non-missing values within the sample
             window) and saved as 'avg_ret3y' as follows:
 
-            >>> funda['avg_ret3y'] = funda.rolling(funda.data['ret'], 3, 'mean', 2, 1)
+            >>> funda.data['avg_ret3y'] = funda.rolling(funda.data['ret'], 3, 'mean', 2, 1)
         """
 
         m = int(self.freq / self.base_freq)

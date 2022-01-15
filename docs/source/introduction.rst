@@ -7,7 +7,7 @@ PyAnomaly is a comprehensive python library for asset pricing research with a fo
 It covers the majority of the firm characteristics published in the literature and contains various analytic tools that are 
 commonly used in asset pricing research, such as quantile portfolio construction, factor regression, and cross-sectional regression.
 The purpose of PyAnomaly is *NOT* to generate firm characteristics in a fixed manner. Rather, we aim to build
-a package that can serve as a standard library for asset pricing research and help reduce *non-standard errors* [5]_.
+a package that can serve as a standard library for asset pricing research and help reduce *non-standard errors*\ [5]_.
 
 The current list of firm characteristics supported by PyAnomaly can be found in `Coverage`_.
 PyAnomaly is a live project and we plan to add more firm characteristics and functionalities going forward. We also welcome contributions
@@ -120,26 +120,40 @@ Memory
 Comparison to Other Sources
 ================================
 
-PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2021).
-We generally follow the SAS codes and validate our code against them, but when their implementation is
+PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2021), and also from the papers
+and documentations of Hou et al. (2020) and Chen and Zimmermann (2020).
+We generally follow the SAS codes of JKP and GHZ and validate our code against them, but when their implementation is
 significantly different from the original definition, we try to follow the original definition.
+When the implementation of a firm characteristic is significantly different between the two sources,
+we implement both implementations using different function names.
 We also found several mistakes in these codes. For those mistakes we found and the differences between our implementation
 and theirs, we make a note in the `mapping file`_ and comments in the code.
 The SAS code of Jensen et al. (2021) has been updated several times
-while we develop PyAnomaly and some
+while we develop PyAnomaly and some of the comments we documented may no longer be valid.
 
 Comparison to the SAS code of Jensen et al. (2021)
 --------------------------------------------------
 
 PyAnomaly can be configured so that it replicates JKP's SAS code as closely as possible.
-However, Having said that...
+However, there are a few key differences that make our results differ from theirs.
 
-* Market equity
+Market equity
+    JKP use not only CRSP's msf but also Compustat's secm and secd to calculate market equity,
+    and (roughly saying) choose the maximum market equity among those calculated from different sources.
+    We only use the price and shares outstanding from CRSP to calculate the market equity.
 
-* Merging FUNDA with FUNDQ
+Merging FUNDA with FUNDQ
+    JKP quarterly-update annual accounting variables using comp.fundq. More specifically,
+    JKP create same characteristics in funda and fundq separately and merge them. On the other hand, we merge the raw data
+    first and then generate characteristics. Since some variables in funda are not available in fundq, eg, ebitda,
+    JKP make those unavailable variables from other variables and create characteristics, even when they are
+    available in funda. We prefer to merge funda with fundq at the raw data level and create characteristics from
+    the merged data.
 
-
-The code is mainly based on the SAS codes of GHZ and JKP: when the implementation of a firm characteristic is significantly different between the two sources, we implement both implementations.
+Share code filtering
+    JKP do not filter data using CRSP share code (shrcd), whereas we only use ordinary common stocks
+    (shrcd = 10, 11, or 12). We find that some stocks' shrcd changes over time. Therefore, this difference does not
+    only affect the cross-section but also affects time-series.
 
 
 References

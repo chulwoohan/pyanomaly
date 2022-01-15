@@ -47,7 +47,7 @@ class TransactionCost:
 
         >>> tc = TransactionCost(buy_fixed=5, buy_linear=0.002, buy_quad=0.001, sell_linear=0.003, sell_quad=0.001)
 
-            Note that only non-zero parameters need to be provided.
+            Only non-zero parameters need to be provided.
 
         Transaction costs that vary across securities:
 
@@ -127,12 +127,12 @@ class TransactionCost:
 
         Args:
             position: Portfolio positions. ``Portfolio`` object calls this function with the argument,
-                ``Portfolio.position``, to get transaction costs. `position` should have index = 'date' and
+                ``Portfolio.position``, to get transaction costs. The `position` argument should have index = 'date' and
                 columns = [`id`, 'val', 'val0'], where 'val' is the value after rebalancing and 'val0' is the value
                 before rebalancing.
 
         Returns:
-            Transaction costs: A vector with the same length as `position`.
+            Transaction costs. A vector with the same length as `position`.
         """
 
         if self.params is None:
@@ -176,24 +176,40 @@ class TimeVaryingCost(TransactionCost):
     """Transaction costs that vary over time and across firm sizes.
 
     This class implements the time-varying transaction costs used in, e.g., Brandt et al. (2009), Hand and Green (2011),
-    and DeMiguel et al. (2020). Transaction cost parameter `k` is defined as `k` = `y` * `z`,
-    where `y` decreases linearly from 3.3 in 1980.01 to 1.0 in 2002.01 and remains at 1.0 thereafter, and
+    DeMiguel et al. (2020), and Han (2021). Transaction cost parameter `k` is defined as `k` = `y` * `z`,
+    where `y` decreases linearly from 4.0 in 1974.01 to 1.0 in 2002.01 and remains at 1.0 thereafter, and
     `z` = 0.006 - 0.0025 * `nme`, where `nme` is the normalized market equity that has a value between 0 and 1.
+
+    The maximum transaction cost is 240 basis points (the smallest firm before 1974) and the minimum transaction cost is
+    35 basis points (the largest firm after 2002).
+
+    We find this assumption is too conservative since the normalized me is sensitive to the largest company.
+    In 1974, the mean of the normalized me is only 0.0045 and most firms have the transaction cost of 240 basis points,
+    and in 2002, the mean of the normalized me is only 0.0059 and most firms have the transaction cost of 60 basis points.
+
+    Using a logarithm of the market equity or capping the me of the largest firms may make more sense.
     """
 
-    def __init__(self, me=None):
+    def __init__(self, me=None, normalize=True):
         super().__init__()
         if me is not None:
-            self.set_params(me)
+            self.set_params(me, normalize)
 
-    def set_params(self, me):
+    def set_params(self, me, normalize=True):
         """Set transaction cost parameters.
 
         Args:
             me: DataFrame or Series of market equity with index = date/id.
+            normalize: If True, normalize `me` so that its values are between 0 and 1.
+
+        NOTE:
+            If the input contains only a subset of all listed stocks, normalizing the market equity can result in
+            over- or underestimation of the transaction costs. For example, if `me` contains only top 80% of the stocks,
+            the transaction costs will be overestimated. Use all listed stocks in the market or normalize the market equity
+            outside and set `normalize = False`.
         """
 
-        date1 = pd.Timestamp('1980-01-01')
+        date1 = pd.Timestamp('1974-01-01')
         date2 = pd.Timestamp('2002-01-01')
         dates = me.index.get_level_values(0)
 
@@ -203,9 +219,12 @@ class TimeVaryingCost(TransactionCost):
             params = me.copy()
         params.index = params.index.set_names(('date', 'id'))
 
-        params['nme'] = params.groupby('date').transform(lambda x: (x - x.min()) / (x.max() - x.min()))
-        params['y'] = 1 + (3.3 - 1) * (date2 - dates) / (date2 - date1)
-        params.loc[dates < date1, 'y'] = 3.3
+        if normalize:
+            params['nme'] = params.groupby('date').transform(lambda x: (x - x.min()) / (x.max() - x.min()))
+        else:
+            params['nme'] = params.iloc[:, 0]
+        params['y'] = 1 + (4 - 1) * (date2 - dates) / (date2 - date1)
+        params.loc[dates < date1, 'y'] = 4.0
         params.loc[dates > date2, 'y'] = 1.0
         params['cost'] = params['y'] * (0.006 - 0.0025 * params['nme'])
 

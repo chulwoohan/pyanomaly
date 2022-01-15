@@ -61,7 +61,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cookbook.html#bulding-your-own">Bulding Your Own</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_your_own.html">Bulding Your Own</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -104,7 +104,7 @@ If you intend to use PyAnomaly ‘’as-is’’, we recommend <code class="docu
 If you need to refer to the source code frequently, e.g., to add new firm characteristics or functions,
 you may want to copy the source to your project directory.</p>
 <p><strong>Using pip</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyanomaly</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyassetpricing</span>
 </pre></div>
 </div>
 <p>After installing pyanomaly, download the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/examples.py">examples</a>.</p>
@@ -125,6 +125,14 @@ you may want to copy the source to your project directory.</p>
 </ul>
 </div></blockquote>
 <p>You can install these packages one by one or run <code class="docutils literal notranslate"><span class="pre">setup.bat</span></code> to install them at once.</p>
+<p>To confirm the package is installed correctly, try the following code:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyanomaly.globals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">unique_list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">[1, 2, 3, 5]</span>
+</pre></div>
+</div>
 <p>We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes, please contact us.</p>
 </section>
 <section id="generating-characteristics">
@@ -302,8 +310,12 @@ whereas the firm characteristics have a monthly frequency.
 The column names of the firm characteristics are their function names (without <code class="docutils literal notranslate"><span class="pre">c_</span></code>). When <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code>
 is saved to a file by calling <code class="docutils literal notranslate"><span class="pre">Panel.save()</span></code>, the column names will be replaced with the aliases.
 When a saved file is loaded back to a class by calling <code class="docutils literal notranslate"><span class="pre">Panel.load()</span></code>, the column names will be replaced with
-the function names. In summary, the column names of the firm characteristics are the function names in <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code>,
-where as the column names are the aliases in saved files.</p>
+the function names. In summary, the column names of the firm characteristics are the function names in
+<code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code> attribute, where as the column names are the aliases in saved files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute has a MultiIndex of ‘date’ and ‘permno’ in <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>, whereas
+it has a MultiIndex of <code class="docutils literal notranslate"><span class="pre">datadate</span></code> and ‘gvkey` in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>. Once the data in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>
+are populated monthly, the index changes to <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">gvkey</span></code> and <code class="docutils literal notranslate"><span class="pre">datadate</span></code> remains as a column.
+Note that the dates in <code class="docutils literal notranslate"><span class="pre">date</span></code> are shifted to month-end.</p>
 <p>The easiest way to get started is going through examples.
 The next section presents several examples to help you get familiarized with PyAnomaly.</p>
 </section>

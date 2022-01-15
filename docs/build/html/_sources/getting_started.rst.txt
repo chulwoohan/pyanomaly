@@ -11,7 +11,7 @@ you may want to copy the source to your project directory.
 
 .. code-block::
 
-    pip install pyanomaly
+    pip install pyassetpricing
 
 After installing pyanomaly, download the `mapping file`_ and the `examples`_.
 
@@ -32,7 +32,16 @@ You need to install the required packages:
 
 You can install these packages one by one or run ``setup.bat`` to install them at once.
 
+To confirm the package is installed correctly, try the following code:
+
+    >>> from pyanomaly.globals import *
+    >>> x = [1, 2, 2, 3, [1, 5], None]
+    >>> y = unique_list(x)
+    >>> print(y)
+    [1, 2, 3, 5]
+
 We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes, please contact us.
+
 
 
 Generating Characteristics
@@ -106,8 +115,13 @@ whereas the firm characteristics have a monthly frequency.
 The column names of the firm characteristics are their function names (without ``c_``). When ``data`` or ``chars``
 is saved to a file by calling ``Panel.save()``, the column names will be replaced with the aliases.
 When a saved file is loaded back to a class by calling ``Panel.load()``, the column names will be replaced with
-the function names. In summary, the column names of the firm characteristics are the function names in ``data`` or ``chars``,
-where as the column names are the aliases in saved files.
+the function names. In summary, the column names of the firm characteristics are the function names in
+``data`` or ``chars`` attribute, where as the column names are the aliases in saved files.
+
+The ``data`` attribute has a MultiIndex of 'date' and 'permno' in ``CRSPM``, ``CRSPD``, and ``Merge``, whereas
+it has a MultiIndex of ``datadate`` and 'gvkey` in ``FUNDA`` and ``FUNDQ``. Once the data in ``FUNDA`` and ``FUNDQ``
+are populated monthly, the index changes to ``date`` and ``gvkey`` and ``datadate`` remains as a column.
+Note that the dates in ``date`` are shifted to month-end.
 
 The easiest way to get started is going through examples.
 The next section presents several examples to help you get familiarized with PyAnomaly.

@@ -2,8 +2,20 @@ Cookbook
 ========
 
 All the examples presented below can be found in `examples`_.
-For the deatils of each function or class, refer to the API documentation (:ref:`pyanomaly`).
+For the details of each function or class, refer to the API documentation (:ref:`pyanomaly`).
 
+First, import the packages as follows:
+
+.. code-block::
+
+    import matplotlib.pyplot as plt
+    from pyanomaly.globals import *
+    from pyanomaly.fileio import read_from_file
+    from pyanomaly.characteristics import FUNDA, FUNDQ, CRSPM, CRSPD, Merge
+    from pyanomaly.jkp import make_factor_portfolios
+    from pyanomaly.tcost import TransactionCost, TimeVaryingCost
+    from pyanomaly.analytics import *
+    from pyanomaly.wrdsdata import WRDS
 
 Example 1
 ---------
@@ -18,12 +30,21 @@ In this example,
     ii) The latest market equity (me) is used when creating firm characteristics.
     iii) Generate firm characteristics that appear in the JKP's paper.
 
+Note:
+    Some firm characteristics' definitions are different from those of JKP's.
+    To follow JKP's definitions, set ``config.REPLICATE_JKP = True``.
+    This will make the program use JKP's definitions when possible.
+    ``config.REPLICATE_JKP`` is only for verification purpose and will be deprecated.
+
 Initialization
 ...............
 
 Set the log file path and initialize time check (can be skipped).
 
 .. code-block::
+
+    # If you want to use JKP's definitions, uncomment this.
+    # config.REPLICATE_JKP = True
 
     # Set log file path. Without this, the log will be printed in stdout.
     set_log_path('./log/example1.log')
@@ -231,6 +252,70 @@ This example demonstrates
     crspm.save('example2', fdir='output2', other_columns=[])
 
     elapsed_time('End of Example 2.')
+
+
+Example 3
+---------
+
+**Firm characteristics using year-end ME.**
+
+This example demonstrates how to generate funda firm characteristics using year-end ME instead of the latest ME.
+    i) All firm characteristics defined in FUNDA are generated.
+    ii) Only USD-denominated stocks are sampled: currency conversion is unnecessary.
+    iii) Only funda is used without merging with fundq: merging the two datasets as in Example 1 is also possible.
+    iv) It is assumed that funda data is available 6 months later.
+
+- It is assumed that data has been downloaded from WRDS.
+
+Set variables
+..............
+
+.. code-block::
+
+    alias = None  # Generate all characteristics.
+    sdate = None  # create characteristics from as early as possible.
+
+Market equity
+......................
+
+.. code-block::
+
+    # Load crspm as we need ME.
+    crspm = CRSPM(alias=alias)
+    crspm.load_data(sdate)
+
+    # Preprocessing
+    crspm.filter_data()
+    crspm.populate(freq=MONTHLY, method=None)
+
+    # 'me' variable is generated here.
+    crspm.update_variables()
+
+Firm characteristics
+......................
+
+.. code-block::
+
+    funda = FUNDA(alias=alias)
+    funda.load_data(sdate)
+
+    # USD stocks only. This is equivalent to funda.data = funda.data[funda.data['curcd'] == 'USD']
+    funda.filter(('curcd', '==', 'USD'))
+
+    funda.convert_to_monthly(lag=6)  # lag=6 means funda is available 6 months later.
+    funda.update_variables()
+
+    # Add year-end market equity to funda.
+    funda.add_crsp_me(crspm, method='year_end')
+
+    # Generate firm characteristics.
+    funda.show_available_functions()
+    funda.create_chars()
+
+    # Postprocess and save results.
+    funda.postprocess()
+    funda.save('funda_eg3')
+
 
 Example 4
 ---------
@@ -626,9 +711,7 @@ Load data
     # Read crspm data (not raw data but the output data).
     data = read_from_file('crspm')
 
-    # If you want to exclude bottom 20% based on NYSE size...
     data['nyse_me'] = np.where(data.exchcd == 1, data[weight_col], np.nan)  # NYSE me
-    data = filter(data, weight_col, (0.2, None), by='nyse_me')
 
     # Make the future return. If it's already in the data, this step can be skipped.
     data[ret_col] = make_future_return(data['ret'])
@@ -674,6 +757,10 @@ In `data`, the future return at t is the return between t and t+1, whereas in th
 so that the future return at t is the return between t-1 and t.
 
 .. code-block::
+
+    # Here, we remove small-cap stocks after setting the cost function.
+    # This is because `TimeVaryingCost` requires all firms' me as the input.
+    data = filter(data, weight_col, (0.2, None), by='nyse_me')
 
     # Classify data on char. The highest momentum stock will be labeled 0 and the lowest 2.
     data[char_class] = classify(data[char], split, ascending=False)
@@ -906,45 +993,5 @@ Note that the query statement must contain 'WHERE [`date_col`] BETWEEN {} and {}
         WHERE datadate between '{{}}' and '{{}}'
     """
     wrds.download_table_async('comp', 'secm', sql=sql, date_cols=['datadate'])
-
-
-Bulding Your Own
-================
-
-PyAnomaly is highly configurable and customizable, and you can easily add new firm characteristics or functions.
-When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary.
-This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you
-update the library.
-
-Coding Rule
-------------
-
-Making your own list of characteristics
----------------------------------------
-
-If you want generate a subset of all available firm characteristics, you can add a new acronym column in 'mapping.xlsx'.
-Alternatively, you can simply define a list of characteristics in a python module and use it as input to panel.create_chars().
-In this case, you need to use the method names and cannot define aliases for the firm characteristics.
-
-
-Adding a new characteristic
----------------------------
-Where to add a method to define a new characteristic depends on what data it requires. If it only requires data from FUNDA (plus market equity from CRSPM),
-you can define a class inheriting FUNDA class and add the method in it. Similary, if the characteristic only requires data from CRSPM, you can define a class
-inheriting CRSPM. If the characteristic requires data from multiple data sources, you can inherit Merged class.
-
-Example:
-
-.. code-block::
-
-	class myFUNDA(FUNDA):
-		self.c_my_char(self):
-			fa = self.data
-			char = fa.x + fa.y
-
-			return char
-
-Note that the method's name starts with 'c_'. This is one of few coding rules you need to follow.
-
 
 

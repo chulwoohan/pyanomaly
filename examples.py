@@ -1,9 +1,17 @@
 import matplotlib.pyplot as plt
 
-import pyanomaly as pa
-from pyanomaly.characteristics import *
+from pyanomaly.globals import *
+
+# If you want to use JKP's definitions, uncomment the following.
+# This MUST come after importing pyanomaly.globals and before importing pyanomaly.characteristics.
+# config.REPLICATE_JKP = True
+
+from pyanomaly.fileio import read_from_file
+from pyanomaly.characteristics import FUNDA, FUNDQ, CRSPM, CRSPD, Merge
 from pyanomaly.jkp import make_factor_portfolios
 from pyanomaly.tcost import TransactionCost, TimeVaryingCost
+from pyanomaly.analytics import *
+from pyanomaly.wrdsdata import WRDS
 
 """
 EXAMPLE 1: Firm characteristics generation (Replication of JKP).
@@ -37,7 +45,7 @@ def example1():
     log('DOWNLOADING DATA')
     drawline()
 
-    wrds = WRDS('wrds_username')  # Use your WRDS user id.
+    wrds = WRDS(wrds_username)  # Use your WRDS user id.
     # Download all necessary data.
     wrds.download_all()
     # Create crspm(d) from m(d)sf and m(d)seall and add gvkey to them.
@@ -238,48 +246,57 @@ def example2():
 
 
 """
-EXAMPLE 3
+EXAMPLE 3: Firm characteristics using year-end ME.
 
-This example demonstrates how to generate funda characteristics using only funda data, i.e., 
-i) without merging with annualized fundq data and ii) using market equity from funda (funda.prcc_f * funda.csho).
-
+This example demonstrates how to generate funda firm characteristics using year-end ME instead of the latest ME. 
+    i) All firm characteristics defined in FUNDA are generated.
+    ii) Only USD-denominated stocks are sampled: currency conversion is unnecessary.
+    iii) Only funda is used without merging with fundq: merging the two datasets as in Example 1 is also possible.
+    iv) It is assumed that funda data is available 6 months later.
+ 
 - It is assumed that data has been downloaded from WRDS.
-- funda and fundq characteristics defined in 'jkp' column are generated.
-- It is assumed that funda data is available 6 months later and fundq 4 months later.
-- Choose only the stocks denominated in USD: currency conversion is unnecessary.
-- The output file will contain the characteristics as well as the raw data from funda and fundq.
 """
 
 def example3():
     elapsed_time('Start of Example 3.')
 
-    alias = 'jkp'  # Generate characteristics defined in 'jkp' column.
+    alias = None  # Generate all characteristics.
     sdate = None  # create characteristics from as early as possible.
 
-    drawline()
-    log('PROCESSING FUNDQ')
-    drawline()
-    fundq = FUNDQ(alias=alias)
-    fundq.load_data(sdate)
-    fundq.preprocess()
-    fundq.create_chars()
-    fundq.postprocess()
+    ###################################
+    # CRSPM
+    ###################################
+    # Load crspm as we need ME.
+    crspm = CRSPM(alias=alias)
+    crspm.load_data(sdate)
 
-    # Generate firm characteristics from funda.
-    drawline()
-    log('PROCESSING FUNDA')
-    drawline()
+    # Preprocessing
+    crspm.filter_data()
+    crspm.populate(freq=MONTHLY, method=None)
+    crspm.update_variables()
+
+    ###################################
+    # FUNDA
+    ###################################
     funda = FUNDA(alias=alias)
     funda.load_data(sdate)
-    funda._filter_data(('curcd', '==', 'USD'))  # USD stocks only. This is equivalent to
-                                                # funda.data = funda.data[funda.data['curcd'] == 'USD']
-    funda.convert_to_monthly(lag=6)  # funda data available 6 months later.
-    funda.update_variables()
-    funda.create_chars()
-    funda.postprocess()
 
-    funda.merge(fundq, how='left')  # Left-join funda with fundq on index (date/gvkey).
-    funda.save('funda_fundq_jkp')  # Output file = output/funda_fundq_jkp.pickle.
+    # USD stocks only. This is equivalent to funda.data = funda.data[funda.data['curcd'] == 'USD']
+    funda.filter(('curcd', '==', 'USD'))
+
+    funda.convert_to_monthly(lag=6)  # lag=6 means funda is available 6 months later.
+    funda.update_variables()
+
+    # Add year-end market equity to funda.
+    funda.add_crsp_me(crspm, method='year_end')
+
+    # Generate firm characteristics.
+    funda.show_available_functions()
+    funda.create_chars()
+
+    # Postprocess and save results.
+    funda.postprocess()
+    funda.save('funda_eg3')
 
     elapsed_time('End of Example 3.')
 
@@ -550,16 +567,14 @@ def example6():
     # Read crspm data (not raw data but the output data).
     data = read_from_file('crspm')
 
-    # If you want to exclude bottom 20% based on NYSE size...
     data['nyse_me'] = np.where(data.exchcd == 1, data[weight_col], np.nan)  # NYSE me
-    data = filter(data, weight_col, (0.2, None), by='nyse_me')
 
     # Make the future return. If it's already in the data, this step can be skipped.
     data[ret_col] = make_future_return(data['ret'])
 
     # Let's just keep the data we need. Below is the same as `data = data[[char, ret_col, weight_col]]`
     # but faster and more memroy efficient.
-    keep_columns(data, [char, ret_col, weight_col])
+    keep_columns(data, [char, ret_col, weight_col, 'nyse_me'])
 
     # Risk-free rates.
     # Don't forget to set `month_end=True` since the crspm date has also been shifted to month end.
@@ -576,6 +591,10 @@ def example6():
 
     # In this example, we will assume transaction cost that decreases over time and with size.
     costfcn = TimeVaryingCost(data[weight_col])
+
+    # Here, we remove small-cap stocks after setting the cost function.
+    # This is because `TimeVaryingCost` requires all firms' me as the input.
+    data = filter(data, weight_col, (0.2, None), by='nyse_me')
 
     ###################################
     # Make portfolios
@@ -650,7 +669,7 @@ Different ways of downloading comp.secm table will be demonstrated.
 def example7():
     elapsed_time('Start of Example 7.')
 
-    wrds = WRDS('fehouse')
+    wrds = WRDS(wrds_username)
 
     # Download the entire table at once.
     # wrds.download_table('comp', 'secm', date_cols=['datadate'])  # 'datadate's type will be converted to datetime.
@@ -677,152 +696,12 @@ def example7():
 
 
 if __name__ == '__main__':
-    example5()
+    wrds_username = 'pyanomaly'
 
-    # # Set log file path. Without this, the log will be printed in stdout.
-    # set_log_path('./log/example1.log')
-    # # initialize time check.
-    # elapsed_time('Start of Example 1.')
-    #
-    # # Generate characteristics in 'jkp' column in mapping.xlsx.
-    # alias = 'jkp'
-    # # Start date. Set to None to create characteristics from as early as possible.
-    # sdate = None
-    #
-    # # crspm = CRSPM()
-    # # crspm.load()
-    # #
-    # # crspd = CRSPD()
-    # # crspd.load()
-    # #
-    # # fundq = FUNDQ()
-    # # fundq.load()
-    # #
-    # # funda = FUNDA()
-    # # funda.load()
-    #
-    # ###################################
-    # # CRSPM
-    # ###################################
-    # # Generate firm characteristics from crspm.
-    # drawline()
-    # log('PROCESSING CRSPM')
-    # drawline()
-    #
-    # crspm = CRSPM(alias=alias)
-    # # Load crspm.
-    # crspm.load_data(sdate)
-    #
-    # # Filter data on shrcd, ...
-    # crspm.filter_data()
-    # # Fill missing months bu populating the data.
-    # # There are only few missing data and the results aren't affected much by this.
-    # crspm.populate(freq=MONTHLY, method=None)
-    # # Some preprocessing, e.g., creating frequently used variables.
-    # crspm.update_variables()
-    # # Merge crspm with the factors created earlier.
-    # crspm.merge_with_factors()
-    #
-    # # Display what characteristics will be generated. Just for information.
-    # crspm.show_available_functions()
-    # # Create characteristics.
-    # crspm.create_chars()
-    #
-    # # Postprocessing: delete temporary variables, etc.
-    # crspm.postprocess()
-    # # Saves the results. You can give a file name if you wish. Otherwise, the file name will be the lower-case class
-    # # name, i.e., crspm. The file can later be loaded using the method, crspm.load_data().
-    # crspm.save()
-    #
-    # ###################################
-    # # CRSPD
-    # ###################################
-    # # Generate firm characteristics from crspd.
-    # drawline()
-    # log('PROCESSING CRSPD')
-    # drawline()
-    #
-    # crspd = CRSPD(alias=alias)
-    # # Load crspd.
-    # crspd.load_data(sdate)
-    #
-    # # Filter data on shrcd, ...
-    # crspd.filter_data()
-    # crspd.update_variables()
-    # crspd.merge_with_factors()
-    #
-    # crspd.show_available_functions()
-    # crspd.create_chars()
-    #
-    # crspd.postprocess()
-    # crspd.save()
-    #
-    # ###################################
-    # # FUNDQ
-    # ###################################
-    # # Generate firm characteristics from fundq.
-    # drawline()
-    # log('PROCESSING FUNDQ')
-    # drawline()
-    #
-    # fundq = FUNDQ(alias=alias)
-    # # Load fundq.
-    # fundq.load_data(sdate)
-    #
-    # # fundq has some duplicates (same datedate/gvkey). Drop duplicates.
-    # fundq.remove_duplicates()
-    # # Convert values in another currency (currently only CAD) to USD values.
-    # fundq.convert_currency()
-    # # Populate data to monthly.
-    # fundq.convert_to_monthly()
-    # # Make quarterly variables from ytd variables and use them to fill missing quarterly variables.
-    # fundq.create_qitems_from_yitems()
-    # fundq.update_variables()
-    #
-    # fundq.show_available_functions()
-    # fundq.create_chars()
-    #
-    # fundq.postprocess()
-    # fundq.save()
-    #
-    # ###################################
-    # # FUNDA
-    # ###################################
-    # # Generate firm characteristics from funda.
-    # drawline()
-    # log('PROCESSING FUNDA')
-    # drawline()
-    #
-    # funda = FUNDA(alias=alias)
-    # # Load fundq.
-    # funda.load_data(sdate)
-    #
-    # funda.convert_currency()
-    # funda.convert_to_monthly()
-    # # Generate quarterly-updated funda data from fundq and merge them with funda.
-    # funda.merge_with_fundq(fundq)
-    # funda.update_variables()
-    # # Add the market equity of crspm to funda.
-    # funda.add_crsp_me(crspm)
-    #
-    # funda.show_available_functions()
-    # funda.create_chars()
-    #
-    # funda.postprocess()
-    # funda.save()
-    #
-    #
-    # merge = Merge()
-    # # Merge all data together.
-    # merge.preprocess(crspm, crspd, funda, fundq)
-    #
-    # merge.show_available_functions()
-    # merge.get_available_chars()
-    # merge.create_chars()
-    #
-    # merge.postprocess()
-    #
-    # columns = ['permco', 'gvkey', 'datadate', 'primary', 'me', 'me_company', 'ret', 'exret', 'rf']
-    # # merge.save('merge_jkp', other_columns=columns)
-    # merge.save()
-    #
+    example1()
+    # example2()
+    # example4()
+    # example5()
+    # example6()
+    # example7()
+

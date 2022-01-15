@@ -1,4 +1,4 @@
-""""This module defines `Portfolo` and `Portfolios` classes that are used for portfolio analysis.
+"""This module defines ``Portfolo`` and ``Portfolios`` classes that are used for portfolio analysis.
 """
 
 from pyanomaly.globals import *
@@ -9,41 +9,41 @@ class Portfolio:
 
     This class makes a portfolio from positions and evaluate it.
 
-    Position information is saved in `position` DataFrame and portfolio information is saved in `value` DataFrame.
-    If positive weights don't add up to 1, (1 - sum(positive weights)) will be assumed to be invested in a
-    risk free asset, and its information is saved in `fposition` DataFrame.
+    Position information is saved in `position` attribute and portfolio information is saved in `value` attribute.
+    If positive weights of the positions on a date don't add up to 1, (1 - sum(positive weights)) will be assumed to be
+    invested in a risk free asset, and its information is saved in `fposition` attribute.
     The transaction cost is assumed to be 0 for risk-free assets.
-    Once the portfolio is evaluated by calling ``Portfolio.eval()``, `performance` DataFrame is generated.
+    Once the portfolio is evaluated by calling ``Portfolio.eval()``, `performance` attribute is generated.
 
     Args:
         name: Portfolio name.
         position: Position DataFrame. It should have index = 'date' and columns = 'id' (security ID) 'ret' (return),
             and 'wgt' (portfolio weight). If it has other columns such as price, they will be kept in the `position`
             attribute. If it has 'rf' (risk-free rate) column, its values are used as risk-free rates.
-        rf: Risk-free rate DataFrame with index = 'date' and columns = 'rf'. `rf` have priority over 'rf' column in
+        rf: Risk-free rate DataFrame with index = 'date' and columns = 'rf'. The `rf` has priority over 'rf' column in
             `position`. If `rf` = None and `position` does not have 'rf' column, the risk-free is assumed to be 0.
         pfval0: Initial portfolio value. Default to 1.
         costfcn: `TransactionCost` class, a transaction cost function, or value. If a const transaction cost of 20
             basis points is assumed, this can be set to 0.002.
-        keep_position: If False, position information (`position`) is deleted.
+        keep_position: If False, position information (`position`) is deleted after the portfolio is created.
 
     Attributes:
         name: Portfolio name.
-        position: Position DataFrame. Its index is `date` and has the following columns:
+        position: Position DataFrame. Its index is 'date' and has the following columns:
 
             - 'id': security ID provided by the user.
             - 'ret': Return between t-1 and t.
             - 'exret': Excess return over risk-free rate between t-1 and t.
-            - 'wgt`: Weight ot the beginning of t.
+            - 'wgt`: Weight at the beginning of t.
             - 'val1': Value at t.
             - 'val': Value at the beginning of t.
             - 'val0': value at t-1.
             - 'cost': Transaction cost incurred at the beginning of t.
-            - Other columns: Any columns that are in the input position data, such as 'permno'.
+            - Other columns: Any columns that are in the input position data.
 
             In the description above, 'at the beginning of t` means at t-1 after rebalancing.
 
-        value: Portfolio value DataFrame. Its index is `date` and has the following columns:
+        value: Portfolio value DataFrame. Its index is 'date' and has the following columns:
 
             - 'ret': Return between t-1 and t. This can be either net return or gross return depending on
               the evaluation method: see ``Portfolio.eval()``.
@@ -54,9 +54,9 @@ class Portfolio:
             - 'cost': Transaction cost incurred at the beginning of t.
             - 'tover': Turnover incurred at the beginning of t. `tover` = sum(pos.val - pos.val0) / sum(pf.val),
               where pos.val is the position values and pf.val is the portfolio value.
-            - 'netret': Return between t-1 and t, net of transaction cost
+            - 'netret': Return between t-1 and t, net of transaction cost.
             - 'grossret': Gross return between t-1 and t.
-            - 'netexret': Excess return between t-1 and t, net of transaction cost
+            - 'netexret': Excess return between t-1 and t, net of transaction cost.
             - 'grossexret': Excess gross return between t-1 and t.
             - 'lposition': Number of long positions.
             - 'sposition': Number of short positions.
@@ -74,7 +74,7 @@ class Portfolio:
         fposition: Risk-free asset position DataFrame. Its index is 'date' and has the following columns:
 
             - 'ret': Return between t-1 and t.
-            - 'wgt`: Weight ot the beginning of t.
+            - 'wgt`: Weight at the beginning of t.
             - 'val1': Value at t.
             - 'val': Value at the beginning of t.
 
@@ -102,9 +102,9 @@ class Portfolio:
             transaction costs. `TransactionCost` allows transaction costs varying across time and securities.
             See ``pyanomaly.tcost`` module for more details.
 
-            A transaction cost function should have arguments val (value after rebalancing) and val0
-            (value before rebalancing). For example, if the transaction cost to buy (sell) is 20 (30) bps,
-            a function can be defined as follows:
+            When `costfcn` is defined as a function, the transaction cost function should have arguments
+            val (value after rebalancing) and val0 (value before rebalancing). For example, if the transaction cost
+            to buy (sell) is 20 (30) bps, a function can be defined as follows:
 
             .. code-block::
 
@@ -115,8 +115,8 @@ class Portfolio:
         If a position exists at t-1 but not at t, it will be added at t with 0 weight.
         This is to compute the transaction cost.
 
-        'val', 'val1', 'val0' in `position` and `value` are calculated without taking transaction costs into account.
-        For a value increase after transaction costs, refer to the cumulative return.
+        'val', 'val1', and 'val0' in `position` and `value` are calculated without taking transaction costs into account.
+        For the value increase after transaction costs, use the cumulative return.
     """
 
     def __init__(self, name=None, position=None, rf=None, pfval0=1, costfcn=None, keep_position=False):
@@ -323,7 +323,9 @@ class Portfolio:
     def set_return_type(self, consider_cost=True):
         """Determine which return (gross vs. net) to use for portfolio evaluation.
 
-        If `consider_cost` is True, `value.ret` is set to net returns, otherwise, it is set to gross returns.
+        If `consider_cost` is True, `value.ret` and `value.exret` are respectively set to net returns (`value.netret`)
+        and net excess returns (`value.netexret`). Otherwise, they are set to gross returns (`value.grossret`) and
+        gross excess returns (`value.grossexret`).
 
         Args:
             consider_cost: True to use returns net of transaction costs for evaluation.
@@ -346,7 +348,7 @@ class Portfolio:
             edate: End date.
 
         Returns:
-            return Series with index = 'date'.
+            Return Series with index = 'date'.
         """
 
         return self.value[sdate:edate].ret
@@ -368,7 +370,9 @@ class Portfolio:
             sdate: Start date.
             edate: End date.
             logscale: If True, return log-scale cumulative returns.
-            zero_start: If True, the return at `sdate` is forced to 0.
+            zero_start: If True, the return at `sdate` is forced to 0. That is, it is assumed that trading starts
+                at the end of `sdate`. This is useful when plotting cumulative returns as all curves will start at the
+                same point, 0.
 
         Returns:
             Cumulative return Series with index = 'date'.
@@ -471,7 +475,7 @@ class Portfolio:
             logscale: If True, return log-scale values.
 
         Returns:
-            Successive downs: DataFrame with index = 'date' and columns = ['value', 'duration', 'start'].
+            Successive downs. DataFrame with index = 'date' and columns = ['value', 'duration', 'start'].
         """
 
         return self._succdown(self.cum_returns(sdate, edate), logscale)
@@ -485,7 +489,7 @@ class Portfolio:
             logscale: If True, return log-scale value.
 
         Returns:
-            Maximum successive down: Series with index = ['value', 'duration', 'start'].
+            Maximum successive down. Series with index = ['value', 'duration', 'start'].
         """
 
         succdown = self.succdown(sdate, edate, logscale)
@@ -524,7 +528,7 @@ class Portfolio:
             logscale: If True, return log-scale values.
 
         Returns:
-            Drawdowns: DataFrame with index = 'date' and columns = ['value', 'duration', 'start'].
+            DataFrame of drawdowns with index = 'date' and columns = ['value', 'duration', 'start'].
         """
 
         return self._drawdown(self.cum_returns(sdate, edate), logscale)
@@ -538,7 +542,7 @@ class Portfolio:
             logscale: If True, return log-scale value.
 
         Returns:
-            Maximum drawdown: Series with index = ['value', 'duration', 'start'].
+            Maximum drawdown. Series with index = ['value', 'duration', 'start'].
         """
 
         drawdown = self.drawdown(sdate, edate, logscale)
@@ -568,7 +572,7 @@ class Portfolio:
 
         Columns added to `value`:
 
-            - 'cumret': Cumulative return since the first date.
+            - 'cumret': Cumulative return since `sdate`.
             - 'drawdown': Drawdown.
             - 'drawdur': Duration of daawdown in the frequency of data, e.g., if rebalanced monthly, 3 means 3 months.
             - 'drawstart': Beginning date of drawdown.
@@ -643,11 +647,11 @@ class Portfolio:
     def eval_series(self, sdate=None, edate=None, logscale=True, annualize_factor=1, consider_cost=True, percentage=False):
         """Evaluate the portfolio repeatedly over the period.
 
-        Evaluate the portfolio repeatedly for the period [`sdate`, `sdate`+1], [`sdate`, `sdate`+2], ...,
+        Evaluate the portfolio repeatedly for the period [`sdate`, `sdate+1`], [`sdate`, `sdate+2`], ...,
         [`sdate`, `edate`]. For the description of the arguments, see ``Portfolio.eval()``.
 
         Returns:
-            Performance for each period: DataFrame with index values equal to the period end dates and columns
+            Performance for each period. DataFrame with index values equal to the period end dates and columns
             equal to the indexes of `performance` attribute, i.e., a row with index t contains the performance up to t.
         """
 

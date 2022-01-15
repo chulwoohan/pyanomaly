@@ -101,7 +101,8 @@ def groupby_apply_np(gb, fcn, *args):
     (ndarray). Use this function if `fcn` cannot receive DataFrame as an argument, e.g., when `fcn` is wrapped by
     ``numpy.jit``.
 
-    NOTE: The groupby operation must not change the order of the data as the input to `fcn`, `data.values`, does not
+    NOTE:
+        The groupby operation must not change the order of the data as the input to `fcn`, `data.values`, does not
         have an index. E.g., if `data` is sorted on `id`/`date`, grouping `data` by `id` is fine but not by `date`.
 
     Args:
@@ -144,7 +145,8 @@ def rolling_apply_np(data, by=None, fcn=None, *args):
     (ndarray). Use this function if `fcn` cannot receive DataFrame as an argument, e.g., when `fcn` is wrapped by
     ``numpy.jit``.
 
-    NOTE: The groupby operation must not change the order of the data as the input to `fcn`, `data.values`, does not
+    NOTE:
+        The groupby operation must not change the order of the data as the input to `fcn`, `data.values`, does not
         have an index. E.g., if `data` is sorted on `id`/`date`, grouping `data` by `id` is fine but not by `date`.
 
     Args:
@@ -239,7 +241,7 @@ def classify_array(array, split, ascending=True, by_array=None):
 
     Args:
         array: Nx1 ndarray or Series to be grouped.
-        split: Number of classes or list of quantiles. (0.3, 0.7) is equivalent to (0.3, 0.7, 1.0).
+        split: Number of classes (for equal-size quantiles) or list of quantiles. (0.3, 0.7) is equivalent to (0.3, 0.7, 1.0).
         ascending (bool): Sorting order.
         by_array: Array based on which cut points are determined. If None, by_array = array. Eg, array can be set
             to ME and by_array to NYSE-ME to group firms on size with NYSE-size cut points.
@@ -289,7 +291,7 @@ def classify(array, split, ascending=True, by_array=None):
 
     Args:
         array: Data to classify. Series with date/id index.
-        split: Number of classes or list of quantiles (see `classify_array`).
+        split: Number of classes or list of quantiles (see `classify_array()`).
         ascending (bool): Sorting order.
         by_array: Data based on which quantile breakpoints are determined. If None, `by_array` = `array`.
 
@@ -414,7 +416,7 @@ def trim(array, limits, by_array=None):
     Args:
         array (Series): Data to trim. The first index should be date.
         limits: Pair of quantiles, eg, (0.1, 0.1), (0.1, None).
-        by_array: Data based on which cut points are determined. If None, `by_array` = `array`.
+        by_array (Series): Data based on which cut points are determined. If None, `by_array` = `array`.
 
     return:
         Trimmed data.
@@ -474,7 +476,7 @@ def winsorize(array, limits, by_array=None):
     Args:
         array (Series): Data to winsorize. The first index should be date.
         limits: Pair of quantiles, eg, (0.1, 0.1), (0.1, None).
-        by_array: Data based on which cut points are determined. If None, `by_array` = `array`.
+        by_array (Series): Data based on which cut points are determined. If None, `by_array` = `array`.
 
     Returns:
         Winsorized data.
@@ -529,6 +531,9 @@ def inspect_data(data, option=['summary'], date_col=None, id_col=None):
         id_col: ID column. If None, `date.index[1]` is assumed to be id.
     """
 
+    max_rows = pd.get_option('display.max_rows')  # get current setting
+    pd.set_option('display.max_rows', data.shape[1])  # set to num. of columns.
+
     if date_col:
         dates = data[date_col]
     else:
@@ -562,7 +567,9 @@ def inspect_data(data, option=['summary'], date_col=None, id_col=None):
     if 'stats' in option:
         log('\n')
         log('Descriptive statistics')
-        log(data.describe(), header=False)
+        log(data.describe([0.001, 0.01, .25, .5, .75, 0.99, 0.999]).T, header=False)
+
+    pd.set_option('display.max_rows', max_rows)  # back to previous setting
 
 
 def compare_data(data1, data2=None, on=None, how='inner', tolerance=0.01, suffixes=('_x', '_y'), returns=False):
@@ -578,9 +585,9 @@ def compare_data(data1, data2=None, on=None, how='inner', tolerance=0.01, suffix
             If `data1` is a merged dataset, `on` and `how` have no effect.
         on: A column or a list of columns to merge data sets on. If None, data sets will be merged on index.
         how: How to merge: 'inner', 'outer', 'left', or 'right'
-        tolerance: Tolerance level to determine equality. Two values, `val1` and `val2` are considered to be the same
-            if `abs((val1 - val2) / val2) < threshold`.
-        suffixes: suffixes to add to overlapping columns or suffixes used in the merged dataset.
+        tolerance: Tolerance level to determine equality. Two values, `val1` and `val2`, are considered to be the same
+            if `abs((val1 - val2) / val2) < tolerance`.
+        suffixes: suffixes to add to common columns or suffixes used in the merged dataset.
             `suffixes[0]`: suffix for `data1`, `suffixes[1]`: suffix for `data2`.
         returns: If True, return the merged data.
     """
@@ -621,7 +628,7 @@ def compare_data(data1, data2=None, on=None, how='inner', tolerance=0.01, suffix
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from multiprocessing import cpu_count
 
-def fcn(k, g, freq, method, limit):
+def _fcn(k, g, freq, method, limit):
     if method == 'ffill':
         return k, g.resample(freq_map[freq]).pad(limit)
     else:  # fill with None
@@ -635,7 +642,7 @@ def populate(data, freq, method='ffill', limit=None):
         https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html
 
     Args:
-        data: Dataframe with index = date/id
+        data: Dataframe with index = date/id.
         freq: Frequency to populate: QUARTERLY, MONTHLY, or DAILY.
         method: Filling method for newly added rows. 'ffill': forward fill, None: None.
         limit: Maximum number of rows to forward-fill.
@@ -650,7 +657,7 @@ def populate(data, freq, method='ffill', limit=None):
     futures = []
     with ProcessPoolExecutor() as executor:
         for k, g in gb:
-            futures.append(executor.submit(fcn, k, g, freq, method, limit))
+            futures.append(executor.submit(_fcn, k, g, freq, method, limit))
 
         for f in as_completed(futures):
             k, retval_ = f.result()
@@ -660,43 +667,43 @@ def populate(data, freq, method='ffill', limit=None):
     return pd.concat(retval).set_index(id_col, append=True).sort_index(level=[1,0])
 
 
-def populate2(data, freq, method='ffill', limit=None):
-    """Populate data.
-
-    References:
-        https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html
-
-    Args:
-        data: Dataframe with index = date/id
-        freq: Frequency to populate: QUARTERLY, MONTHLY, or DAILY.
-        method: Filling method for newly added rows. 'ffill': forward fill, None: None.
-        limit: Maximum number of rows to forward-fill.
-
-    Returns:
-        Populated data.
-    """
-
-    id_col = data.index.names[-1]
-
-    gb = data.reset_index(level=id_col).groupby(id_col)
-    retval = []
-    for k, g in gb:
-        if method == 'ffill':
-            retval.append(g.resample(freq_map[freq]).pad(limit))
-        else:  # fill with None
-            retval.append(g.resample(freq_map[freq]).asfreq())
-        retval[-1][id_col] = k
-
-    return pd.concat(retval).set_index(id_col, append=True)
-
-    # The code below is simpler but three times slower.
-    # if method == 'ffill':
-    #     pop_data = data.reset_index(level=id_col).groupby(id_col).resample(freq_map[freq]).pad(limit).swaplevel()
-    # else:  # fill with None
-    #     pop_data = data.reset_index(level=id_col).groupby(id_col).resample(freq_map[freq]).asfreq().swaplevel()
-    # pop_data.drop(columns=id_col, inplace=True)
-    #
-    # return pop_data
+# def populate2(data, freq, method='ffill', limit=None):
+#     """Populate data.
+#
+#     References:
+#         https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html
+#
+#     Args:
+#         data: Dataframe with index = date/id
+#         freq: Frequency to populate: QUARTERLY, MONTHLY, or DAILY.
+#         method: Filling method for newly added rows. 'ffill': forward fill, None: None.
+#         limit: Maximum number of rows to forward-fill.
+#
+#     Returns:
+#         Populated data.
+#     """
+#
+#     id_col = data.index.names[-1]
+#
+#     gb = data.reset_index(level=id_col).groupby(id_col)
+#     retval = []
+#     for k, g in gb:
+#         if method == 'ffill':
+#             retval.append(g.resample(freq_map[freq]).pad(limit))
+#         else:  # fill with None
+#             retval.append(g.resample(freq_map[freq]).asfreq())
+#         retval[-1][id_col] = k
+#
+#     return pd.concat(retval).set_index(id_col, append=True)
+#
+#     # The code below is simpler but three times slower.
+#     # if method == 'ffill':
+#     #     pop_data = data.reset_index(level=id_col).groupby(id_col).resample(freq_map[freq]).pad(limit).swaplevel()
+#     # else:  # fill with None
+#     #     pop_data = data.reset_index(level=id_col).groupby(id_col).resample(freq_map[freq]).asfreq().swaplevel()
+#     # pop_data.drop(columns=id_col, inplace=True)
+#     #
+#     # return pop_data
 
 
 def to_month_end(date):

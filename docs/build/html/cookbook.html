@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pyanomaly" href="pyanomaly_edited.html" />
+    <link rel="next" title="Bulding Your Own" href="building_your_own.html" />
     <link rel="prev" title="Installation" href="getting_started.html" /> 
 </head>
 
@@ -58,18 +58,14 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Cookbook</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#example-1">Example 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-2">Example 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-3">Example 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-4">Example 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-5">Example 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-6">Example 6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-7">Example 7</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#bulding-your-own">Bulding Your Own</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#coding-rule">Coding Rule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#making-your-own-list-of-characteristics">Making your own list of characteristics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adding-a-new-characteristic">Adding a new characteristic</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="building_your_own.html">Bulding Your Own</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -108,7 +104,18 @@
   <section id="cookbook">
 <h1>Cookbook<a class="headerlink" href="#cookbook" title="Permalink to this headline"></a></h1>
 <p>All the examples presented below can be found in <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/examples.py">examples</a>.
-For the deatils of each function or class, refer to the API documentation (<a class="reference internal" href="pyanomaly_edited.html#pyanomaly"><span class="std std-ref">pyanomaly</span></a>).</p>
+For the details of each function or class, refer to the API documentation (<a class="reference internal" href="pyanomaly_edited.html#pyanomaly"><span class="std std-ref">pyanomaly</span></a>).</p>
+<p>First, import the packages as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.globals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.fileio</span> <span class="kn">import</span> <span class="n">read_from_file</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.characteristics</span> <span class="kn">import</span> <span class="n">FUNDA</span><span class="p">,</span> <span class="n">FUNDQ</span><span class="p">,</span> <span class="n">CRSPM</span><span class="p">,</span> <span class="n">CRSPD</span><span class="p">,</span> <span class="n">Merge</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.jkp</span> <span class="kn">import</span> <span class="n">make_factor_portfolios</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.tcost</span> <span class="kn">import</span> <span class="n">TransactionCost</span><span class="p">,</span> <span class="n">TimeVaryingCost</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.analytics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyanomaly.wrdsdata</span> <span class="kn">import</span> <span class="n">WRDS</span>
+</pre></div>
+</div>
 <section id="example-1">
 <h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline"></a></h2>
 <p><strong>Firm characteristics generation replicating JKP.</strong></p>
@@ -122,10 +129,20 @@ This example replicates the JKP’s SAS code as closely as possible.</p>
 <li><p>Generate firm characteristics that appear in the JKP’s paper.</p></li>
 </ol>
 </div></blockquote>
+<dl class="simple">
+<dt>Note:</dt><dd><p>Some firm characteristics’ definitions are different from those of JKP’s.
+To follow JKP’s definitions, set <code class="docutils literal notranslate"><span class="pre">config.REPLICATE_JKP</span> <span class="pre">=</span> <span class="pre">True</span></code>.
+This will make the program use JKP’s definitions when possible.
+<code class="docutils literal notranslate"><span class="pre">config.REPLICATE_JKP</span></code> is only for verification purpose and will be deprecated.</p>
+</dd>
+</dl>
 <section id="initialization">
 <h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline"></a></h3>
 <p>Set the log file path and initialize time check (can be skipped).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set log file path. Without this, the log will be printed in stdout.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to use JKP&#39;s definitions, uncomment this.</span>
+<span class="c1"># config.REPLICATE_JKP = True</span>
+
+<span class="c1"># Set log file path. Without this, the log will be printed in stdout.</span>
 <span class="n">set_log_path</span><span class="p">(</span><span class="s1">&#39;./log/example1.log&#39;</span><span class="p">)</span>
 <span class="c1"># initialize time check.</span>
 <span class="n">elapsed_time</span><span class="p">(</span><span class="s1">&#39;Start of Example 1.&#39;</span><span class="p">)</span>
@@ -331,6 +348,68 @@ These are used in some firm characteristics, such as the residual momentum.</p>
 </pre></div>
 </div>
 </section>
+<section id="example-3">
+<h2>Example 3<a class="headerlink" href="#example-3" title="Permalink to this headline"></a></h2>
+<p><strong>Firm characteristics using year-end ME.</strong></p>
+<dl class="simple">
+<dt>This example demonstrates how to generate funda firm characteristics using year-end ME instead of the latest ME.</dt><dd><ol class="lowerroman simple">
+<li><p>All firm characteristics defined in FUNDA are generated.</p></li>
+<li><p>Only USD-denominated stocks are sampled: currency conversion is unnecessary.</p></li>
+<li><p>Only funda is used without merging with fundq: merging the two datasets as in Example 1 is also possible.</p></li>
+<li><p>It is assumed that funda data is available 6 months later.</p></li>
+</ol>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>It is assumed that data has been downloaded from WRDS.</p></li>
+</ul>
+<section id="set-variables">
+<h3>Set variables<a class="headerlink" href="#set-variables" title="Permalink to this headline"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Generate all characteristics.</span>
+<span class="n">sdate</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># create characteristics from as early as possible.</span>
+</pre></div>
+</div>
+</section>
+<section id="market-equity">
+<h3>Market equity<a class="headerlink" href="#market-equity" title="Permalink to this headline"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load crspm as we need ME.</span>
+<span class="n">crspm</span> <span class="o">=</span> <span class="n">CRSPM</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">)</span>
+<span class="n">crspm</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sdate</span><span class="p">)</span>
+
+<span class="c1"># Preprocessing</span>
+<span class="n">crspm</span><span class="o">.</span><span class="n">filter_data</span><span class="p">()</span>
+<span class="n">crspm</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">MONTHLY</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># &#39;me&#39; variable is generated here.</span>
+<span class="n">crspm</span><span class="o">.</span><span class="n">update_variables</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="firm-characteristics">
+<h3>Firm characteristics<a class="headerlink" href="#firm-characteristics" title="Permalink to this headline"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">funda</span> <span class="o">=</span> <span class="n">FUNDA</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">)</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sdate</span><span class="p">)</span>
+
+<span class="c1"># USD stocks only. This is equivalent to funda.data = funda.data[funda.data[&#39;curcd&#39;] == &#39;USD&#39;]</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="s1">&#39;curcd&#39;</span><span class="p">,</span> <span class="s1">&#39;==&#39;</span><span class="p">,</span> <span class="s1">&#39;USD&#39;</span><span class="p">))</span>
+
+<span class="n">funda</span><span class="o">.</span><span class="n">convert_to_monthly</span><span class="p">(</span><span class="n">lag</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># lag=6 means funda is available 6 months later.</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">update_variables</span><span class="p">()</span>
+
+<span class="c1"># Add year-end market equity to funda.</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">add_crsp_me</span><span class="p">(</span><span class="n">crspm</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;year_end&#39;</span><span class="p">)</span>
+
+<span class="c1"># Generate firm characteristics.</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">show_available_functions</span><span class="p">()</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">create_chars</span><span class="p">()</span>
+
+<span class="c1"># Postprocess and save results.</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+<span class="n">funda</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;funda_eg3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="example-4">
 <h2>Example 4<a class="headerlink" href="#example-4" title="Permalink to this headline"></a></h2>
 <p><strong>Defining a new characteristic.</strong></p>
@@ -416,8 +495,8 @@ the new characteristic.</p>
 <ul class="simple">
 <li><p>It is assumed that the firm characteristic has been created and saved to ‘crspm.pickle’.</p></li>
 </ul>
-<section id="set-variables">
-<h3>Set variables<a class="headerlink" href="#set-variables" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h3>Set variables<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="o">=</span> <span class="s1">&#39;ret_12_1&#39;</span>  <span class="c1"># 12-month momentum</span>
 <span class="n">char_class</span> <span class="o">=</span> <span class="n">char</span> <span class="o">+</span> <span class="s1">&#39;_class&#39;</span>  <span class="c1"># Group column: portfolio-stock mapping</span>
 <span class="n">ret_col</span> <span class="o">=</span> <span class="s1">&#39;futret&#39;</span>  <span class="c1"># Future return column</span>
@@ -531,8 +610,8 @@ the new characteristic.</p>
 </pre></div>
 </div>
 </section>
-<section id="id1">
-<h3>2-D sort<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<section id="id2">
+<h3>2-D sort<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s make a 5x5 portfolios on char and char2.</span>
 <span class="n">char2</span> <span class="o">=</span> <span class="s1">&#39;me&#39;</span>
 <span class="n">char_class2</span> <span class="o">=</span> <span class="n">char2</span> <span class="o">+</span> <span class="s1">&#39;_class&#39;</span>
@@ -682,8 +761,8 @@ and evaluate their performance.</p>
 <li><p>It is assumed that the firm characteristic has been created and saved to ‘crspm.pickle’.</p></li>
 </ul>
 <p>See also <a class="reference internal" href="pyanomaly_edited.html#pyanomaly-jkp"><span class="std std-ref">pyanomaly.jkp</span></a> module for factor and characteristic portfolio creation replicating JKP’s SAS code.</p>
-<section id="id2">
-<h3>Set variables<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<section id="id3">
+<h3>Set variables<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="o">=</span> <span class="s1">&#39;ret_12_1&#39;</span>  <span class="c1"># 12-month momentum</span>
 <span class="n">char_class</span> <span class="o">=</span> <span class="n">char</span> <span class="o">+</span> <span class="s1">&#39;_class&#39;</span>  <span class="c1"># Group column: portfolio-stock mapping</span>
 <span class="n">ret_col</span> <span class="o">=</span> <span class="s1">&#39;futret&#39;</span>  <span class="c1"># Future return column</span>
@@ -693,14 +772,12 @@ and evaluate their performance.</p>
 </pre></div>
 </div>
 </section>
-<section id="id3">
-<h3>Load data<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<section id="id4">
+<h3>Load data<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read crspm data (not raw data but the output data).</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">read_from_file</span><span class="p">(</span><span class="s1">&#39;crspm&#39;</span><span class="p">)</span>
 
-<span class="c1"># If you want to exclude bottom 20% based on NYSE size...</span>
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;nyse_me&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exchcd</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">weight_col</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>  <span class="c1"># NYSE me</span>
-<span class="n">data</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight_col</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;nyse_me&#39;</span><span class="p">)</span>
 
 <span class="c1"># Make the future return. If it&#39;s already in the data, this step can be skipped.</span>
 <span class="n">data</span><span class="p">[</span><span class="n">ret_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_future_return</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">])</span>
@@ -741,7 +818,11 @@ In this example, we will assume transaction cost that decreases over time and wi
 The <code class="docutils literal notranslate"><span class="pre">make_position()</span></code> function converts a panel data to position data that is used as the input to <code class="docutils literal notranslate"><span class="pre">Portfolio</span></code> class.
 In <cite>data</cite>, the future return at t is the return between t and t+1, whereas in the position data, dates are shifted
 so that the future return at t is the return between t-1 and t.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Classify data on char. The highest momentum stock will be labeled 0 and the lowest 2.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here, we remove small-cap stocks after setting the cost function.</span>
+<span class="c1"># This is because `TimeVaryingCost` requires all firms&#39; me as the input.</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight_col</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;nyse_me&#39;</span><span class="p">)</span>
+
+<span class="c1"># Classify data on char. The highest momentum stock will be labeled 0 and the lowest 2.</span>
 <span class="n">data</span><span class="p">[</span><span class="n">char_class</span><span class="p">]</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">char</span><span class="p">],</span> <span class="n">split</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Make position data.</span>
@@ -934,45 +1015,13 @@ Note that the query statement must contain ‘WHERE [<cite>date_col</cite>] BETW
 </div>
 </section>
 </section>
-<section id="bulding-your-own">
-<h1>Bulding Your Own<a class="headerlink" href="#bulding-your-own" title="Permalink to this headline"></a></h1>
-<p>PyAnomaly is highly configurable and customizable, and you can easily add new firm characteristics or functions.
-When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary.
-This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you
-update the library.</p>
-<section id="coding-rule">
-<h2>Coding Rule<a class="headerlink" href="#coding-rule" title="Permalink to this headline"></a></h2>
-</section>
-<section id="making-your-own-list-of-characteristics">
-<h2>Making your own list of characteristics<a class="headerlink" href="#making-your-own-list-of-characteristics" title="Permalink to this headline"></a></h2>
-<p>If you want generate a subset of all available firm characteristics, you can add a new acronym column in ‘mapping.xlsx’.
-Alternatively, you can simply define a list of characteristics in a python module and use it as input to panel.create_chars().
-In this case, you need to use the method names and cannot define aliases for the firm characteristics.</p>
-</section>
-<section id="adding-a-new-characteristic">
-<h2>Adding a new characteristic<a class="headerlink" href="#adding-a-new-characteristic" title="Permalink to this headline"></a></h2>
-<p>Where to add a method to define a new characteristic depends on what data it requires. If it only requires data from FUNDA (plus market equity from CRSPM),
-you can define a class inheriting FUNDA class and add the method in it. Similary, if the characteristic only requires data from CRSPM, you can define a class
-inheriting CRSPM. If the characteristic requires data from multiple data sources, you can inherit Merged class.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">myFUNDA</span><span class="p">(</span><span class="n">FUNDA</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">c_my_char</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="n">fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
-                <span class="n">char</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">fa</span><span class="o">.</span><span class="n">y</span>
-
-                <span class="k">return</span> <span class="n">char</span>
-</pre></div>
-</div>
-<p>Note that the method’s name starts with ‘<a href="#id4"><span class="problematic" id="id5">c_</span></a>’. This is one of few coding rules you need to follow.</p>
-</section>
-</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="getting_started.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pyanomaly_edited.html" class="btn btn-neutral float-right" title="pyanomaly" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="building_your_own.html" class="btn btn-neutral float-right" title="Bulding Your Own" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

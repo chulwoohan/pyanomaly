@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Support" href="support.html" />
-    <link rel="prev" title="Cookbook" href="cookbook.html" /> 
+    <link rel="prev" title="Bulding Your Own" href="building_your_own.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,12 +56,11 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html#generating-characteristics">Generating Characteristics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cookbook.html#bulding-your-own">Bulding Your Own</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_your_own.html">Bulding Your Own</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyanomaly</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-pyanomaly">Module contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyanomaly.analytics">pyanomaly.analytics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyanomaly.characteristics">pyanomaly.characteristics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyanomaly.datatools">pyanomaly.datatools</a></li>
@@ -108,11 +107,7 @@
              
   <section id="pyanomaly">
 <span id="id1"></span><h1>pyanomaly<a class="headerlink" href="#pyanomaly" title="Permalink to this headline"></a></h1>
-<section id="module-pyanomaly">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyanomaly" title="Permalink to this headline"></a></h2>
-<p>Python library for firm characteristics and factors</p>
-<p>pyanomaly is a library for generating firm characteristics and factors.</p>
-</section>
+<span class="target" id="module-pyanomaly"></span><p>Python library for asset pricing research.</p>
 <section id="module-pyanomaly.analytics">
 <span id="pyanomaly-analytics"></span><h2>pyanomaly.analytics<a class="headerlink" href="#module-pyanomaly.analytics" title="Permalink to this headline"></a></h2>
 <p>This module defines analytic functions.</p>
@@ -151,8 +146,8 @@ and the class label of the long-short is set to N.</p>
 <li><p><strong>data</strong> – DataFrame with index = date/class1/class2/….</p></li>
 <li><p><strong>level</strong> – Index level to make long-short on. Default to the last level.</p></li>
 <li><p><strong>l_label</strong> – Label of the long class. If None, <cite>l_label = 0</cite>.</p></li>
-<li><p><strong>s_label</strong> – Label of the short class. If None, ‘s_label = num. classes - 1`.</p></li>
-<li><p><strong>ls_label</strong> – Label of the long-short: If None, <cite>ls_label = num. classes</cite>.</p></li>
+<li><p><strong>s_label</strong> – Label of the short class. If None, <cite>s_label = num. classes - 1</cite>.</p></li>
+<li><p><strong>ls_label</strong> – Label of the long-short. If None, <cite>ls_label = num. classes</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -168,7 +163,7 @@ and the class label of the long-short is set to N.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – DataFrame with index=date/id</p></li>
+<li><p><strong>data</strong> – DataFrame with index = date/id.</p></li>
 <li><p><strong>endo_col</strong> – y column.</p></li>
 <li><p><strong>exog_cols</strong> – List of X columns.</p></li>
 <li><p><strong>add_constant</strong> (<em>bool</em>) – Add constant to x.</p></li>
@@ -179,9 +174,9 @@ and the class label of the long-short is set to N.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p>mean, tval, coefs.</p>
 <ul class="simple">
-<li><p>mean (DataFrame): Time-series means of coefficients with index=(‘const’) + <cite>exog_cols</cite>, columns=’mean’.</p></li>
-<li><p>tval (DataFrame): t-values of coefficients with index=(‘const’) + <cite>exog_cols</cite>, columns=’t-stat’.</p></li>
-<li><p>coefs (DataFrame): Coefficient time-series with index=dates, columns=(‘const’) + <cite>exog_cols</cite>.</p></li>
+<li><p>mean (DataFrame): Time-series means of coefficients with index = (‘const’) + <cite>exog_cols</cite> and columns = ‘mean’.</p></li>
+<li><p>tval (DataFrame): t-values of coefficients with index = (‘const’) + <cite>exog_cols</cite> and columns = ‘t-stat’.</p></li>
+<li><p>coefs (DataFrame): Coefficient time-series with index = dates and columns = (‘const’) + <cite>exog_cols</cite>.</p></li>
 </ul>
 </p>
 </dd>
@@ -201,7 +196,7 @@ and the class label of the long-short is set to N.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ret</strong> – Series of returns with index = date or date/id.</p></li>
-<li><p><strong>period</strong> – target period. Eg: If period=3, 3-period ahead (cumulative) returns. If <cite>ret</cite> contains monthly (daily)
+<li><p><strong>period</strong> – target period. Eg: If <cite>period</cite> = 3, 3-period ahead (cumulative) returns are returned. If <cite>ret</cite> contains monthly (daily)
 returns, the output will be 3-month (day) ahead returns.</p></li>
 </ul>
 </dd>
@@ -265,20 +260,20 @@ set this to False to save memory.</p></li>
 This function makes the position data from the input data, which is a panel of securities.
 The position data is generated via the following operations:</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>Shift dates forward so that the return at t is the return between between t-1 and t,
+<div><ul>
+<li><p>Shift dates forward so that the return at t is the return between t-1 and t
 and other variables are as of t-1.</p></li>
-<li><dl class="simple">
-<dt>Change column names as assumed in <code class="docutils literal notranslate"><span class="pre">Portfolio</span></code>.</dt><dd><ul>
+<li><p>Change column names as assumed in <code class="docutils literal notranslate"><span class="pre">Portfolio</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>‘date’: Date column.</p></li>
 <li><p>‘id’: Security id column.</p></li>
 <li><p>‘ret’: Return column.</p></li>
 <li><p>‘wgt’: Weight column.</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><p>Generate portfolio weights by normalizing market equity.</p></li>
+<li><p>Generate portfolio weights by normalizing the values given in <cite>weight_col</cite>.</p></li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
@@ -341,7 +336,7 @@ If <cite>function</cite> != ‘mean’, <cite>weight_col</cite> is ignored.</p><
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Aggregated data with index=date/class, columns = <cite>target_cols</cite>.</p>
+<dd class="field-even"><p>Aggregated data with index = date/class, columns = <cite>target_cols</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -369,7 +364,7 @@ The <cite>data</cite> is relabeled in-place.</p>
 <dt class="sig sig-object py" id="pyanomaly.analytics.rolling_beta">
 <span class="sig-prename descclassname"><span class="pre">pyanomaly.analytics.</span></span><span class="sig-name descname"><span class="pre">rolling_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endo_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exog_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.analytics.rolling_beta" title="Permalink to this definition"></a></dt>
 <dd><p>Run rolling OLS on a panel, <cite>data</cite>.</p>
-<p><cite>data</cite> must have index=date/id and Rolling OLS is applied to each id.
+<p>The <cite>data</cite> must have index = date/id and Rolling OLS is applied to each id.
 This is faster than <cite>statsmodels.RollingOLS</cite>, but the output is limited to
 coefficients, R2, and idiosyncratic volatility.</p>
 <dl class="field-list simple">
@@ -412,7 +407,7 @@ where N = <cite>len(data)</cite> and K = <cite>len(exog_cols)+1</cite>.</p>
 <dt class="sig sig-object py" id="pyanomaly.analytics.time_series_average">
 <span class="sig-prename descclassname"><span class="pre">pyanomaly.analytics.</span></span><span class="sig-name descname"><span class="pre">time_series_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nonrobust'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_kwds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.analytics.time_series_average" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate time-series mean and t-value of each column (and for each group).</p>
-<p><cite>data</cite> can be either a time-series data (index=date) or a panel data (index=date/group).
+<p><cite>data</cite> can be either a time-series data (index = date) or a panel data (index = date/group).
 If it is a panel, time-series mean and t-value are calculated for each group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -425,8 +420,8 @@ If it is a panel, time-series mean and t-value are calculated for each group.</p
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p>mean (DataFrame), t-value (DataFrame).</p>
 <ul class="simple">
-<li><p>If data has MultiIndex, mean (t-value) has index = <cite>data.index[1:]</cite>, columns = <cite>data.columns</cite>.</p></li>
-<li><p>Otherwise, mean (t-value) has index = <cite>data.columns</cite>, columns = ‘mean’ (‘t-stat’).</p></li>
+<li><p>If data has MultiIndex, mean (t-value) has index = <cite>data.index[1:]</cite> and columns = <cite>data.columns</cite>.</p></li>
+<li><p>Otherwise, mean (t-value) has index = <cite>data.columns</cite> and columns = ‘mean’ (‘t-stat’).</p></li>
 </ul>
 </p>
 </dd>
@@ -449,20 +444,17 @@ return aggregated results.</p>
 <li><p><strong>weight_col</strong> – Weight column. If given, weighted mean is returned.</p></li>
 <li><p><strong>function</strong> – Aggregate function, e.g., ‘sum’, ‘mean’, ‘count’. If it is other than ‘mean’, <cite>weight_col</cite> is ignored.</p></li>
 <li><p><strong>add_long_short</strong> (<em>bool</em>) – Add long-short to the output.</p></li>
-<li><p><strong>output_dim</strong> – If 1, output is a DataFrame with index=date/class1/class2; if 2, output is a DataFrame with
-index=date/class1 and column=class2.</p></li>
+<li><p><strong>output_dim</strong> – If 1, output is a DataFrame with index = date/class1/class2; if 2, output is a DataFrame with
+index = date/class1 and column = class2.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>Aggregated data (DataFrame or dict of DataFrame).</p>
+<dd class="field-even"><p><p>Aggregated data (DataFrame or dict of DataFrames).</p>
 <ul class="simple">
-<li><p>If <cite>output_dim</cite> = 1, index = date/class1/class2, columns = <cite>target_cols</cite></p></li>
-<li><p>If <cite>output_dim</cite> = 2 and <cite>len(target_cols)</cite> = 1, index = date/class1, columns = class2</p></li>
-<li><dl class="simple">
-<dt>If <cite>output_dim</cite> = 2 and <cite>len(target_cols)</cite> &gt; 1, output is dict with keys = <cite>target_cols</cite> and</dt><dd><p>values = DataFrames (as in the second case).</p>
-</dd>
-</dl>
-</li>
+<li><p>If <cite>output_dim</cite> = 1, index = date/class1/class2 and columns = <cite>target_cols</cite>.</p></li>
+<li><p>If <cite>output_dim</cite> = 2 and <cite>len(target_cols)</cite> = 1, index = date/class1 and columns = class2.</p></li>
+<li><p>If <cite>output_dim</cite> = 2 and <cite>len(target_cols)</cite> &gt; 1, output is dict with keys = <cite>target_cols</cite> and
+values = DataFrames (as in the second case).</p></li>
 </ul>
 </p>
 </dd>
@@ -483,16 +475,23 @@ index=date/class1 and column=class2.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DataFrame of weighted mean with index = <cite>group_cols</cite>, columns = <cite>target_cols</cite>.</p>
+<dd class="field-even"><p>DataFrame of weighted mean with index = <cite>group_cols</cite> and columns = <cite>target_cols</cite>.</p>
 </dd>
 </dl>
+<p>If <cite>data</cite> is a panel with index = ‘date’/’permno’ and column ‘ret’ contains returns
+and ‘me’ contains market equity at t-1, weighted mean returns can be obtained as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wmean</span> <span class="o">=</span> <span class="n">weighted_mean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;me&#39;</span><span class="p">,</span> <span class="s1">&#39;permno&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
 <section id="module-pyanomaly.characteristics">
 <span id="pyanomaly-characteristics"></span><h2>pyanomaly.characteristics<a class="headerlink" href="#module-pyanomaly.characteristics" title="Permalink to this headline"></a></h2>
-<p>This module defines classes for firm characteristic generation.</p>
-<ul class="simple">
+<p>This module defines classes for firm characteristic generation.
+Refer to the cookbook for use cases.</p>
+<blockquote>
+<div><ul class="simple">
 <li><dl class="simple">
 <dt><cite>FUNDA</cite></dt><dd><p>Class to generate firm characteristics from funda.</p>
 </dd>
@@ -519,6 +518,7 @@ index=date/class1 and column=class2.</p></li>
 </dl>
 </li>
 </ul>
+</div></blockquote>
 <section id="pyanomaly-characteristics-funda">
 <h3>pyanomaly.characteristics.FUNDA<a class="headerlink" href="#pyanomaly-characteristics-funda" title="Permalink to this headline"></a></h3>
 <dl class="py class">
@@ -530,7 +530,6 @@ index=date/class1 and column=class2.</p></li>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">FUNDA</span><span class="p">()</span><span class="o">.</span><span class="n">show_available_functions</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Refer to the manual for usage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -545,7 +544,8 @@ characteristic names.</p></li>
 <dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDA.add_crsp_me">
 <span class="sig-name descname"><span class="pre">add_crsp_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crspm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDA.add_crsp_me" title="Permalink to this definition"></a></dt>
 <dd><p>Replace funda’s market equity (‘me’) with crspm’s firm level market equity (‘me_company’).</p>
-<p>This method also adds a column, ‘me_fiscal’ (me_company on datadate), to <cite>data</cite>.
+<p>This method also adds a column ‘me_fiscal’ to <cite>data</cite>. The ‘me_fiscal’ is the me on datadate
+if <cite>method</cite> = ‘latest` and it is the as me (December me) if <cite>method</cite> = ‘year_end’.
 Without calling this function, me and me_fiscal are set to me of funda (prcc_f * csho).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1347,8 +1347,7 @@ The date and datadate has a gap of at least <cite>lag</cite> months.</p>
 <dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDA.merge_with_fundq">
 <span class="sig-name descname"><span class="pre">merge_with_fundq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fundq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDA.merge_with_fundq" title="Permalink to this definition"></a></dt>
 <dd><p>Merge funda with fundq.</p>
-<p>If variable X is available in fundq, i.e., Xq or Xy exists, it is used, otherwise,
-X in funda is used. Xq(y) replaces X if:</p>
+<p>If variable X is available in fundq, i.e., Xq or Xy exists, Xq(y) replaces X if:</p>
 <blockquote>
 <div><ol class="lowerroman simple">
 <li><p>X is missing, or</p></li>
@@ -1358,7 +1357,7 @@ X in funda is used. Xq(y) replaces X if:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>JKP create characteristics in funda and fundq separately and merge them, whereas we merge the raw data
-first and then calculate characteristics. Since some variables in funda are not available in fundq, eg, ebitda,
+first and then generate characteristics. Since some variables in funda are not available in fundq, eg, ebitda,
 JKP make those unavailable variables from other variables and create characteristics, even when they are
 available in funda. We prefer to merge funda with fundq at the raw data level and create characteristics from
 the merged data.</p>
@@ -1381,12 +1380,6 @@ itcb, pstkrv, pstkl, dltis, ppenb, ppenls</p>
 <dd class="field-odd"><p><strong>fundq</strong> – FUNDQ instance.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDA.ni_ar1_ivol">
-<span class="sig-name descname"><span class="pre">ni_ar1_ivol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDA.ni_ar1_ivol" title="Permalink to this definition"></a></dt>
-<dd><p>Earnings persistence and predictability</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1421,7 +1414,6 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">FUNDQ</span><span class="p">()</span><span class="o">.</span><span class="n">show_available_functions</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Refer to the manual for usage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1537,7 +1529,8 @@ The date and datadate has a gap of at least <cite>lag</cite> months.</p>
 <dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDQ.create_qitems_from_yitems">
 <span class="sig-name descname"><span class="pre">create_qitems_from_yitems</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDQ.create_qitems_from_yitems" title="Permalink to this definition"></a></dt>
 <dd><p>Quarterize ytd items.</p>
-<p>Quarterize a ytd column, Xy, and fill missing Xq if Xq exists, otherwise, create a new column Xq.</p>
+<p>Quarterize a ytd column, Xy, and used the quarterized values to fill missing Xq if Xq exists or to
+ceate a new column Xq.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1571,7 +1564,8 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 <dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDQ.remove_duplicates">
 <span class="sig-name descname"><span class="pre">remove_duplicates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDQ.remove_duplicates" title="Permalink to this definition"></a></dt>
 <dd><p>Drop duplicates.</p>
-<p>Remove duplicates in the following manner:</p>
+<p>In fundq, there are duplicate rows (rows with the same datadate and gvekey).
+Remove duplicates in the following manner:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Remove records with missing fqtr.</p></li>
@@ -1583,7 +1577,11 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDQ.update_variables">
 <span class="sig-name descname"><span class="pre">update_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDQ.update_variables" title="Permalink to this definition"></a></dt>
-<dd><p>Preprocess variables.</p>
+<dd><p>Preprocess data before creating characteristics.</p>
+<ol class="arabic simple">
+<li><p>Replace missing values with other variables.</p></li>
+<li><p>Create frequently used variables.</p></li>
+</ol>
 </dd></dl>
 
 </dd></dl>
@@ -1600,7 +1598,6 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CRSPM</span><span class="p">()</span><span class="o">.</span><span class="n">show_available_functions</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Refer to the manual for usage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1684,8 +1681,8 @@ characteristic names.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPM.c_prc">
-<span class="sig-name descname"><span class="pre">c_prc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPM.c_prc" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPM.c_price">
+<span class="sig-name descname"><span class="pre">c_price</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPM.c_price" title="Permalink to this definition"></a></dt>
 <dd><p>Share price. Miller and Scholes (1982)</p>
 </dd></dl>
 
@@ -1855,14 +1852,13 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPM.resff3_mom">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resff3_mom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">36</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPM.resff3_mom" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPM.update_variables">
 <span class="sig-name descname"><span class="pre">update_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPM.update_variables" title="Permalink to this definition"></a></dt>
-<dd><p>Update variables.</p>
+<dd><p>Preprocess data before creating characteristics.</p>
+<ol class="arabic simple">
+<li><p>Replace missing values with other variables.</p></li>
+<li><p>Create frequently used variables.</p></li>
+</ol>
 </dd></dl>
 
 </dd></dl>
@@ -1881,7 +1877,6 @@ attribute, which is a daily data.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CRSPD</span><span class="p">()</span><span class="o">.</span><span class="n">show_available_functions</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Refer to the manual for usage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1896,12 +1891,6 @@ characteristic names.</p></li>
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.chars">
 <span class="sig-name descname"><span class="pre">chars</span></span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.chars" title="Permalink to this definition"></a></dt>
 <dd><p>DataFrame to store firm characteristics. Index = date/permno.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.adjust_bidaskhl">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adjust_bidaskhl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidlo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">askhi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcount</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.adjust_bidaskhl" title="Permalink to this definition"></a></dt>
-<dd><p>Adjust bidlo, askhi.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2115,12 +2104,6 @@ characteristic names.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.corr_1260d">
-<span class="sig-name descname"><span class="pre">corr_1260d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.corr_1260d" title="Permalink to this definition"></a></dt>
-<dd><p>Market correlation. Assness et al. (2020)</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.create_chars">
 <span class="sig-name descname"><span class="pre">create_chars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.create_chars" title="Permalink to this definition"></a></dt>
 <dd><p>Generate firm characteristics.</p>
@@ -2133,22 +2116,6 @@ characteristic names.</p></li>
 <dd><p>Filter data.</p>
 <p>Currently, we filter data only on <cite>shrcd</cite>.</p>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.icapm_21d">
-<span class="sig-name descname"><span class="pre">icapm_21d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.icapm_21d" title="Permalink to this definition"></a></dt>
-<dd><p>ivol, skew, coskew from CAPM</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.iff3_21d">
-<span class="sig-name descname"><span class="pre">iff3_21d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.iff3_21d" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.ihxz4_21d">
-<span class="sig-name descname"><span class="pre">ihxz4_21d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.ihxz4_21d" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.load">
@@ -2178,12 +2145,6 @@ in config.factor_names.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.multifactor_ivol_skew">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">multifactor_ivol_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_vars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.multifactor_ivol_skew" title="Permalink to this definition"></a></dt>
-<dd><p>ivol and skew from a multi-factor model.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.postprocess">
 <span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.postprocess" title="Permalink to this definition"></a></dt>
 <dd><p>Postprocess data.</p>
@@ -2199,41 +2160,24 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.reg_weekly_vars">
-<span class="sig-name descname"><span class="pre">reg_weekly_vars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.reg_weekly_vars" title="Permalink to this definition"></a></dt>
-<dd><p>Create chars that use weekly returns.
-beta (GHZ), betasq (GHZ), idiovol (GHZ), pricedelay, pricedelay_slope</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.roll_126d">
-<span class="sig-name descname"><span class="pre">roll_126d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.roll_126d" title="Permalink to this definition"></a></dt>
-<dd><p>Create chars that use 6-month data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.roll_252d">
-<span class="sig-name descname"><span class="pre">roll_252d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.roll_252d" title="Permalink to this definition"></a></dt>
-<dd><p>Create chars that use 12-month data.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.rolling_apply_m">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rolling_apply_m</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fcn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_retval</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.rolling_apply_m" title="Permalink to this definition"></a></dt>
-<dd><p>Apply fcn in every month. This function runs a loop over permno-month and can be used when the calculation
-inside fcn requires only the data within the month.</p>
+<dd><p>Apply <cite>fcn</cite> to <cite>cd[data_columns]</cite> in every month for each stock.</p>
+<p>This function runs a loop over permno-month and can be used when the calculation
+inside <cite>fcn</cite> requires only the data within the month.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cd</strong> – crspd.data</p></li>
-<li><p><strong>data_columns</strong> – columns of cd that are used as input to fcn.</p></li>
-<li><p><strong>fcn</strong> (<em>data</em><em>, </em><em>isnan</em>) – function to apply. data is cd[data_columns] of a permno/mon pair, and isnan is a non</p></li>
-<li><p><strong>indicator</strong> – isnan[i] = True if any column of data[i, :] has nan. fcn should return a tuple of size n_retval.</p></li>
-<li><p><strong>n_retval</strong> – number of returns from fcn.</p></li>
+<li><p><strong>cd</strong> – <cite>crspd.data</cite>.</p></li>
+<li><p><strong>data_columns</strong> – Columns of <cite>cd</cite> that are used as input to <cite>fcn</cite>.</p></li>
+<li><p><strong>fcn</strong> – function to apply. The first argument (<cite>data</cite>) should be <cite>cd[data_columns]</cite> of a permno-month and
+the second argument (<cite>isnan</cite>) should be a nan indicator of <cite>data</cite>:
+<cite>isnan[i]</cite> = True if any column of data[i, :] has nan. <cite>fcn</cite> should return a tuple of size <cite>n_retval</cite>.</p></li>
+<li><p><strong>n_retval</strong> – Number of returns from fcn.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Concatenated ndarray of the returns from fcn. Size = permno/mon x n_retval.</p>
+<dd class="field-even"><p>Concatenated ndarray of the returns from <cite>fcn</cite>. Size = permno/month x n_retval.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2248,7 +2192,11 @@ inside fcn requires only the data within the month.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.update_variables">
 <span class="sig-name descname"><span class="pre">update_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.update_variables" title="Permalink to this definition"></a></dt>
-<dd><p>Update variables.</p>
+<dd><p>Preprocess data before creating characteristics.</p>
+<ol class="arabic simple">
+<li><p>Replace missing values with other variables.</p></li>
+<li><p>Create frequently used variables.</p></li>
+</ol>
 </dd></dl>
 
 </dd></dl>
@@ -2265,7 +2213,6 @@ inside fcn requires only the data within the month.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Merge</span><span class="p">()</span><span class="o">.</span><span class="n">show_available_functions</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Refer to the manual for usage.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.Merge.c_age">
 <span class="sig-name descname"><span class="pre">c_age</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.Merge.c_age" title="Permalink to this definition"></a></dt>
@@ -2320,7 +2267,7 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 <dt class="sig sig-object py" id="pyanomaly.characteristics.Merge.preprocess">
 <span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crspm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crspd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fundq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.Merge.preprocess" title="Permalink to this definition"></a></dt>
 <dd><p>Merge crspm, crspd, funda, and fundq by left-joining crspd, funda, and fundq to crspm. The resulting data has
-an index=date/permno.</p>
+index = date/permno.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2332,12 +2279,6 @@ an index=date/permno.</p>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyanomaly.characteristics.Merge.zrank">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zrank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.Merge.zrank" title="Permalink to this definition"></a></dt>
-<dd><p>Normalized rank.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2405,7 +2346,7 @@ if <cite>ascending</cite> = True (False). If <cite>array</cite> contains nan, th
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>array</strong> – Data to classify. Series with date/id index.</p></li>
-<li><p><strong>split</strong> – Number of classes or list of quantiles (see <cite>classify_array</cite>).</p></li>
+<li><p><strong>split</strong> – Number of classes or list of quantiles (see <cite>classify_array()</cite>).</p></li>
 <li><p><strong>ascending</strong> (<em>bool</em>) – Sorting order.</p></li>
 <li><p><strong>by_array</strong> – Data based on which quantile breakpoints are determined. If None, <cite>by_array</cite> = <cite>array</cite>.</p></li>
 </ul>
@@ -2436,7 +2377,7 @@ If array contains nan, their classes are set to nan.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>array</strong> – Nx1 ndarray or Series to be grouped.</p></li>
-<li><p><strong>split</strong> – Number of classes or list of quantiles. (0.3, 0.7) is equivalent to (0.3, 0.7, 1.0).</p></li>
+<li><p><strong>split</strong> – Number of classes (for equal-size quantiles) or list of quantiles. (0.3, 0.7) is equivalent to (0.3, 0.7, 1.0).</p></li>
 <li><p><strong>ascending</strong> (<em>bool</em>) – Sorting order.</p></li>
 <li><p><strong>by_array</strong> – Array based on which cut points are determined. If None, by_array = array. Eg, array can be set
 to ME and by_array to NYSE-ME to group firms on size with NYSE-size cut points.</p></li>
@@ -2470,20 +2411,15 @@ columns. Also, a tolerance can be set to determine whether two values are the sa
 If <cite>data1</cite> is a merged dataset, <cite>on</cite> and <cite>how</cite> have no effect.</p></li>
 <li><p><strong>on</strong> – A column or a list of columns to merge data sets on. If None, data sets will be merged on index.</p></li>
 <li><p><strong>how</strong> – How to merge: ‘inner’, ‘outer’, ‘left’, or ‘right’</p></li>
-<li><p><strong>tolerance</strong> – Tolerance level to determine equality. Two values, <cite>val1</cite> and <cite>val2</cite> are considered to be the same
-if <cite>abs((val1 - val2) / val2) &lt; threshold</cite>.</p></li>
-<li><p><strong>suffixes</strong> – suffixes to add to overlapping columns or suffixes used in the merged dataset.
+<li><p><strong>tolerance</strong> – Tolerance level to determine equality. Two values, <cite>val1</cite> and <cite>val2</cite>, are considered to be the same
+if <cite>abs((val1 - val2) / val2) &lt; tolerance</cite>.</p></li>
+<li><p><strong>suffixes</strong> – suffixes to add to common columns or suffixes used in the merged dataset.
 <cite>suffixes[0]</cite>: suffix for <cite>data1</cite>, <cite>suffixes[1]</cite>: suffix for <cite>data2</cite>.</p></li>
 <li><p><strong>returns</strong> – If True, return the merged data.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyanomaly.datatools.fcn">
-<span class="sig-prename descclassname"><span class="pre">pyanomaly.datatools.</span></span><span class="sig-name descname"><span class="pre">fcn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.datatools.fcn" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyanomaly.datatools.filter">
@@ -2567,10 +2503,11 @@ where <cite>gbdata</cite> is an element of <cite>gb</cite>.</p></li>
 <p>This is the same as <code class="docutils literal notranslate"><span class="pre">groupby_apply()</span></code> except that the first argument of <cite>fcn</cite> is the values of the grouped data
 (ndarray). Use this function if <cite>fcn</cite> cannot receive DataFrame as an argument, e.g., when <cite>fcn</cite> is wrapped by
 <code class="docutils literal notranslate"><span class="pre">numpy.jit</span></code>.</p>
-<dl class="simple">
-<dt>NOTE: The groupby operation must not change the order of the data as the input to <cite>fcn</cite>, <cite>data.values</cite>, does not</dt><dd><p>have an index. E.g., if <cite>data</cite> is sorted on <cite>id</cite>/<cite>date</cite>, grouping <cite>data</cite> by <cite>id</cite> is fine but not by <cite>date</cite>.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The groupby operation must not change the order of the data as the input to <cite>fcn</cite>, <cite>data.values</cite>, does not
+have an index. E.g., if <cite>data</cite> is sorted on <cite>id</cite>/<cite>date</cite>, grouping <cite>data</cite> by <cite>id</cite> is fine but not by <cite>date</cite>.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2618,28 +2555,7 @@ where <cite>gbdata_values</cite> is the values of an element of <cite>gb</cite>.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – Dataframe with index = date/id</p></li>
-<li><p><strong>freq</strong> – Frequency to populate: QUARTERLY, MONTHLY, or DAILY.</p></li>
-<li><p><strong>method</strong> – Filling method for newly added rows. ‘ffill’: forward fill, None: None.</p></li>
-<li><p><strong>limit</strong> – Maximum number of rows to forward-fill.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Populated data.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyanomaly.datatools.populate2">
-<span class="sig-prename descclassname"><span class="pre">pyanomaly.datatools.</span></span><span class="sig-name descname"><span class="pre">populate2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ffill'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.datatools.populate2" title="Permalink to this definition"></a></dt>
-<dd><p>Populate data.</p>
-<p class="rubric">References</p>
-<p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html</a></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – Dataframe with index = date/id</p></li>
+<li><p><strong>data</strong> – Dataframe with index = date/id.</p></li>
 <li><p><strong>freq</strong> – Frequency to populate: QUARTERLY, MONTHLY, or DAILY.</p></li>
 <li><p><strong>method</strong> – Filling method for newly added rows. ‘ffill’: forward fill, None: None.</p></li>
 <li><p><strong>limit</strong> – Maximum number of rows to forward-fill.</p></li>
@@ -2679,10 +2595,11 @@ where <cite>gbdata</cite> is an element of the grouped data.</p></li>
 <p>This is the same as <code class="docutils literal notranslate"><span class="pre">rolling_apply()</span></code> except that the first argument of <cite>fcn</cite> is the values of the grouped data
 (ndarray). Use this function if <cite>fcn</cite> cannot receive DataFrame as an argument, e.g., when <cite>fcn</cite> is wrapped by
 <code class="docutils literal notranslate"><span class="pre">numpy.jit</span></code>.</p>
-<dl class="simple">
-<dt>NOTE: The groupby operation must not change the order of the data as the input to <cite>fcn</cite>, <cite>data.values</cite>, does not</dt><dd><p>have an index. E.g., if <cite>data</cite> is sorted on <cite>id</cite>/<cite>date</cite>, grouping <cite>data</cite> by <cite>id</cite> is fine but not by <cite>date</cite>.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The groupby operation must not change the order of the data as the input to <cite>fcn</cite>, <cite>data.values</cite>, does not
+have an index. E.g., if <cite>data</cite> is sorted on <cite>id</cite>/<cite>date</cite>, grouping <cite>data</cite> by <cite>id</cite> is fine but not by <cite>date</cite>.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2723,7 +2640,7 @@ set to None for one-sided trim, e.g., <cite>limits</cite> = (0.1, None).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>array</strong> (<em>Series</em>) – Data to trim. The first index should be date.</p></li>
 <li><p><strong>limits</strong> – Pair of quantiles, eg, (0.1, 0.1), (0.1, None).</p></li>
-<li><p><strong>by_array</strong> – Data based on which cut points are determined. If None, <cite>by_array</cite> = <cite>array</cite>.</p></li>
+<li><p><strong>by_array</strong> (<em>Series</em>) – Data based on which cut points are determined. If None, <cite>by_array</cite> = <cite>array</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2761,7 +2678,7 @@ set to None for one-sided trim, e.g., <cite>limits</cite> = (0.1, None).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>array</strong> (<em>Series</em>) – Data to winsorize. The first index should be date.</p></li>
 <li><p><strong>limits</strong> – Pair of quantiles, eg, (0.1, 0.1), (0.1, None).</p></li>
-<li><p><strong>by_array</strong> – Data based on which cut points are determined. If None, <cite>by_array</cite> = <cite>array</cite>.</p></li>
+<li><p><strong>by_array</strong> (<em>Series</em>) – Data based on which cut points are determined. If None, <cite>by_array</cite> = <cite>array</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2870,23 +2787,27 @@ and SMB has a correlation of 0.993.</p>
 </section>
 <section id="pyanomaly-jkp">
 <span id="id3"></span><h2>pyanomaly.jkp<a class="headerlink" href="#pyanomaly-jkp" title="Permalink to this headline"></a></h2>
-<span class="target" id="module-pyanomaly.jkp"></span><p>This module defines functions to generate factors and characteristic portfolios.</p>
-<p>Fama-French 3 factors and Hou-Xue-Zhang 4 factors are generated.
-We follow JKP’s SAS code to generate the portfolios.</p>
+<span class="target" id="module-pyanomaly.jkp"></span><p>This module defines functions to generate firm characteristics, factors, and characteristic portfolios
+replicating JKP’s SAS code.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyanomaly.jkp.generate_firm_characterisitcs">
-<span class="sig-prename descclassname"><span class="pre">pyanomaly.jkp.</span></span><span class="sig-name descname"><span class="pre">generate_firm_characterisitcs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.jkp.generate_firm_characterisitcs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyanomaly.jkp.</span></span><span class="sig-name descname"><span class="pre">generate_firm_characterisitcs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.jkp.generate_firm_characterisitcs" title="Permalink to this definition"></a></dt>
 <dd><p>Firm characteristics generation (Replication of JKP’s SAS code).</p>
 <p>This function generate the firm characteristics that appear in JKP (2021).
 We replicate JKP’s SAS code as closely as possible.
-The output is saved to ‘config.output_dir/merge.pickle`.</p>
+The output is saved to ‘config.output_dir/fname.pickle`.</p>
 <p>It is assumed that</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>the raw data has been downloaded from WRDS. If not, call <code class="docutils literal notranslate"><span class="pre">WRDS.download_all()</span></code>.</p></li>
+<li><p>the raw data has been downloaded from WRDS. If not, call <code class="docutils literal notranslate"><span class="pre">WRDS.download_all()</span></code>;</p></li>
 <li><p>factor portfolios has been created. If not, call <code class="docutils literal notranslate"><span class="pre">make_factor_portfolios()</span></code>.</p></li>
 </ul>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> – Output file name. If None, fname = ‘merge’.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -2898,11 +2819,12 @@ The output is saved to ‘config.output_dir/merge.pickle`.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> – DataFrame of firm characteristics.</p></li>
 <li><p><strong>char_list</strong> – List of characteristics to generate.</p></li>
-<li><p><strong>weighting</strong> – ‘ew’ (Equal-weight), ‘vw’ (Value-weight), or ‘vw_cap’ (Value-weight capped at 0.8 NYSE-size quantile)</p></li>
+<li><p><strong>weighting</strong> – ‘ew’ (Equal-weight), ‘vw’ (Value-weight), or ‘vw_cap’ (Value-weight capped at 0.8 NYSE-size quantile).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>index = date/class, columns = [(char, ‘target’, ‘signal’, ‘n_firms’)]</p>
+<dd class="field-even"><p>Characteristic portfolio DataFrame with index = date/class and columns = [char, ‘ret’, ‘signal’, ‘n_firms’].
+The class values are one of ‘h’, ‘m’, ‘l’, ‘hml’.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2917,16 +2839,14 @@ The output is saved to ‘config.output_dir/merge.pickle`.</p>
 <li><p><strong>data</strong> – Dataframe with index = date/id. Its columns should include <cite>char</cite>, <cite>ret_col</cite>, <cite>size_class</cite>, and
 <cite>weight_col</cite> (optional).</p></li>
 <li><p><strong>char</strong> – Characteristic column to make a factor portfolio from.</p></li>
-<li><p><strong>ret_col</strong> – Future return column.</p></li>
+<li><p><strong>ret_col</strong> – Return column.</p></li>
 <li><p><strong>size_class</strong> – Size class column.</p></li>
 <li><p><strong>weight_col</strong> – Weight column. If None, stocks are equally weighted.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>index = date, columns: bh, bl, bm, sh, sl, sm, hml, smb.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Dataframe of (size x <cite>char</cite>) factor portfolios</p>
+<dd class="field-even"><p>Dataframe of (size x <cite>char</cite>) factor portfolios. Index = ‘date’,
+columns: [‘bh’, ‘bl’, ‘bm’, ‘sh’, ‘sl’, ‘sm’, ‘hml’, ‘smb’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3205,7 +3125,7 @@ set to None.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.panel.Panel.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.panel.Panel.load" title="Permalink to this definition"></a></dt>
-<dd><p>Load data and parameters.</p>
+<dd><p>Load this object from a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -3294,10 +3214,10 @@ already exist and generate them if they do not exist.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.panel.Panel.rename">
 <span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.panel.Panel.rename" title="Permalink to this definition"></a></dt>
-<dd><p>Rename data columns.</p>
+<dd><p>Rename <cite>data</cite> columns.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>to_alias</strong> – If True, rename alias columns with functions, otherwise, rename function columns with aliases.</p>
+<dd class="field-odd"><p><strong>to_alias</strong> – If True, rename firm characteristic columns from function names to aliases, and vice-versa.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3328,7 +3248,7 @@ If <cite>min_n</cite> = None, <cite>min_n</cite> = <cite>n</cite>.</p></li>
 monthly), and <cite>funda.data</cite> has a return column, ‘ret’. The past three-year average return starting
 from one year ago can be calculated (with a condition of at least two non-missing values within the sample
 window) and saved as ‘avg_ret3y’ as follows:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">funda</span><span class="p">[</span><span class="s1">&#39;avg_ret3y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">funda</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">funda</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">funda</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;avg_ret3y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">funda</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">funda</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3390,14 +3310,14 @@ If <cite>min_n</cite> = None, <cite>min_n</cite> = <cite>n</cite>.</p></li>
 <dt class="sig sig-object py" id="pyanomaly.panel.Panel.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.panel.Panel.save" title="Permalink to this definition"></a></dt>
 <dd><p>Save this object.</p>
-<p>Parameters are saved to a json file and <cite>data</cite> are saved to a pickle file.</p>
+<p>Parameters are saved to a json file and <cite>data</cite> is saved to a pickle file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fname</strong> – File name without extension. If None, <cite>fname</cite> = class name.</p></li>
 <li><p><strong>fdir</strong> – Directory to save the file. If None, <cite>fdir</cite> = <cite>config.output_dir</cite>.</p></li>
 <li><p><strong>other_columns</strong> – List of columns to save other than firm characteristics. If given, characteristic columns
-plus <cite>other_columns</cite> are save. If None, all columns are saved. Note that unsaved columns will be deleted
+plus <cite>other_columns</cite> are saved. If None, all columns are saved. Note that unsaved columns will be deleted
 from <cite>self.data</cite>.</p></li>
 </ul>
 </dd>
@@ -3451,17 +3371,17 @@ by <cite>n</cite> years (quarters) regardless of the data frequency, <cite>freq<
 </section>
 <section id="module-pyanomaly.portfolio">
 <span id="pyanomaly-portfolio"></span><h2>pyanomaly.portfolio<a class="headerlink" href="#module-pyanomaly.portfolio" title="Permalink to this headline"></a></h2>
-<p>“This module defines <cite>Portfolo</cite> and <cite>Portfolios</cite> classes that are used for portfolio analysis.</p>
+<p>This module defines <code class="docutils literal notranslate"><span class="pre">Portfolo</span></code> and <code class="docutils literal notranslate"><span class="pre">Portfolios</span></code> classes that are used for portfolio analysis.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyanomaly.portfolio.Portfolio">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyanomaly.portfolio.</span></span><span class="sig-name descname"><span class="pre">Portfolio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pfval0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">costfcn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.portfolio.Portfolio" title="Permalink to this definition"></a></dt>
 <dd><p>Portfolio class.</p>
 <p>This class makes a portfolio from positions and evaluate it.</p>
-<p>Position information is saved in <cite>position</cite> DataFrame and portfolio information is saved in <cite>value</cite> DataFrame.
-If positive weights don’t add up to 1, (1 - sum(positive weights)) will be assumed to be invested in a
-risk free asset, and its information is saved in <cite>fposition</cite> DataFrame.
+<p>Position information is saved in <cite>position</cite> attribute and portfolio information is saved in <cite>value</cite> attribute.
+If positive weights of the positions on a date don’t add up to 1, (1 - sum(positive weights)) will be assumed to be
+invested in a risk free asset, and its information is saved in <cite>fposition</cite> attribute.
 The transaction cost is assumed to be 0 for risk-free assets.
-Once the portfolio is evaluated by calling <code class="docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code>, <cite>performance</cite> DataFrame is generated.</p>
+Once the portfolio is evaluated by calling <code class="docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code>, <cite>performance</cite> attribute is generated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -3469,12 +3389,12 @@ Once the portfolio is evaluated by calling <code class="docutils literal notrans
 <li><p><strong>position</strong> – Position DataFrame. It should have index = ‘date’ and columns = ‘id’ (security ID) ‘ret’ (return),
 and ‘wgt’ (portfolio weight). If it has other columns such as price, they will be kept in the <cite>position</cite>
 attribute. If it has ‘rf’ (risk-free rate) column, its values are used as risk-free rates.</p></li>
-<li><p><strong>rf</strong> – Risk-free rate DataFrame with index = ‘date’ and columns = ‘rf’. <cite>rf</cite> have priority over ‘rf’ column in
+<li><p><strong>rf</strong> – Risk-free rate DataFrame with index = ‘date’ and columns = ‘rf’. The <cite>rf</cite> has priority over ‘rf’ column in
 <cite>position</cite>. If <cite>rf</cite> = None and <cite>position</cite> does not have ‘rf’ column, the risk-free is assumed to be 0.</p></li>
 <li><p><strong>pfval0</strong> – Initial portfolio value. Default to 1.</p></li>
 <li><p><strong>costfcn</strong> – <cite>TransactionCost</cite> class, a transaction cost function, or value. If a const transaction cost of 20
 basis points is assumed, this can be set to 0.002.</p></li>
-<li><p><strong>keep_position</strong> – If False, position information (<cite>position</cite>) is deleted.</p></li>
+<li><p><strong>keep_position</strong> – If False, position information (<cite>position</cite>) is deleted after the portfolio is created.</p></li>
 </ul>
 </dd>
 </dl>
@@ -3487,17 +3407,17 @@ basis points is assumed, this can be set to 0.002.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyanomaly.portfolio.Portfolio.position">
 <span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#pyanomaly.portfolio.Portfolio.position" title="Permalink to this definition"></a></dt>
-<dd><p>Position DataFrame. Its index is <cite>date</cite> and has the following columns:</p>
+<dd><p>Position DataFrame. Its index is ‘date’ and has the following columns:</p>
 <ul class="simple">
 <li><p>‘id’: security ID provided by the user.</p></li>
 <li><p>‘ret’: Return between t-1 and t.</p></li>
 <li><p>‘exret’: Excess return over risk-free rate between t-1 and t.</p></li>
-<li><p>‘wgt`: Weight ot the beginning of t.</p></li>
+<li><p>‘wgt`: Weight at the beginning of t.</p></li>
 <li><p>‘val1’: Value at t.</p></li>
 <li><p>‘val’: Value at the beginning of t.</p></li>
 <li><p>‘val0’: value at t-1.</p></li>
 <li><p>‘cost’: Transaction cost incurred at the beginning of t.</p></li>
-<li><p>Other columns: Any columns that are in the input position data, such as ‘permno’.</p></li>
+<li><p>Other columns: Any columns that are in the input position data.</p></li>
 </ul>
 <p>In the description above, ‘at the beginning of t` means at t-1 after rebalancing.</p>
 </dd></dl>
@@ -3505,7 +3425,7 @@ basis points is assumed, this can be set to 0.002.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyanomaly.portfolio.Portfolio.value">
 <span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyanomaly.portfolio.Portfolio.value" title="Permalink to this definition"></a></dt>
-<dd><p>Portfolio value DataFrame. Its index is <cite>date</cite> and has the following columns:</p>
+<dd><p>Portfolio value DataFrame. Its index is ‘date’ and has the following columns:</p>
 <ul class="simple">
 <li><p>‘ret’: Return between t-1 and t. This can be either net return or gross return depending on
 the evaluation method: see <code class="docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code>.</p></li>
@@ -3516,9 +3436,9 @@ gross excess return depending on the evaluation method.</p></li>
 <li><p>‘cost’: Transaction cost incurred at the beginning of t.</p></li>
 <li><p>‘tover’: Turnover incurred at the beginning of t. <cite>tover</cite> = sum(pos.val - pos.val0) / sum(pf.val),
 where pos.val is the position values and pf.val is the portfolio value.</p></li>
-<li><p>‘netret’: Return between t-1 and t, net of transaction cost</p></li>
+<li><p>‘netret’: Return between t-1 and t, net of transaction cost.</p></li>
 <li><p>‘grossret’: Gross return between t-1 and t.</p></li>
-<li><p>‘netexret’: Excess return between t-1 and t, net of transaction cost</p></li>
+<li><p>‘netexret’: Excess return between t-1 and t, net of transaction cost.</p></li>
 <li><p>‘grossexret’: Excess gross return between t-1 and t.</p></li>
 <li><p>‘lposition’: Number of long positions.</p></li>
 <li><p>‘sposition’: Number of short positions.</p></li>
@@ -3541,7 +3461,7 @@ where pos.val is the position values and pf.val is the portfolio value.</p></li>
 <dd><p>Risk-free asset position DataFrame. Its index is ‘date’ and has the following columns:</p>
 <ul class="simple">
 <li><p>‘ret’: Return between t-1 and t.</p></li>
-<li><p>‘wgt`: Weight ot the beginning of t.</p></li>
+<li><p>‘wgt`: Weight at the beginning of t.</p></li>
 <li><p>‘val1’: Value at t.</p></li>
 <li><p>‘val’: Value at the beginning of t.</p></li>
 </ul>
@@ -3577,9 +3497,9 @@ cost of 20 basis points is assumed, <cite>costfcn</cite> can be simply set to 0.
 <p>If <cite>costfcn</cite> is a <cite>TransactionCost</cite> object, <code class="docutils literal notranslate"><span class="pre">TransactionCost.get_cost(position)</span></code> is called to get
 transaction costs. <cite>TransactionCost</cite> allows transaction costs varying across time and securities.
 See <code class="docutils literal notranslate"><span class="pre">pyanomaly.tcost</span></code> module for more details.</p>
-<p>A transaction cost function should have arguments val (value after rebalancing) and val0
-(value before rebalancing). For example, if the transaction cost to buy (sell) is 20 (30) bps,
-a function can be defined as follows:</p>
+<p>When <cite>costfcn</cite> is defined as a function, the transaction cost function should have arguments
+val (value after rebalancing) and val0 (value before rebalancing). For example, if the transaction cost
+to buy (sell) is 20 (30) bps, a function can be defined as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost_fcn</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">val0</span><span class="p">):</span>
     <span class="k">return</span> <span class="mf">0.002</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="n">val0</span> <span class="k">else</span> <span class="mf">0.003</span>
 </pre></div>
@@ -3590,8 +3510,8 @@ a function can be defined as follows:</p>
 <p class="admonition-title">Note</p>
 <p>If a position exists at t-1 but not at t, it will be added at t with 0 weight.
 This is to compute the transaction cost.</p>
-<p>‘val’, ‘val1’, ‘val0’ in <cite>position</cite> and <cite>value</cite> are calculated without taking transaction costs into account.
-For a value increase after transaction costs, refer to the cumulative return.</p>
+<p>‘val’, ‘val1’, and ‘val0’ in <cite>position</cite> and <cite>value</cite> are calculated without taking transaction costs into account.
+For the value increase after transaction costs, use the cumulative return.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.portfolio.Portfolio.add_position">
@@ -3647,7 +3567,9 @@ The arguments have the same formats as those of the initializer.</p>
 <li><p><strong>sdate</strong> – Start date.</p></li>
 <li><p><strong>edate</strong> – End date.</p></li>
 <li><p><strong>logscale</strong> – If True, return log-scale cumulative returns.</p></li>
-<li><p><strong>zero_start</strong> – If True, the return at <cite>sdate</cite> is forced to 0.</p></li>
+<li><p><strong>zero_start</strong> – If True, the return at <cite>sdate</cite> is forced to 0. That is, it is assumed that trading starts
+at the end of <cite>sdate</cite>. This is useful when plotting cumulative returns as all curves will start at the
+same point, 0.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -3669,10 +3591,7 @@ The arguments have the same formats as those of the initializer.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DataFrame with index = ‘date’ and columns = [‘value’, ‘duration’, ‘start’].</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Drawdowns</p>
+<dd class="field-even"><p>DataFrame of drawdowns with index = ‘date’ and columns = [‘value’, ‘duration’, ‘start’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3704,7 +3623,7 @@ to <cite>value</cite> attribute.</p>
 <p>Columns added to <cite>value</cite>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>‘cumret’: Cumulative return since the first date.</p></li>
+<li><p>‘cumret’: Cumulative return since <cite>sdate</cite>.</p></li>
 <li><p>‘drawdown’: Drawdown.</p></li>
 <li><p>‘drawdur’: Duration of daawdown in the frequency of data, e.g., if rebalanced monthly, 3 means 3 months.</p></li>
 <li><p>‘drawstart’: Beginning date of drawdown.</p></li>
@@ -3738,15 +3657,12 @@ Default to False.</p></li>
 <dt class="sig sig-object py" id="pyanomaly.portfolio.Portfolio.eval_series">
 <span class="sig-name descname"><span class="pre">eval_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annualize_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.portfolio.Portfolio.eval_series" title="Permalink to this definition"></a></dt>
 <dd><p>Evaluate the portfolio repeatedly over the period.</p>
-<p>Evaluate the portfolio repeatedly for the period [<cite>sdate</cite>, <cite>sdate`+1], [`sdate</cite>, <cite>sdate`+2], …,
-[`sdate</cite>, <cite>edate</cite>]. For the description of the arguments, see <code class="docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code>.</p>
+<p>Evaluate the portfolio repeatedly for the period [<cite>sdate</cite>, <cite>sdate+1</cite>], [<cite>sdate</cite>, <cite>sdate+2</cite>], …,
+[<cite>sdate</cite>, <cite>edate</cite>]. For the description of the arguments, see <code class="docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>DataFrame with index values equal to the period end dates and columns
+<dd class="field-odd"><p>Performance for each period. DataFrame with index values equal to the period end dates and columns
 equal to the indexes of <cite>performance</cite> attribute, i.e., a row with index t contains the performance up to t.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Performance for each period</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3780,10 +3696,7 @@ and evaluate the portfolio.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Series with index = [‘value’, ‘duration’, ‘start’].</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Maximum drawdown</p>
+<dd class="field-even"><p>Maximum drawdown. Series with index = [‘value’, ‘duration’, ‘start’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3801,10 +3714,7 @@ and evaluate the portfolio.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Series with index = [‘value’, ‘duration’, ‘start’].</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Maximum successive down</p>
+<dd class="field-even"><p>Maximum successive down. Series with index = [‘value’, ‘duration’, ‘start’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3839,7 +3749,7 @@ and evaluate the portfolio.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>return Series with index = ‘date’.</p>
+<dd class="field-even"><p>Return Series with index = ‘date’.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3856,7 +3766,9 @@ For the details of the input arguments, See the arguments of the initializer.</p
 <dt class="sig sig-object py" id="pyanomaly.portfolio.Portfolio.set_return_type">
 <span class="sig-name descname"><span class="pre">set_return_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">consider_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.portfolio.Portfolio.set_return_type" title="Permalink to this definition"></a></dt>
 <dd><p>Determine which return (gross vs. net) to use for portfolio evaluation.</p>
-<p>If <cite>consider_cost</cite> is True, <cite>value.ret</cite> is set to net returns, otherwise, it is set to gross returns.</p>
+<p>If <cite>consider_cost</cite> is True, <cite>value.ret</cite> and <cite>value.exret</cite> are respectively set to net returns (<cite>value.netret</cite>)
+and net excess returns (<cite>value.netexret</cite>). Otherwise, they are set to gross returns (<cite>value.grossret</cite>) and
+gross excess returns (<cite>value.grossexret</cite>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>consider_cost</strong> – True to use returns net of transaction costs for evaluation.</p>
@@ -3912,10 +3824,7 @@ For the details of the input arguments, See the arguments of the initializer.</p
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DataFrame with index = ‘date’ and columns = [‘value’, ‘duration’, ‘start’].</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Successive downs</p>
+<dd class="field-even"><p>Successive downs. DataFrame with index = ‘date’ and columns = [‘value’, ‘duration’, ‘start’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4015,22 +3924,38 @@ portfolio names.</p>
 <span class="target" id="module-pyanomaly.tcost"></span><p>This module defines classes for transaction costs.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyanomaly.tcost.TimeVaryingCost">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyanomaly.tcost.</span></span><span class="sig-name descname"><span class="pre">TimeVaryingCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">me</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.tcost.TimeVaryingCost" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyanomaly.tcost.</span></span><span class="sig-name descname"><span class="pre">TimeVaryingCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">me</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.tcost.TimeVaryingCost" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyanomaly.tcost.TransactionCost" title="pyanomaly.tcost.TransactionCost"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyanomaly.tcost.TransactionCost</span></code></a></p>
 <p>Transaction costs that vary over time and across firm sizes.</p>
 <p>This class implements the time-varying transaction costs used in, e.g., Brandt et al. (2009), Hand and Green (2011),
-and DeMiguel et al. (2020). Transaction cost parameter <cite>k</cite> is defined as <cite>k</cite> = <cite>y</cite> * <cite>z</cite>,
-where <cite>y</cite> decreases linearly from 3.3 in 1980.01 to 1.0 in 2002.01 and remains at 1.0 thereafter, and
+DeMiguel et al. (2020), and Han (2021). Transaction cost parameter <cite>k</cite> is defined as <cite>k</cite> = <cite>y</cite> * <cite>z</cite>,
+where <cite>y</cite> decreases linearly from 4.0 in 1974.01 to 1.0 in 2002.01 and remains at 1.0 thereafter, and
 <cite>z</cite> = 0.006 - 0.0025 * <cite>nme</cite>, where <cite>nme</cite> is the normalized market equity that has a value between 0 and 1.</p>
+<p>The maximum transaction cost is 240 basis points (the smallest firm before 1974) and the minimum transaction cost is
+35 basis points (the largest firm after 2002).</p>
+<p>We find this assumption is too conservative since the normalized me is sensitive to the largest company.
+In 1974, the mean of the normalized me is only 0.0045 and most firms have the transaction cost of 240 basis points,
+and in 2002, the mean of the normalized me is only 0.0059 and most firms have the transaction cost of 60 basis points.</p>
+<p>Using a logarithm of the market equity or capping the me of the largest firms may make more sense.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.tcost.TimeVaryingCost.set_params">
-<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">me</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.tcost.TimeVaryingCost.set_params" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">me</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.tcost.TimeVaryingCost.set_params" title="Permalink to this definition"></a></dt>
 <dd><p>Set transaction cost parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>me</strong> – DataFrame or Series of market equity with index = date/id.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>me</strong> – DataFrame or Series of market equity with index = date/id.</p></li>
+<li><p><strong>normalize</strong> – If True, normalize <cite>me</cite> so that its values are between 0 and 1.</p></li>
+</ul>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the input contains only a subset of all listed stocks, normalizing the market equity can result in
+over- or underestimation of the transaction costs. For example, if <cite>me</cite> contains only top 80% of the stocks,
+the transaction costs will be overestimated. Use all listed stocks in the market or normalize the market equity
+outside and set <cite>normalize = False</cite>.</p>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -4054,15 +3979,12 @@ where <cite>y</cite> decreases linearly from 3.3 in 1980.01 to 1.0 in 2002.01 an
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>position</strong> – Portfolio positions. <code class="docutils literal notranslate"><span class="pre">Portfolio</span></code> object calls this function with the argument,
-<code class="docutils literal notranslate"><span class="pre">Portfolio.position</span></code>, to get transaction costs. <cite>position</cite> should have index = ‘date’ and
+<code class="docutils literal notranslate"><span class="pre">Portfolio.position</span></code>, to get transaction costs. The <cite>position</cite> argument should have index = ‘date’ and
 columns = [<cite>id</cite>, ‘val’, ‘val0’], where ‘val’ is the value after rebalancing and ‘val0’ is the value
 before rebalancing.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A vector with the same length as <cite>position</cite>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Transaction costs</p>
+<dd class="field-even"><p>Transaction costs. A vector with the same length as <cite>position</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4119,7 +4041,7 @@ a quadratic transaction cost.</p></li>
 </pre></div>
 </div>
 <blockquote>
-<div><p>Note that only non-zero parameters need to be provided.</p>
+<div><p>Only non-zero parameters need to be provided.</p>
 </div></blockquote>
 <p>Transaction costs that vary across securities:</p>
 <blockquote>
@@ -4189,6 +4111,12 @@ of ‘cost’ for a more complex transaction cost structure.</p>
 <dt class="sig sig-object py" id="pyanomaly.util.is_zero">
 <span class="sig-prename descclassname"><span class="pre">pyanomaly.util.</span></span><span class="sig-name descname"><span class="pre">is_zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.util.is_zero" title="Permalink to this definition"></a></dt>
 <dd><p>Check if <cite>x</cite> is zero.</p>
+<p>A value is considered 0 if it is in the range (-1.e-7, 1.e-7).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – A scalar or array.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -4221,7 +4149,7 @@ Not sure why but the following two methods seem to momentarily consume a lot of 
 <dd class="field-odd"><p><strong>x</strong> – a list, tuple, or scalar.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><cite>x</cite> converted to a list.</p>
+<dd class="field-even"><p><cite>x</cite> converted to list.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4231,6 +4159,14 @@ Not sure why but the following two methods seem to momentarily consume a lot of 
 <span class="sig-prename descclassname"><span class="pre">pyanomaly.util.</span></span><span class="sig-name descname"><span class="pre">unique_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.util.unique_list" title="Permalink to this definition"></a></dt>
 <dd><p>Get a list of unique elements of <cite>x</cite>.</p>
 <p>If <cite>x</cite> contains a list, its elements are considered elements of <cite>x</cite>, not the list itself.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unique_list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[1, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unique_list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[1, 2, 3]</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4239,7 +4175,7 @@ Not sure why but the following two methods seem to momentarily consume a lot of 
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of unique element of <cite>x</cite>.</p>
+<dd class="field-even"><p>List of unique elements of <cite>x</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4295,7 +4231,7 @@ data from files.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.db">
 <span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.db" title="Permalink to this definition"></a></dt>
-<dd><p>wrds object to connect to WRDS database.</p>
+<dd><p>A wrds object to connect to WRDS database.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -4342,11 +4278,11 @@ if you use market equity of CRSP, which is in USD, Compustat data should be conv
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fund</strong> – funda(q) DataFrame with index = ‘datadate’/’gvkey’.</p></li>
-<li><p><strong>table</strong> – ‘funda’ or ‘fundq’: indicator whether fund is funda or fundq.</p></li>
+<li><p><strong>table</strong> – ‘funda’ or ‘fundq’: indicator whether <cite>fund</cite> is funda or fundq.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Converted fund DataFrame.</p>
+<dd class="field-even"><p>Converted <cite>fund</cite> DataFrame.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4426,7 +4362,7 @@ connecting to WRDS.</p>
 <dd><p>Download delist info from m(d)seall.</p>
 <p>Delist can be obtained from either mseall or msedelist. We use mseall since it contains exchcd, which is used
 when replacing missing dlret.
-shrcd and exchcd in mseall are usually those before halting/suspension. If a stock in NYSE is halted, exchcd
+The shrcd and exchcd in mseall are usually those before halting/suspension. If a stock in NYSE is halted, exchcd
 in msenames can be -2, whereas that in mseall is 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4478,13 +4414,13 @@ The queried table is saved in config.input_dir/library/table.pickle. Useful when
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>library</strong> – WRDS library. e.g., crsp, comp, …</p></li>
-<li><p><strong>table</strong> – table in library.</p></li>
-<li><p><strong>obs</strong> – see <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
-<li><p><strong>offset</strong> – see <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
-<li><p><strong>columns</strong> – see <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
-<li><p><strong>coerce_float</strong> – see <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
-<li><p><strong>index_col</strong> – see <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
-<li><p><strong>date_cols</strong> – see <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
+<li><p><strong>table</strong> – A table in <cite>library</cite>.</p></li>
+<li><p><strong>obs</strong> – See <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
+<li><p><strong>offset</strong> – See <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
+<li><p><strong>columns</strong> – See <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
+<li><p><strong>coerce_float</strong> – See <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
+<li><p><strong>index_col</strong> – See <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
+<li><p><strong>date_cols</strong> – See <code class="docutils literal notranslate"><span class="pre">wrds.get_table()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4520,7 +4456,7 @@ and convert the types of double precision fields to float. When data is selected
 <li><p><strong>type</strong> – Type for numeric fields: float or np.float32. For a large dataset, converting to float32 can save
 disc space and read/write time.</p></li>
 <li><p><strong>date_cols</strong> – List of date columns. The dtype of these columns will be converted to datetime.</p></li>
-<li><p><strong>run_in_executer</strong> – If True, download data concurrently using executer. Setting this to True will increase
+<li><p><strong>run_in_executer</strong> – If True, download data concurrently using <cite>executer</cite>. Setting this to True will increase
 download speed but can take up much memory.</p></li>
 </ul>
 </dd>
@@ -4539,7 +4475,7 @@ download speed but can take up much memory.</p></li>
 </li>
 <li><p>To download data using a complete query, <cite>library</cite>, <cite>table</cite>, and <cite>sql</cite> should be given, where <cite>table</cite> is a table
 name for the data (can be any name), and <cite>sql</cite> is a query statement. The <cite>sql</cite> should contain
-‘WHERE [<cite>date_col</cite>] BETWEEN {} and {}’. See, e.g., <code class="docutils literal notranslate"><span class="pre">WRDS.download_sf()</span></code>.</p></li>
+‘WHERE [<cite>date_col</cite>] BETWEEN {} and {}’. See, e.g., the code of <code class="docutils literal notranslate"><span class="pre">WRDS.download_sf()</span></code>.</p></li>
 </ul>
 </div>
 </dd></dl>
@@ -4556,12 +4492,12 @@ Both risk-free rates are in decimal (not percentage values).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdate</strong> – Start date.</p></li>
 <li><p><strong>edate</strong> – End date.</p></li>
-<li><p><strong>src</strong> – data source. ‘mstc’: crsp.mcti, ‘ff’: ff.factors_monthly.</p></li>
+<li><p><strong>src</strong> – data source. ‘mcti’: crsp.mcti, ‘ff’: ff.factors_monthly.</p></li>
 <li><p><strong>month_end</strong> – Shift dates to the end of the month.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dataframe of risk-free rates with index = ‘date’ and columns = ‘rf’.</p>
+<dd class="field-even"><p>Dataframe of risk-free rates with index = ‘date’ and columns = [‘rf’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4570,15 +4506,33 @@ Both risk-free rates are in decimal (not percentage values).</p>
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.merge_sf_with_seall">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge_sf_with_seall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monthly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.merge_sf_with_seall" title="Permalink to this definition"></a></dt>
 <dd><p>Merge m(d)sf with m(d)seall.</p>
-<p>This method adjusts m(d)sf return (‘ret’) using m(d)seall delist return (‘dlret’). The adjusted return is
-saved in the same column, ‘ret’, and ‘dlret’ column is added to m(d)sf.
+<p>This method adjusts m(d)sf return (‘ret’) using m(d)seall delist return (‘dlret’). The adjusted return replaces
+‘ret’ and ‘dlret’ column is added to m(d)sf.
 For msf, this method also adds cash dividend columns, ‘cash_div’, to m(d)sf.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sf</strong> – m(d)sf DataFrame.</p></li>
 <li><p><strong>monthly</strong> – <cite>sf</cite> = msf if True, else <cite>sf</cite> = dsf.</p></li>
-<li><p><strong>fill_method</strong> – Method to fill missing dlret. 0: don’t fill, 1: JKP code, or 2: GHZ code.</p></li>
+<li><p><strong>fill_method</strong> – <p>Method to fill missing dlret. 0: don’t fill, 1: JKP code, or 2: GHZ code.</p>
+<ul>
+<li><p>fill_method = 1:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>dlret</cite> = -0.30 if <cite>dlstcd</cite> is 500 or between 520 and 584.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>fill_method = 2:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>dlret</cite> = -0.35 if <cite>dlstcd</cite> is 500 or between 520 and 584, and <cite>exchcd</cite> is 1 or 2.</p></li>
+<li><p><cite>dlret</cite> = -0.55 if <cite>dlstcd</cite> is 500 or between 520 and 584, and <cite>exchcd</cite> is 3.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -4639,7 +4593,7 @@ The result is saved to config.input_dir/crspm(d).pickle.</p>
 <dd><p>Save <cite>data</cite> in pickle format.</p>
 <p>We use pickle file format to store data as a pickle file preserves data types and is much faster to read
 compared to a csv file. To convert a pickle file to a csv file, <code class="docutils literal notranslate"><span class="pre">WRDS.save_as_csv()</span></code> can be used.
-<cite>data</cite> is saved in the following location:</p>
+The <cite>data</cite> is saved in the following location:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>If <cite>library</cite> = None, config.input_dir/<cite>table</cite>.pickle</p></li>
@@ -4666,7 +4620,7 @@ compared to a csv file. To convert a pickle file to a csv file, <code class="doc
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cookbook.html" class="btn btn-neutral float-left" title="Cookbook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="building_your_own.html" class="btn btn-neutral float-left" title="Bulding Your Own" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="support.html" class="btn btn-neutral float-right" title="Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -1,14 +1,13 @@
-"""This module defines functions to generate factors and characteristic portfolios.
-
-Fama-French 3 factors and Hou-Xue-Zhang 4 factors are generated.
-We follow JKP's SAS code to generate the portfolios.
+"""This module defines functions to generate firm characteristics, factors, and characteristic portfolios
+replicating JKP's SAS code.
 """
 
 from pyanomaly.globals import *
+# config.REPLICATE_JKP = True
+
 from pyanomaly.analytics import *
 from pyanomaly.fileio import write_to_file, read_from_file
 from pyanomaly.characteristics import CRSPM, CRSPD, FUNDQ, FUNDA, Merge
-
 
 ################################################################################
 #
@@ -16,17 +15,20 @@ from pyanomaly.characteristics import CRSPM, CRSPD, FUNDQ, FUNDA, Merge
 #
 ################################################################################
 
-def generate_firm_characterisitcs():
+def generate_firm_characterisitcs(fname=None):
     """Firm characteristics generation (Replication of JKP's SAS code).
 
     This function generate the firm characteristics that appear in JKP (2021).
     We replicate JKP's SAS code as closely as possible.
-    The output is saved to 'config.output_dir/merge.pickle`.
+    The output is saved to 'config.output_dir/fname.pickle`.
 
     It is assumed that
 
-        - the raw data has been downloaded from WRDS. If not, call ``WRDS.download_all()``.
+        - the raw data has been downloaded from WRDS. If not, call ``WRDS.download_all()``;
         - factor portfolios has been created. If not, call ``make_factor_portfolios()``.
+
+    Args:
+        fname: Output file name. If None, fname = 'merge'.
     """
 
     set_log_path('./log/generate_firmcharacterisitcs.log')
@@ -60,7 +62,7 @@ def generate_firm_characterisitcs():
 
     # Save the output.
     crspm.postprocess()
-    crspm.save()
+    # crspm.save()
 
     ###################################
     # CRSPD
@@ -84,7 +86,7 @@ def generate_firm_characterisitcs():
 
     # Save the output.
     crspd.postprocess()
-    crspd.save()
+    # crspd.save()
 
     ###################################
     # FUNDQ
@@ -110,7 +112,7 @@ def generate_firm_characterisitcs():
 
     # Save the output.
     fundq.postprocess()
-    fundq.save()
+    # fundq.save()
 
     ###################################
     # FUNDA
@@ -136,7 +138,7 @@ def generate_firm_characterisitcs():
 
     # Save the output.
     funda.postprocess()
-    funda.save()
+    # funda.save()
 
     ###################################
     # Merge
@@ -155,7 +157,7 @@ def generate_firm_characterisitcs():
 
     # Save the output.
     merge.postprocess()
-    merge.save()
+    merge.save(fname)
 
 
 ################################################################################
@@ -229,12 +231,13 @@ def make_factor_portfolio(data, char, ret_col, size_class, weight_col=None):
         data: Dataframe with index = date/id. Its columns should include `char`, `ret_col`, `size_class`, and
             `weight_col` (optional).
         char: Characteristic column to make a factor portfolio from.
-        ret_col: Future return column.
+        ret_col: Return column.
         size_class: Size class column.
         weight_col: Weight column. If None, stocks are equally weighted.
 
     Returns:
-        Dataframe of (size x `char`) factor portfolios: index = date, columns: bh, bl, bm, sh, sl, sm, hml, smb.
+        Dataframe of (size x `char`) factor portfolios. Index = 'date',
+        columns: ['bh', 'bl', 'bm', 'sh', 'sl', 'sm', 'hml', 'smb'].
     """
 
     char_split = [0.3, 0.7, 1.0]
@@ -344,10 +347,11 @@ def make_char_portfolios(data, char_list, weighting):
     Args:
         data: DataFrame of firm characteristics.
         char_list: List of characteristics to generate.
-        weighting: 'ew' (Equal-weight), 'vw' (Value-weight), or 'vw_cap' (Value-weight capped at 0.8 NYSE-size quantile)
+        weighting: 'ew' (Equal-weight), 'vw' (Value-weight), or 'vw_cap' (Value-weight capped at 0.8 NYSE-size quantile).
 
     Returns:
-        index = date/class, columns = [(char, 'target', 'signal', 'n_firms')]
+        Characteristic portfolio DataFrame with index = date/class and columns = [char, 'ret', 'signal', 'n_firms'].
+        The class values are one of 'h', 'm', 'l', 'hml'.
     """
 
     elapsed_time(f'make_char_portfolios. weighting: {weighting}')

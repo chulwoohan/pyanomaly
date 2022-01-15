@@ -22,7 +22,10 @@ config = struct(
         'inv': 'inv',
         'roe': 'roe',
         'smb_hxz': 'smb_hxz',
-    }
+    },
+    # True to replicate JKP version (not completely). Verification purpose only. Will be deprecated.
+    REPLICATE_JKP=False
+
 )
 
 ########################################
@@ -46,7 +49,3 @@ np.seterr(divide='ignore', invalid='ignore')  # Silence divide by 0) or nan warn
 ########################################
 # Other configurations
 ########################################
-REPLICATE_JKP = True  # True to replicate JKP version (not completely)
-if REPLICATE_JKP:
-    config.factors_monthly_fname = 'factors_monthly_jkp'
-    config.factors_daily_fname = 'factors_daily_jkp'

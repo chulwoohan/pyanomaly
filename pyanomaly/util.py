@@ -23,7 +23,7 @@ def to_list(x):
         x: a list, tuple, or scalar.
 
     Returns:
-        `x` converted to a list.
+        `x` converted to list.
     """
 
     if is_iterable(x):
@@ -37,12 +37,19 @@ def unique_list(x, exclude_nan=True):
 
     If `x` contains a list, its elements are considered elements of `x`, not the list itself.
 
+    >>> x = [1, 2, 2, None]
+    >>> unique_list(x)
+    [1, 2]
+    >>> x = [1, 2, [1, 3], None]
+    >>> unique_list(x)
+    [1, 2, 3]
+
     Args:
         x: A list.
         exclude_nan: If True, exclude None elements.
 
     Returns:
-        List of unique element of `x`.
+        List of unique elements of `x`.
     """
 
     y = []
@@ -91,6 +98,11 @@ ZERO = 1.e-7
 
 def is_zero(x):
     """Check if `x` is zero.
+
+    A value is considered 0 if it is in the range (-1.e-7, 1.e-7).
+
+    Args:
+        x: A scalar or array.
     """
 
     return (x < ZERO) & (x > -ZERO)

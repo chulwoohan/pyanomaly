@@ -23,6 +23,7 @@ If you use PyAnomaly for your research, please let us know (|email|).
       
    getting_started
    cookbook
+   building_your_own
 
 .. toctree::
    :caption: API
