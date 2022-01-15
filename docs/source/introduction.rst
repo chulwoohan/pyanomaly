@@ -170,7 +170,7 @@ Useful Links
 
 - PyAnomaly repository: https://github.com/chulwoohan/pyanomaly
 - JKP's SAS code: https://github.com/bkelly-lab/ReplicationCrisis
-- openassetpricing: https://www.openassetpricing.com/
+- Openassetpricing: https://www.openassetpricing.com/
 - GHZ' SAS code: https://sites.google.com/site/jeremiahrgreenacctg/home
 
 
