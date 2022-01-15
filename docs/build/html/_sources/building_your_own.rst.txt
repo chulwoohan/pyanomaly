@@ -19,7 +19,7 @@ There are a few coding rules we follow and we suggest you follow them when devel
       The docstring content will be displayed when ``Panel.show_available_functions()`` is called.
     - Do not make a method that generate multiple firm characteristics. For each firm characteristic, make one associated
       method. If for some reason, it is efficient to generate multiple firm characteristics in one method,
-      make a private method for it and then make methods for each firm characteristic that calls the method.
+      make a private method for it and then make a method for each firm characteristic that calls the private method.
       Below is an example of generating earnings persistence and predictability. ``_ni_ar1_ivol()`` generates both
       persistence and predictability and ``c_ni_ar1()`` and ``c_ni_ivol()`` call ``_ni_ar1_ivol()`` to generate
       persistence and predictability, respectively.

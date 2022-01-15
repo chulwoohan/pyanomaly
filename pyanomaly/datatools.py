@@ -627,11 +627,17 @@ def compare_data(data1, data2=None, on=None, how='inner', tolerance=0.01, suffix
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from multiprocessing import cpu_count
 
-def _fcn(k, g, freq, method, limit):
-    if method == 'ffill':
-        return k, g.resample(freq_map[freq]).pad(limit)
-    else:  # fill with None
-        return k, g.resample(freq_map[freq]).asfreq()
+def _populate(data, id_col, freq, method, limit):
+    gb = data.groupby(id_col)
+    retval = []
+    for k, g in gb:
+        if method == 'ffill':
+            retval.append(g.resample(freq_map[freq]).pad(limit))
+        else:  # fill with None
+            retval.append(g.resample(freq_map[freq]).asfreq())
+        retval[-1][id_col] = k
+
+    return pd.concat(retval)
 
 
 def populate(data, freq, method='ffill', limit=None):
@@ -649,60 +655,25 @@ def populate(data, freq, method='ffill', limit=None):
     Returns:
         Populated data.
     """
-    id_col = data.index.names[-1]
 
-    gb = data.reset_index(level=id_col).groupby(id_col)
+    # Split ids into n_cpu groups.
+    n_cpu = cpu_count()
+    id_col = data.index.names[-1]
+    data = data.reset_index(level=id_col)
+    id_groups = np.array_split(data[id_col].unique(), n_cpu)
+
+    # Create a process for each id group.
     retval = []
     futures = []
     with ProcessPoolExecutor() as executor:
-        for k, g in gb:
-            futures.append(executor.submit(_fcn, k, g, freq, method, limit))
+        for ids in id_groups:
+            data_ = data[data[id_col].isin(ids)]
+            futures.append(executor.submit(_populate, data_, id_col, freq, method, limit))
 
         for f in as_completed(futures):
-            k, retval_ = f.result()
-            retval_[id_col] = k
-            retval.append(retval_)
+            retval.append(f.result())
 
     return pd.concat(retval).set_index(id_col, append=True).sort_index(level=[1,0])
-
-
-# def populate2(data, freq, method='ffill', limit=None):
-#     """Populate data.
-#
-#     References:
-#         https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html
-#
-#     Args:
-#         data: Dataframe with index = date/id
-#         freq: Frequency to populate: QUARTERLY, MONTHLY, or DAILY.
-#         method: Filling method for newly added rows. 'ffill': forward fill, None: None.
-#         limit: Maximum number of rows to forward-fill.
-#
-#     Returns:
-#         Populated data.
-#     """
-#
-#     id_col = data.index.names[-1]
-#
-#     gb = data.reset_index(level=id_col).groupby(id_col)
-#     retval = []
-#     for k, g in gb:
-#         if method == 'ffill':
-#             retval.append(g.resample(freq_map[freq]).pad(limit))
-#         else:  # fill with None
-#             retval.append(g.resample(freq_map[freq]).asfreq())
-#         retval[-1][id_col] = k
-#
-#     return pd.concat(retval).set_index(id_col, append=True)
-#
-#     # The code below is simpler but three times slower.
-#     # if method == 'ffill':
-#     #     pop_data = data.reset_index(level=id_col).groupby(id_col).resample(freq_map[freq]).pad(limit).swaplevel()
-#     # else:  # fill with None
-#     #     pop_data = data.reset_index(level=id_col).groupby(id_col).resample(freq_map[freq]).asfreq().swaplevel()
-#     # pop_data.drop(columns=id_col, inplace=True)
-#     #
-#     # return pop_data
 
 
 def to_month_end(date):
