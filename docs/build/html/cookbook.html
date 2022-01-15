@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cookbook &mdash; PyAnomaly 0.921 documentation</title>
+  <title>Cookbook &mdash; PyAnomaly 0.922 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -139,10 +139,7 @@ This will make the program use JKP’s definitions when possible.
 <section id="initialization">
 <h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline"></a></h3>
 <p>Set the log file path and initialize time check (can be skipped).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to use JKP&#39;s definitions, uncomment this.</span>
-<span class="c1"># config.REPLICATE_JKP = True</span>
-
-<span class="c1"># Set log file path. Without this, the log will be printed in stdout.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set log file path. Without this, the log will be printed in stdout.</span>
 <span class="n">set_log_path</span><span class="p">(</span><span class="s1">&#39;./log/example1.log&#39;</span><span class="p">)</span>
 <span class="c1"># initialize time check.</span>
 <span class="n">elapsed_time</span><span class="p">(</span><span class="s1">&#39;Start of Example 1.&#39;</span><span class="p">)</span>
@@ -154,7 +151,7 @@ This will make the program use JKP’s definitions when possible.
 <p>Download data frm WRDS.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrds</span> <span class="o">=</span> <span class="n">WRDS</span><span class="p">(</span><span class="n">wrds_username</span><span class="p">)</span>  <span class="c1"># Use your WRDS user id.</span>
 <span class="c1"># Download all necessary data.</span>
-<span class="n">wrds</span><span class="o">.</span><span class="n">download_all</span><span class="p">()</span>
+<span class="n">wrds</span><span class="o">.</span><span class="n">download_all</span><span class="p">(</span><span class="n">run_in_executer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># run_in_executer=True will download faster but consumes more memory.</span>
 <span class="c1"># Create crspm(d) from m(d)sf and m(d)seall and add gvkey to them.</span>
 <span class="n">wrds</span><span class="o">.</span><span class="n">preprocess_crsp</span><span class="p">()</span>
 </pre></div>
@@ -351,15 +348,15 @@ These are used in some firm characteristics, such as the residual momentum.</p>
 <section id="example-3">
 <h2>Example 3<a class="headerlink" href="#example-3" title="Permalink to this headline"></a></h2>
 <p><strong>Firm characteristics using year-end ME.</strong></p>
-<dl class="simple">
-<dt>This example demonstrates how to generate funda firm characteristics using year-end ME instead of the latest ME.</dt><dd><ol class="lowerroman simple">
+<p>This example demonstrates how to generate funda firm characteristics using year-end ME instead of the latest ME.</p>
+<blockquote>
+<div><ol class="lowerroman simple">
 <li><p>All firm characteristics defined in FUNDA are generated.</p></li>
 <li><p>Only USD-denominated stocks are sampled: currency conversion is unnecessary.</p></li>
 <li><p>Only funda is used without merging with fundq: merging the two datasets as in Example 1 is also possible.</p></li>
 <li><p>It is assumed that funda data is available 6 months later.</p></li>
 </ol>
-</dd>
-</dl>
+</div></blockquote>
 <ul class="simple">
 <li><p>It is assumed that data has been downloaded from WRDS.</p></li>
 </ul>
@@ -380,7 +377,7 @@ These are used in some firm characteristics, such as the residual momentum.</p>
 <span class="n">crspm</span><span class="o">.</span><span class="n">filter_data</span><span class="p">()</span>
 <span class="n">crspm</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">MONTHLY</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-<span class="c1"># &#39;me&#39; variable is generated here.</span>
+<span class="c1"># &#39;me&#39; and &#39;me_company&#39; (firm-level me) are generated here.</span>
 <span class="n">crspm</span><span class="o">.</span><span class="n">update_variables</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -421,7 +418,7 @@ divided by the one-year average excess return (I have no idea if this has any pr
 </ul>
 <section id="defining-a-new-characteristic-function">
 <h3>Defining a new characteristic function<a class="headerlink" href="#defining-a-new-characteristic-function" title="Permalink to this headline"></a></h3>
-<p>This a new class by inheriting <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code> and add a new function <code class="docutils literal notranslate"><span class="pre">c_excess_ret_change()</span></code> that defines
+<p>Define a new class by inheriting <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code> and add a new function <code class="docutils literal notranslate"><span class="pre">c_excess_ret_change()</span></code> that defines
 the new characteristic.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCRSPM</span><span class="p">(</span><span class="n">CRSPM</span><span class="p">):</span>
 
@@ -495,6 +492,7 @@ the new characteristic.</p>
 <ul class="simple">
 <li><p>It is assumed that the firm characteristic has been created and saved to ‘crspm.pickle’.</p></li>
 </ul>
+<p>See also <a class="reference internal" href="pyanomaly_edited.html#pyanomaly-jkp"><span class="std std-ref">pyanomaly.jkp</span></a> module for factor and characteristic portfolio creation replicating JKP’s SAS code.</p>
 <section id="id1">
 <h3>Set variables<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="o">=</span> <span class="s1">&#39;ret_12_1&#39;</span>  <span class="c1"># 12-month momentum</span>
@@ -700,18 +698,17 @@ Take the time-series average of the coefficients and examine their significance.
 </section>
 <section id="factor-regression">
 <h3>Factor regression<a class="headerlink" href="#factor-regression" title="Permalink to this headline"></a></h3>
-<p>Regress the long-short portfolio (H-L) returns on the FF-3 factors.</p>
+<p>Regress quantile portfolios’ returns on the FF-3 factors.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample period.</span>
 <span class="n">sdate</span> <span class="o">=</span> <span class="s1">&#39;1952-01&#39;</span>
 <span class="n">edate</span> <span class="o">=</span> <span class="s1">&#39;2020-12&#39;</span>
+
+<span class="n">qpfs</span> <span class="o">=</span> <span class="n">qpfs</span><span class="p">[</span><span class="n">sdate</span><span class="p">:</span><span class="n">edate</span><span class="p">]</span>
 
 <span class="c1"># Read factors.</span>
 <span class="c1"># Here I use the factors generated by PyAnomaly. You can use different sources if you like.</span>
 <span class="n">factors</span> <span class="o">=</span> <span class="n">read_from_file</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">factors_monthly_fname</span><span class="p">)</span>
 <span class="c1"># factors = WRDS.read_data(&#39;factors_monthly&#39;)  # factors from K.French website.</span>
-
-<span class="n">qpfs</span> <span class="o">=</span> <span class="n">qpfs</span><span class="p">[</span><span class="n">sdate</span><span class="p">:</span><span class="n">edate</span><span class="p">]</span>
-<span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">sdate</span><span class="p">:</span><span class="n">edate</span><span class="p">]</span>
 
 <span class="c1"># X: Constant + FF3.</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sdate</span><span class="p">:</span><span class="n">edate</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;mktrf&#39;</span><span class="p">,</span> <span class="s1">&#39;smb_ff&#39;</span><span class="p">,</span> <span class="s1">&#39;hml&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
@@ -760,7 +757,6 @@ and evaluate their performance.</p>
 <ul class="simple">
 <li><p>It is assumed that the firm characteristic has been created and saved to ‘crspm.pickle’.</p></li>
 </ul>
-<p>See also <a class="reference internal" href="pyanomaly_edited.html#pyanomaly-jkp"><span class="std std-ref">pyanomaly.jkp</span></a> module for factor and characteristic portfolio creation replicating JKP’s SAS code.</p>
 <section id="id3">
 <h3>Set variables<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="o">=</span> <span class="s1">&#39;ret_12_1&#39;</span>  <span class="c1"># 12-month momentum</span>
@@ -777,7 +773,8 @@ and evaluate their performance.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read crspm data (not raw data but the output data).</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">read_from_file</span><span class="p">(</span><span class="s1">&#39;crspm&#39;</span><span class="p">)</span>
 
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;nyse_me&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exchcd</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">weight_col</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>  <span class="c1"># NYSE me</span>
+<span class="c1"># NYSE me</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;nyse_me&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exchcd</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">weight_col</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
 
 <span class="c1"># Make the future return. If it&#39;s already in the data, this step can be skipped.</span>
 <span class="n">data</span><span class="p">[</span><span class="n">ret_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_future_return</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">])</span>
@@ -795,7 +792,8 @@ and evaluate their performance.</p>
 <section id="transaction-costs">
 <h3>Transaction costs<a class="headerlink" href="#transaction-costs" title="Permalink to this headline"></a></h3>
 <p>PyAnomaly provides a powerful way to set transaction costs via <code class="docutils literal notranslate"><span class="pre">TransactionCost</span></code> class.
-For example,</p>
+See <a class="reference internal" href="pyanomaly_edited.html#pyanomaly-tcost"><span class="std std-ref">pyanomaly.tcost</span></a> module for details.
+Below are some examples of setting transaction costs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># No transaction costs.</span>
 <span class="n">costfcn</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -806,8 +804,7 @@ For example,</p>
 <span class="n">costfcn</span> <span class="o">=</span> <span class="n">TransactionCost</span><span class="p">(</span><span class="n">buy_linear</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span> <span class="n">sell_linear</span><span class="o">=</span><span class="mf">0.002</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="pyanomaly_edited.html#pyanomaly-tcost"><span class="std std-ref">pyanomaly.tcost</span></a> module for details.
-In this example, we will assume transaction cost that decreases over time and with size.</p>
+<p>In this example, we will assume transaction cost that decreases over time and with size.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">costfcn</span> <span class="o">=</span> <span class="n">TimeVaryingCost</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">weight_col</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -816,7 +813,7 @@ In this example, we will assume transaction cost that decreases over time and wi
 <h3>Portfolio construction<a class="headerlink" href="#portfolio-construction" title="Permalink to this headline"></a></h3>
 <p>In PyAnomaly, <code class="docutils literal notranslate"><span class="pre">Portfolio</span></code> class is used to make a portfolio from position information.
 The <code class="docutils literal notranslate"><span class="pre">make_position()</span></code> function converts a panel data to position data that is used as the input to <code class="docutils literal notranslate"><span class="pre">Portfolio</span></code> class.
-In <cite>data</cite>, the future return at t is the return between t and t+1, whereas in the position data, dates are shifted
+In the panel data, the future return at t is the return between t and t+1, whereas in the position data, dates are shifted
 so that the future return at t is the return between t-1 and t.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here, we remove small-cap stocks after setting the cost function.</span>
 <span class="c1"># This is because `TimeVaryingCost` requires all firms&#39; me as the input.</span>
@@ -992,7 +989,7 @@ Different ways of downloading <cite>comp.secm</cite> table are demonstrated.</p>
 </pre></div>
 </div>
 <p>Method 2: Download the entire table asynchronously.</p>
-<p>This downloads data every <cite>interval</cite> years along <cite>data_col</cite>. This is a memory efficient way of downloading a large dataset.
+<p>This downloads data every <cite>interval</cite> years along <cite>date_col</cite>. This is a memory efficient way of downloading a large dataset.
 For a small size data, this can be slower than <code class="docutils literal notranslate"><span class="pre">download_table()</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrds</span><span class="o">.</span><span class="n">download_table_async</span><span class="p">(</span><span class="s1">&#39;comp&#39;</span><span class="p">,</span> <span class="s1">&#39;secm&#39;</span><span class="p">,</span> <span class="n">date_col</span><span class="o">=</span><span class="s1">&#39;datadate&#39;</span><span class="p">,</span> <span class="n">date_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datadate&#39;</span><span class="p">],</span> <span class="n">interval</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>

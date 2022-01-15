@@ -393,7 +393,7 @@ def make_future_return(ret, period=1):
     This is a simple function to compute `period`-period ahead return.
 
     See Also:
-        ``Panel.cumret()``
+        ``Panel.futret()``
 
     Args:
         ret: Series of returns with index = date or date/id.

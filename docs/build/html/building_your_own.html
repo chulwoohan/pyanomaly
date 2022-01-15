@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bulding Your Own &mdash; PyAnomaly 0.921 documentation</title>
+  <title>Bulding Your Own &mdash; PyAnomaly 0.922 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -113,7 +113,7 @@ update the library.</p>
 The docstring content will be displayed when <code class="docutils literal notranslate"><span class="pre">Panel.show_available_functions()</span></code> is called.</p></li>
 <li><p>Do not make a method that generate multiple firm characteristics. For each firm characteristic, make one associated
 method. If for some reason, it is efficient to generate multiple firm characteristics in one method,
-make a private method for it and then make methods for each firm characteristic that calls the method.
+make a private method for it and then make a method for each firm characteristic that calls the private method.
 Below is an example of generating earnings persistence and predictability. <code class="docutils literal notranslate"><span class="pre">_ni_ar1_ivol()</span></code> generates both
 persistence and predictability and <code class="docutils literal notranslate"><span class="pre">c_ni_ar1()</span></code> and <code class="docutils literal notranslate"><span class="pre">c_ni_ivol()</span></code> call <code class="docutils literal notranslate"><span class="pre">_ni_ar1_ivol()</span></code> to generate
 persistence and predictability, respectively.</p></li>

@@ -97,7 +97,7 @@ ghz, jkp, hxz, cz
 
 my chars
     You can add a new column in the file to define what characteristics to generate and their aliases.
-    For example, if you add a column 'my chars' as shown in the table and set ``alias='my chars``, only
+    For example, if you add a column 'my chars' as shown in the table and set ``alias='my chars'``, only
     'Idiosyncratic volatility (Org, JKP)' and 'Illiquidity' will be generated.
 
 .. csv-table::
@@ -116,12 +116,12 @@ The column names of the firm characteristics are their function names (without `
 is saved to a file by calling ``Panel.save()``, the column names will be replaced with the aliases.
 When a saved file is loaded back to a class by calling ``Panel.load()``, the column names will be replaced with
 the function names. In summary, the column names of the firm characteristics are the function names in
-``data`` or ``chars`` attribute, where as the column names are the aliases in saved files.
+``data`` and ``chars`` attributes, whereas the column names are the aliases in saved files.
 
 The ``data`` attribute has a MultiIndex of 'date' and 'permno' in ``CRSPM``, ``CRSPD``, and ``Merge``, whereas
-it has a MultiIndex of ``datadate`` and 'gvkey` in ``FUNDA`` and ``FUNDQ``. Once the data in ``FUNDA`` and ``FUNDQ``
-are populated monthly, the index changes to ``date`` and ``gvkey`` and ``datadate`` remains as a column.
-Note that the dates in ``date`` are shifted to month-end.
+it has a MultiIndex of 'datadate' and 'gvkey` in ``FUNDA`` and ``FUNDQ``. Once the data in ``FUNDA`` and ``FUNDQ``
+are populated monthly, the index changes to ``date`` and ``gvkey`` and 'datadate' remains as a column.
+Note that the dates in 'date' are shifted to month-end.
 
 The easiest way to get started is going through examples.
 The next section presents several examples to help you get familiarized with PyAnomaly.

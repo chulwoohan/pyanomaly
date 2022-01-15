@@ -105,8 +105,8 @@ Recommendation
 The minimum system requirement depends on the configuration, e.g., what characteristics to generate or the sample period.
 
 Disc space
-    The raw data downloaded from WRDS take up about 27GB of the disc space. The final output file can take
-    up to 15GB if all characteristics are generated and the raw data are saved together.
+    The raw data downloaded from WRDS take up about 27 GB of the disc space. The final output file can take
+    up to 15 GB if all characteristics are generated and the raw data are saved together.
     The size of the output file can be significantly reduced if only the firm characteristics are saved (less than 5 GB).
     In general, 100GB should be sufficient in all types of tasks and even when interim results are saved.
 
@@ -139,7 +139,7 @@ However, there are a few key differences that make our results differ from their
 
 Market equity
     JKP use not only CRSP's msf but also Compustat's secm and secd to calculate market equity,
-    and (roughly saying) choose the maximum market equity among those calculated from different sources.
+    and (roughly speaking) choose the maximum market equity among those calculated from different sources.
     We only use the price and shares outstanding from CRSP to calculate the market equity.
 
 Merging FUNDA with FUNDQ

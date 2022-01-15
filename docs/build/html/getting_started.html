@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; PyAnomaly 0.921 documentation</title>
+  <title>Installation &mdash; PyAnomaly 0.922 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -179,7 +179,7 @@ characteristics defined in these columns.
 If you set <code class="docutils literal notranslate"><span class="pre">alias=None</span></code>, all available characteristics will be generated.</p>
 </dd>
 <dt>my chars</dt><dd><p>You can add a new column in the file to define what characteristics to generate and their aliases.
-For example, if you add a column ‘my chars’ as shown in the table and set <code class="docutils literal notranslate"><span class="pre">alias='my</span> <span class="pre">chars</span></code>, only
+For example, if you add a column ‘my chars’ as shown in the table and set <code class="docutils literal notranslate"><span class="pre">alias='my</span> <span class="pre">chars'</span></code>, only
 ‘Idiosyncratic volatility (Org, JKP)’ and ‘Illiquidity’ will be generated.</p>
 </dd>
 </dl>
@@ -311,11 +311,11 @@ The column names of the firm characteristics are their function names (without <
 is saved to a file by calling <code class="docutils literal notranslate"><span class="pre">Panel.save()</span></code>, the column names will be replaced with the aliases.
 When a saved file is loaded back to a class by calling <code class="docutils literal notranslate"><span class="pre">Panel.load()</span></code>, the column names will be replaced with
 the function names. In summary, the column names of the firm characteristics are the function names in
-<code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code> attribute, where as the column names are the aliases in saved files.</p>
+<code class="docutils literal notranslate"><span class="pre">data</span></code> and <code class="docutils literal notranslate"><span class="pre">chars</span></code> attributes, whereas the column names are the aliases in saved files.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute has a MultiIndex of ‘date’ and ‘permno’ in <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>, whereas
-it has a MultiIndex of <code class="docutils literal notranslate"><span class="pre">datadate</span></code> and ‘gvkey` in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>. Once the data in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>
-are populated monthly, the index changes to <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">gvkey</span></code> and <code class="docutils literal notranslate"><span class="pre">datadate</span></code> remains as a column.
-Note that the dates in <code class="docutils literal notranslate"><span class="pre">date</span></code> are shifted to month-end.</p>
+it has a MultiIndex of ‘datadate’ and ‘gvkey` in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>. Once the data in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>
+are populated monthly, the index changes to <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">gvkey</span></code> and ‘datadate’ remains as a column.
+Note that the dates in ‘date’ are shifted to month-end.</p>
 <p>The easiest way to get started is going through examples.
 The next section presents several examples to help you get familiarized with PyAnomaly.</p>
 </section>
