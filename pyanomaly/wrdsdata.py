@@ -270,7 +270,9 @@ class WRDS():
                     data.append(pd.read_pickle(fpath))
             data = pd.concat(data)
 
-            shutil.rmtree(tmp_dir, ignore_errors=True)  # delete sub-period data files.
+            for file in os.scandir(tmp_dir):
+                print(file)
+                os.remove(file.path)
 
         # type conversion
         if src_tables is None:
@@ -280,13 +282,14 @@ class WRDS():
         self.save_data(data, table, library)
         elapsed_time(f'Download complete: {table}')
 
-    def download_sf(self, sdate=None, edate=None, monthly=True):
+    def download_sf(self, sdate=None, edate=None, monthly=True, run_in_executer=True):
         """ Download crsp.m(d)sf joined with crsp.m(d)senames.
 
         Args:
             sdate: Start date. e.g., '2000-01-01'. Set to None to download all data.
             edate: End date. Set to None to download all data.
             monthly: If True download msf else dsf.
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
 
         if monthly:
@@ -311,9 +314,9 @@ class WRDS():
 
         src_tables = [('crsp', sf), ('crsp', senames)]
         type = float if monthly else np.float32  # For dsf, use float32 to save space.
-        self.download_table_async('crsp', sf, sql, sdate=sdate, edate=edate, src_tables=src_tables, type=type, date_cols=['date'])
+        self.download_table_async('crsp', sf, sql, sdate=sdate, edate=edate, src_tables=src_tables, type=type, date_cols=['date'], run_in_executer=run_in_executer)
 
-    def download_seall(self, sdate=None, edate=None, monthly=True):
+    def download_seall(self, sdate=None, edate=None, monthly=True, run_in_executer=True):
         """Download delist info from m(d)seall.
 
         Delist can be obtained from either mseall or msedelist. We use mseall since it contains exchcd, which is used
@@ -325,6 +328,7 @@ class WRDS():
             sdate: Start date. e.g., '2000-01-01'. Set to None to download all data.
             edate: End date. Set to None to download all data.
             monthly: If True download mseall else dseall.
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
 
         seall = 'mseall' if monthly else 'dseall'
@@ -338,14 +342,15 @@ class WRDS():
         """
 
         type = float if monthly else np.float32
-        self.download_table_async('crsp', seall, sql, sdate=sdate, edate=edate, type=type, date_cols=['date'])
+        self.download_table_async('crsp', seall, sql, sdate=sdate, edate=edate, type=type, date_cols=['date'], run_in_executer=run_in_executer)
 
-    def download_funda(self, sdate=None, edate=None):
+    def download_funda(self, sdate=None, edate=None, run_in_executer=True):
         """Download comp.funda.
 
         Args:
             sdate: Start date. e.g., '2000-01-01'. Set to None to download all data.
             edate: End date. Set to None to download all data.
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
 
         sql = f"""
@@ -371,14 +376,15 @@ class WRDS():
             """
 
         src_tables = [('comp', 'funda'), ('comp', 'company')]
-        self.download_table_async('comp', 'fundq', sql, sdate=sdate, edate=edate, src_tables=src_tables, date_cols=['datadate'])
+        self.download_table_async('comp', 'funda', sql, sdate=sdate, edate=edate, src_tables=src_tables, date_cols=['datadate'], run_in_executer=run_in_executer)
 
-    def download_fundq(self, sdate=None, edate=None):
+    def download_fundq(self, sdate=None, edate=None, run_in_executer=True):
         """Download comp.fundq.
 
         Args:
             sdate: Start date. e.g., '2000-01-01'. Set to None to download all data.
             edate: End date. Set to None to download all data.
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
 
         sql = f"""
@@ -409,29 +415,31 @@ class WRDS():
             """
 
         src_tables = [('comp', 'fundq'), ('comp', 'company')]
-        self.download_table_async('comp', 'fundq', sql, sdate=sdate, edate=edate, src_tables=src_tables, date_cols=['datadate'])
+        self.download_table_async('comp', 'fundq', sql, sdate=sdate, edate=edate, src_tables=src_tables, date_cols=['datadate'], run_in_executer=run_in_executer)
 
-    def download_secd(self, sdate=None, edate=None):
+    def download_secd(self, sdate=None, edate=None, run_in_executer=True):
         """Download comp.secd.
 
         Args:
             sdate: Start date. e.g., '2000-01-01'. Set to None to download all data.
             edate: End date. Set to None to download all data.
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
         sql = 'gvkey, datadate, prccd, ajexdi, cshoc, iid'
-        self.download_table_async('comp', 'secd', sql, 'datadate', sdate, edate)
+        self.download_table_async('comp', 'secd', sql, 'datadate', sdate, edate, run_in_executer=run_in_executer)
 
-    def download_g_secd(self, sdate=None, edate=None):
+    def download_g_secd(self, sdate=None, edate=None, run_in_executer=True):
         """Download comp.g_secd.
 
         Args:
             sdate: Start date. e.g., '2000-01-01'. Set to None to download all data.
             edate: End date. Set to None to download all data.
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
         sql = 'gvkey, datadate, prccd, ajexdi, cshoc, iid'
-        self.download_table_async('comp', 'g_secd', sql, 'datadate', sdate, edate)
+        self.download_table_async('comp', 'g_secd', sql, 'datadate', sdate, edate, run_in_executer=run_in_executer)
 
-    def download_all(self):
+    def download_all(self, run_in_executer=True):
         """Download all tables.
 
         Currently, this function downloads the following tables:
@@ -447,14 +455,17 @@ class WRDS():
         * ff.factors_monthly
         * ff.factors_daily
         * comp.exrt_dly
+
+        Args:
+            run_in_executer: If True, download concurrently. Faster but memory hungrier.
         """
 
-        self.download_funda()
-        self.download_fundq()
-        self.download_sf(monthly=True)
-        self.download_sf(monthly=False)
-        self.download_seall(monthly=True)
-        self.download_seall(monthly=False)
+        self.download_funda(run_in_executer=run_in_executer)
+        self.download_fundq(run_in_executer=run_in_executer)
+        self.download_sf(monthly=True, run_in_executer=run_in_executer)
+        self.download_sf(monthly=False, run_in_executer=run_in_executer)
+        self.download_seall(monthly=True, run_in_executer=run_in_executer)
+        self.download_seall(monthly=False, run_in_executer=run_in_executer)
 
         self.download_table('crsp', 'ccmxpf_linktable', date_cols=['linkdt', 'linkenddt'])
         self.download_table('crsp', 'mcti', date_cols=['caldt'])

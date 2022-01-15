@@ -4296,7 +4296,7 @@ connecting to WRDS.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_all">
-<span class="sig-name descname"><span class="pre">download_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_all" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_all" title="Permalink to this definition"></a></dt>
 <dd><p>Download all tables.</p>
 <p>Currently, this function downloads the following tables:</p>
 <ul class="simple">
@@ -4312,17 +4312,23 @@ connecting to WRDS.</p>
 <li><p>ff.factors_daily</p></li>
 <li><p>comp.exrt_dly</p></li>
 </ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_funda">
-<span class="sig-name descname"><span class="pre">download_funda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_funda" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_funda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_funda" title="Permalink to this definition"></a></dt>
 <dd><p>Download comp.funda.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdate</strong> – Start date. e.g., ‘2000-01-01’. Set to None to download all data.</p></li>
 <li><p><strong>edate</strong> – End date. Set to None to download all data.</p></li>
+<li><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4330,13 +4336,14 @@ connecting to WRDS.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_fundq">
-<span class="sig-name descname"><span class="pre">download_fundq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_fundq" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_fundq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_fundq" title="Permalink to this definition"></a></dt>
 <dd><p>Download comp.fundq.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdate</strong> – Start date. e.g., ‘2000-01-01’. Set to None to download all data.</p></li>
 <li><p><strong>edate</strong> – End date. Set to None to download all data.</p></li>
+<li><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4344,13 +4351,14 @@ connecting to WRDS.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_g_secd">
-<span class="sig-name descname"><span class="pre">download_g_secd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_g_secd" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_g_secd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_g_secd" title="Permalink to this definition"></a></dt>
 <dd><p>Download comp.g_secd.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdate</strong> – Start date. e.g., ‘2000-01-01’. Set to None to download all data.</p></li>
 <li><p><strong>edate</strong> – End date. Set to None to download all data.</p></li>
+<li><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4358,7 +4366,7 @@ connecting to WRDS.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_seall">
-<span class="sig-name descname"><span class="pre">download_seall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monthly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_seall" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_seall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monthly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_seall" title="Permalink to this definition"></a></dt>
 <dd><p>Download delist info from m(d)seall.</p>
 <p>Delist can be obtained from either mseall or msedelist. We use mseall since it contains exchcd, which is used
 when replacing missing dlret.
@@ -4370,6 +4378,7 @@ in msenames can be -2, whereas that in mseall is 1.</p>
 <li><p><strong>sdate</strong> – Start date. e.g., ‘2000-01-01’. Set to None to download all data.</p></li>
 <li><p><strong>edate</strong> – End date. Set to None to download all data.</p></li>
 <li><p><strong>monthly</strong> – If True download mseall else dseall.</p></li>
+<li><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4377,13 +4386,14 @@ in msenames can be -2, whereas that in mseall is 1.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_secd">
-<span class="sig-name descname"><span class="pre">download_secd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_secd" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_secd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_secd" title="Permalink to this definition"></a></dt>
 <dd><p>Download comp.secd.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdate</strong> – Start date. e.g., ‘2000-01-01’. Set to None to download all data.</p></li>
 <li><p><strong>edate</strong> – End date. Set to None to download all data.</p></li>
+<li><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4391,7 +4401,7 @@ in msenames can be -2, whereas that in mseall is 1.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.wrdsdata.WRDS.download_sf">
-<span class="sig-name descname"><span class="pre">download_sf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monthly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_sf" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_sf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monthly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_in_executer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.wrdsdata.WRDS.download_sf" title="Permalink to this definition"></a></dt>
 <dd><p>Download crsp.m(d)sf joined with crsp.m(d)senames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4399,6 +4409,7 @@ in msenames can be -2, whereas that in mseall is 1.</p>
 <li><p><strong>sdate</strong> – Start date. e.g., ‘2000-01-01’. Set to None to download all data.</p></li>
 <li><p><strong>edate</strong> – End date. Set to None to download all data.</p></li>
 <li><p><strong>monthly</strong> – If True download msf else dsf.</p></li>
+<li><p><strong>run_in_executer</strong> – If True, download concurrently. Faster but memory hungrier.</p></li>
 </ul>
 </dd>
 </dl>
