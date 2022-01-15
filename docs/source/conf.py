@@ -24,7 +24,7 @@ copyright = '2021, Chulwoo Han and Jongho Kang'
 author = 'Chulwoo Han and Jongho Kang'
 
 # The full version, including alpha/beta/rc tags
-release = '0.921'
+release = '0.922'
 
 
 # -- General configuration ---------------------------------------------------
@@ -69,14 +69,7 @@ html_css_files = [
 
 todo_include_todos = False
 
-# autodoc_mock_imports = ['numpy', 'pandas', 'wrds', 'numba', 'statsmodels', 'openpyxl']
-from unittest.mock import MagicMock
-sys.modules['numpy'] = MagicMock()
-sys.modules['pandas'] = MagicMock()
-sys.modules['wrds'] = MagicMock()
-sys.modules['numba'] = MagicMock()
-sys.modules['statsmodels'] = MagicMock()
-sys.modules['openpyxl'] = MagicMock()
+autodoc_mock_imports = ['numpy', 'pandas', 'wrds', 'numba', 'scipy', 'statsmodels', 'openpyxl', 'matplotlib']
 
 # -- rst prolog
 # Substitutions

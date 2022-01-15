@@ -47,7 +47,7 @@ def example1():
 
     wrds = WRDS(wrds_username)  # Use your WRDS user id.
     # Download all necessary data.
-    wrds.download_all()
+    wrds.download_all(run_in_executer=False)
     # Create crspm(d) from m(d)sf and m(d)seall and add gvkey to them.
     wrds.preprocess_crsp()
 
@@ -696,7 +696,7 @@ def example7():
 
 
 if __name__ == '__main__':
-    wrds_username = 'pyanomaly'
+    wrds_username = 'pyanomaly'  # Change to your wrds username.
 
     example1()
     # example2()

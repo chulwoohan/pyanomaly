@@ -152,7 +152,6 @@ def make_ff_factors():
 ###############################################################################
 import datetime as dt
 import wrds
-from pandas.tseries.offsets import *
 from scipy import stats
 
 def make_ff_factors_wrds():
@@ -167,7 +166,7 @@ def make_ff_factors_wrds():
     ###################
     # Connect to WRDS #
     ###################
-    conn = wrds.Connection(wrds_username='fehouse')
+    conn = wrds.Connection()
 
     ###################
     # Compustat Block #
@@ -323,8 +322,8 @@ def make_ff_factors_wrds():
     ccm['linkenddt'] = ccm['linkenddt'].fillna(pd.to_datetime('today'))
 
     ccm1 = pd.merge(comp[['gvkey', 'datadate', 'be', 'count']], ccm, how='left', on=['gvkey'])
-    ccm1['yearend'] = ccm1['datadate'] + YearEnd(0)
-    ccm1['jdate'] = ccm1['yearend'] + MonthEnd(6)
+    ccm1['yearend'] = ccm1['datadate'] + pd.tseries.offsets.YearEnd(0)
+    ccm1['jdate'] = ccm1['yearend'] + pd.tseries.offsets.MonthEnd(6)
 
     # set link date bounds
     ccm2 = ccm1[(ccm1['jdate'] >= ccm1['linkdt']) & (ccm1['jdate'] <= ccm1['linkenddt'])]

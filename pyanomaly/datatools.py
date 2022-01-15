@@ -30,7 +30,6 @@ Auxiliary Functions
 import numpy as np
 import pandas as pd
 from pandas.tseries.offsets import MonthEnd
-import scipy.stats.mstats as mstats
 
 from pyanomaly.globals import *
 
@@ -572,7 +571,7 @@ def inspect_data(data, option=['summary'], date_col=None, id_col=None):
     pd.set_option('display.max_rows', max_rows)  # back to previous setting
 
 
-def compare_data(data1, data2=None, on=None, how='inner', tolerance=0.01, suffixes=('_x', '_y'), returns=False):
+def compare_data(data1, data2=None, on=None, how='inner', tolerance=0.01, suffixes=('_x', '_y'), returns=True):
     """Compare `data1` with `data2`.
 
     This function compares the common columns of `data1` and `data2`.
