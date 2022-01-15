@@ -24,7 +24,7 @@ copyright = '2021, Chulwoo Han and Jongho Kang'
 author = 'Chulwoo Han and Jongho Kang'
 
 # The full version, including alpha/beta/rc tags
-release = '0.922'
+release = '0.923'
 
 
 # -- General configuration ---------------------------------------------------
