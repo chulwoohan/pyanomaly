@@ -35,7 +35,7 @@ Main Features
 
 * Efficient data download from WRDS using asynco.
 * Over 200 firm characteristics generation. You can choose which firm characteristics to generate.
-* Fama-French 3-factor and Hou-Zhou-Zhang 4-factor portfolios.
+* Fama-French 3-factor and Hou-Xue-Zhang 4-factor portfolios.
 * Analytics
 
     * Cross-section regression
