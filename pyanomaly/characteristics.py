@@ -3218,6 +3218,55 @@ class CRSPD(Panel):
         cd['_tmp'] = (cd.askhi - cd.bidlo) / (0.5 * (cd.askhi + cd.bidlo))
         return cd.groupby(['permno', 'ym'])._tmp.mean().swaplevel()
 
+    def c_trend_factor(self):
+        """Trend factor. Han, Zhou, and Zhu (2016)"""
+
+        cd = self.data[['ym', 'ret', 'prc_adj']].copy()
+
+        avg_prc = np.full([len(cd), 12], np.nan)
+
+        avg_prc[:, 0] = cd['prc_adj']  # prc at t
+        avg_prc[:, 1] = self.rolling(cd['prc_adj'], 3, 'mean')  # 3-day mean
+        avg_prc[:, 2] = self.rolling(cd['prc_adj'], 5, 'mean')  # 5-day mean
+        avg_prc[:, 3] = self.rolling(cd['prc_adj'], 10, 'mean')  # 10-day mean
+        avg_prc[:, 4] = self.rolling(cd['prc_adj'], 20, 'mean')  # 20-day mean
+        avg_prc[:, 5] = self.rolling(cd['prc_adj'], 50, 'mean')  # 50-day mean
+        avg_prc[:, 6] = self.rolling(cd['prc_adj'], 100, 'mean')  # 100-day mean
+        avg_prc[:, 7] = self.rolling(cd['prc_adj'], 200, 'mean')  # 200-day mean
+        avg_prc[:, 8] = self.rolling(cd['prc_adj'], 400, 'mean')  # 400-day mean
+        avg_prc[:, 9] = self.rolling(cd['prc_adj'], 600, 'mean')  # 600-day mean
+        avg_prc[:, 10] = self.rolling(cd['prc_adj'], 800, 'mean')  # 800-day mean
+        avg_prc[:, 11] = self.rolling(cd['prc_adj'], 1000, 'mean')  # 1000-day mean
+
+        avg_prc = avg_prc / avg_prc[:, [0]]  # normalized average prices including constant.
+        avg_prc = pd.DataFrame(avg_prc, index=pd.MultiIndex.from_frame(cd.reset_index()[['permno', 'ym']]))
+        avg_prc = avg_prc.groupby(['permno', 'ym']).last()
+        avg_prc_l1 = avg_prc.groupby('permno').shift(1)
+
+        cd['ret'] = np.log(1 + cd['ret'])
+        ret = np.exp(cd.groupby(['permno', 'ym'])['ret'].sum()) - 1
+
+        sample = pd.concat([ret, avg_prc_l1], axis=1)
+
+        beta = {}
+        for ym, sample_ in sample.groupby('ym'):
+            sample_.dropna(inplace=True)
+            y = sample_.iloc[:, 0]
+            X = sample_.iloc[:, 1:]
+            if X.shape[0] < X.shape[1]:  # singular
+                beta[ym] = np.full(X.shape[1], np.nan)
+            else:
+                beta[ym] = (np.linalg.solve(X.T @ X, X.T @ y)).reshape(X.shape[1])
+
+        beta = pd.DataFrame.from_dict(beta, orient='index')
+        est_beta = beta.rolling(12).mean()  # 12-month mean of beta estimates.
+
+        char = []
+        for ym, avg_prc_ in avg_prc.groupby('ym'):
+            char.append(avg_prc_.dot(est_beta.loc[ym]))  # Return prediction
+
+        return pd.concat(char).sort_index().swaplevel()  # ym/permno sorted on permno/ym
+
 
 ################################################################################
 #
@@ -3237,72 +3286,95 @@ class Merge(Panel):
         super().__init__()
         self.data = None
 
-    def preprocess(self, crspm, crspd, funda, fundq, delete_data=True):
+    def preprocess(self, crspm=None, crspd=None, funda=None, fundq=None, delete_data=True):
         """Merge crspm, crspd, funda, and fundq by left-joining crspd, funda, and fundq to crspm. The resulting data has
         index = date/permno.
 
         Args:
-            crspm: CRSPM instance
-            crspd: CRSPD instance
-            funda: FUNDA instance
-            fundq: FUNDQ instance
+            crspm: CRSPM instance.
+            crspd: CRSPD instance.
+            funda: FUNDA instance.
+            fundq: FUNDQ instance.
             delete_data: True to delete the data of crspm, crspd, funda, and fundq after merge to save memory.
         """
 
-        elapsed_time('Preprocessing merged...')
+        elapsed_time('Preprocessing Merge...')
 
         ###############################
         # Prepare characteristics required to generate characteristics here..
         ###############################
-        # For age.
-        funda.prepare(['age'])
+        if crspm is not None:
+            # For mispricing.
+            crspm.prepare(['ret_12_1', 'chcsho_12m', 'eqnpo_12m'])
 
-        # For mispricing.
-        crspm.prepare(['ret_12_1', 'chcsho_12m', 'eqnpo_12m'])
-        funda.prepare(['o_score', 'gp_at', 'oaccruals_at', 'noa_at', 'at_gr1', 'ppeinv_gr1a'])
-        fundq.prepare(['niq_at'])
+        if funda is not None:
+            # For age.
+            funda.prepare(['age'])
 
-        # For qmj.
-        funda.prepare(['gp_at', 'ni_be', 'ocf_at', 'oaccruals_at', 'o_score', 'z_score'])
-        fa = funda.data
-        fa['ni_at'] = fa.ib / fa.at_
-        fa['gp_sale'] = fa.gp / fa.sale
-        fa['debt_at'] = fa.debt / fa.at_
-        fa['gpoa_ch5'] = funda.diff(fa.gp_at, 5)
-        fa['roe_ch5'] = funda.diff(fa.ni_be, 5)
-        fa['roa_ch5'] = funda.diff(fa.ni_at, 5)
-        fa['cfoa_ch5'] = funda.diff(fa.ocf_at, 5)
-        fa['gmar_ch5'] = funda.diff(fa.gp_sale, 5)
-        fa['roe_std'] = funda.rolling(fa.ni_be, 5, 'std')
+            # For mispricing.
+            funda.prepare(['o_score', 'gp_at', 'oaccruals_at', 'noa_at', 'at_gr1', 'ppeinv_gr1a'])
 
-        fq = fundq.data
-        fq['roeq_std'] = fundq.rolling(fq.ibq / fq.be, 20, 'std', min_n=12)
+            # For qmj.
+            funda.prepare(['gp_at', 'ni_be', 'ocf_at', 'oaccruals_at', 'o_score', 'z_score'])
+            fa = funda.data
+            fa['ni_at'] = fa.ib / fa.at_
+            fa['gp_sale'] = fa.gp / fa.sale
+            fa['debt_at'] = fa.debt / fa.at_
+            fa['gpoa_ch5'] = funda.diff(fa.gp_at, 5)
+            fa['roe_ch5'] = funda.diff(fa.ni_be, 5)
+            fa['roa_ch5'] = funda.diff(fa.ni_at, 5)
+            fa['cfoa_ch5'] = funda.diff(fa.ocf_at, 5)
+            fa['gmar_ch5'] = funda.diff(fa.gp_sale, 5)
+            fa['roe_std'] = funda.rolling(fa.ni_be, 5, 'std')
+
+        if fundq is not None:
+            # For mispricing.
+            fundq.prepare(['niq_at'])
+
+            # For qmj.
+            fq = fundq.data
+            fq['roeq_std'] = fundq.rolling(fq.ibq / fq.be, 20, 'std', min_n=12)
 
         ###############################
         # Merge data
         ###############################
-        self.copy_from(crspm)
-        if delete_data:
-            del crspm.data
+        # We require at least one of crspm or crspd.
+        if crspm is not None and crspd is not None:  # Both exist.
+            self.copy_from(crspm)
+            if delete_data:
+                del crspm.data
 
-        self.merge(crspd.chars, how='left')
-        if delete_data:
-            del crspd.data
-            del crspd.chars
+            self.merge(crspd.chars, how='left')
+            if delete_data:
+                del crspd.data
+                del crspd.chars
+        elif crspm is not None and crspd is None:  # Only crspm.
+            self.copy_from(crspm)
+            if delete_data:
+                del crspm.data
+        elif crspm is None and crspd is not None:  # Only crspd.
+            self.copy_from(crspd)
+            if delete_data:
+                del crspd.data
+                del crspd.chars
+        else:
+            raise ValueError('At least one of CRSPM or CRSPD should be provided.')
 
-        self.merge(funda.data, on=['date', 'gvkey'], how='left')
-        if delete_data:
-            del funda.data
+        if funda is not None:
+            self.merge(funda.data, on=['date', 'gvkey'], how='left')
+            if delete_data:
+                del funda.data
 
-        self.merge(fundq.data, on=['date', 'gvkey'], how='left')
-        if delete_data:
-            del fundq.data
+        if fundq is not None:
+            self.merge(fundq.data, on=['date', 'gvkey'], how='left')
+            if delete_data:
+                del fundq.data
 
         self.data.sort_index(level=['permno', 'date'], inplace=True)
 
-        # Add target return
-        self.data['target'] = self.futret(self.data.exret)
-        elapsed_time('merged preprocessed.')
+        # Add future return
+        self.data['futret'] = self.futret(self.data.exret)
+        elapsed_time('Merge preprocessed.')
 
     def postprocess(self):
         """Postprocess data.

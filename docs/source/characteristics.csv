@@ -161,154 +161,155 @@ Scherbina",2002,JF,
 160,Percent total accruals,"Hafzalla, Lundholm, and Van Winkle",2011,AR,taccruals_ni
 161,Tangibility,Hahn and Lee,2009,JF,tangibility
 162,Tangibility (quarterly),Hahn and Lee,2009,JF,
-163,Coskewness,Harvey and Siddique,2000,JF,coskew_21d
-164,Capital turnover,Haugen and Baker,1996,JFE,at_turnover
-165,Capital turnover (quarterly),Haugen and Baker,1996,JFE,
-166,Return on equity,Haugen and Baker,1996,JFE,ni_be
-167,Analysts' forecast change,"Hawkins, Chamberlin, and Daniel",1984,FAJ,
-168,Revisions in analyst's' earnings forecasts,"Hawkins, Chamberlin, and Daniel",1984,FAJ,
-169,"Year 1-lagged return, annual",Heston and Sadka,2008,JFE,seas_1_1an
-170,"Year 1-lagged return, nonannual",Heston and Sadka,2008,JFE,seas_1_1na
-171,"Years 2-5 lagged returns, annual",Heston and Sadka,2008,JFE,seas_2_5an
-172,"Years 2-5 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_2_5na
-173,"Years 6-10 lagged returns, annual",Heston and Sadka,2008,JFE,seas_6_10an
-174,"Years 6-10 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_6_10na
-175,"Years 11-15 lagged returns, annual",Heston and Sadka,2008,JFE,seas_11_15an
-176,"Years 11-15 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_11_15na
-177,"Years 16-20 lagged returns, annual",Heston and Sadka,2008,JFE,seas_16_20an
-178,"Years 16-20 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_16_20na
-179,Citations to R&D expenses,"Hirschleifer, Hsu, and Li",2013,JFE,
-180,Patents to R&D expenses,"Hirschleifer, Hsu, and Li",2013,JFE,
-181,Change in net operating assets,Hirshleifer et al.,2004,JAE,noa_gr1a
-182,Net operating assets,Hirshleifer et al.,2004,JAE,noa_at
-183,Change in depreciation to PP&E,Holthausen and Larcker,1992,JAE,pchdepr
-184,Depreciation to PP&E,Holthausen and Larcker,1992,JAE,depr
-185,Sin stock,Hong and Kacperczyk,2009,JFE,sin
-186,Industry lead-lag effect in earnings surprises,Hou,2007,RFS,
-187,Industry lead-lag effect in prior returns,Hou,2007,RFS,
-188,Bid-ask spread (TAQ),Hou and Loh ,2016,JFE,
-189,Price delay based on R-squared,Hou and Moskowitz,2005,RFS,pricedelay
-190,Price delay based on SE-adjusted slopes,Hou and Moskowitz,2005,RFS,
-191,Price delay based on slopes,Hou and Moskowitz,2005,RFS,pricedelay_slope
-192,Industry concentration (book equity),Hou and Robinson,2006,JF,herf_be
-193,Industry concentration (sales),Hou and Robinson,2006,JF,herf_sale
-194,Industry concentration (total assets),Hou and Robinson,2006,JF,herf_at
-195,Return on equity (quarterly),"Hou, Xue, and Zhang",2015,RFS,niq_be
-196,Cash flow volatility,Huang,2009,JEF,ocfq_saleq_std
-197,Short-term reversal,Jegadeesh,1990,JF,ret_1_0
-198,Revenue surprise,Jegadeesh and Livnat,2006,JFE,saleq_su
-199,Momentum (12 month),Jegadeesh and Titman,1993,JF,ret_12_1
-200,Momentum (3 month),Jegadeesh and Titman,1993,JF,ret_3_1
-201,Momentum (6 month),Jegadeesh and Titman,1993,JF,ret_6_1
-202,Momentum (9 month),Jegadeesh and Titman,1993,JF,ret_9_1
-203,Firm age,"Jiang, Lee, and Zhang",2005,RAS,age
-204,Revenue surprise (Karma),Karma,2009,JBFA,rsup
-205,Tail risk,Kelly and Jiang,2014,RFS,
-206,Earnings announcement return (Kishore et al.),Kishore et al.,2008,WP,
-207,Long-term EPS forecast,La Porta,1996,JF,
-208,Long-term EPS forecast (monthly sort),La Porta,1996,JF,
-209,Annual sales growth,"Lakonishok, Shleifer, and Vishny",1994,JF,sale_gr1
-210,Annual sales growth (quarterly),"Lakonishok, Shleifer, and Vishny",1994,JF,
-211,Cash flow-to-price,"Lakonishok, Shleifer, and Vishny",1994,JF,fcf_me
-212,Cash flow-to-price (quarterly),"Lakonishok, Shleifer, and Vishny",1994,JF,
-213,Five-year sales growth rank,"Lakonishok, Shleifer, and Vishny",1994,JF,
-214,Three-year sales growth,"Lakonishok, Shleifer, and Vishny",1994,JF,sale_gr3
-215,Kaplan-Zingales index,"Lamont, Polk, and Saa-Requejo",2001,RFS,kz_index
-216,Kaplan-Zingales index (quarterly),"Lamont, Polk, and Saa-Requejo",2001,RFS,
-217,Abnormal volume in earnings announcement month,"Lerman, Livnat, and Mendenhall",2008,WP,
-218,Taxable income to income (JKP),Lev and Nissim,2004,AR,pi_nix
-219,"Taxable income to income (Org, GHZ)",Lev and Nissim,2004,AR,tb
-220,Taxable income to income (quarterly),Lev and Nissim,2004,AR,
-221,R&D capital-to-assets,Li,2011,RFS,rd5_at
-222,Dividend yield (JKP),Litzenberger and Ramaswamy,1979,JF,div12m_me
-223,Dividend yield (GHZ),Litzenberger and Ramaswamy,1979,JF,dy
-224,Dividend yield (quarterly),Litzenberger and Ramaswamy,1979,JF,
-225,Zero-trading days (1 month),Liu,2006,JFE,zero_trades_21d
-226,Zero-trading days (6 months),Liu,2006,JFE,zero_trades_126d
-227,Zero-trading days (12 months),Liu,2006,JFE,zero_trades_252d
-228,Growth in advertising expenses,Lou,2014,RFS,
-229,Initial public offerings,Loughran and Ritter,1995,JF,ipo
-230,Enterprise multiple,Loughran and Wellman,2011,JFQA,ebitda_mev
-231,Enterprise multiple (quarterly),Loughran and Wellman,2011,JFQA,
-232,Changes in PPE and inventory/assets,"Lyandres, Sun, and Zhang",2008,RFS,ppeinv_gr1a
-233,Composite debt issuance,"Lyandres, Sun, and Zhang",2008,RFS,debt_gr3
-234,Customer industries momentum,Menzly and Ozbas,2010,JF,
-235,Supplier industries momentum,Menzly and Ozbas,2010,JF,
-236,Dividend initiation,"Michaely, Thaler, and Womack",1995,JF,divi
-237,Dividend omission,"Michaely, Thaler, and Womack",1995,JF,divo
-238,Share price,Miller and Scholes,1982,JPE,price
-239,Mohanram G-score,Mohanram,2005,RAS,
-240,Quarterly sales growth,Mohanram,2005,RAS,saleq_gr1
-241,Industry momentum ,Moskowitz and Grinblatt,1999,JFE,indmom
-242,Operating leverage,Novy-Marx,2011,JFE,opex_at
-243,Operating leverage (quarterly),Novy-Marx,2011,JFE,
-244,Intermediate momentum (7-12),Novy-Marx,2012,ROF,ret_12_6
-245,Gross profits-to-assets,Novy-Marx,2013,JFE,gp_at
-246,Gross profits-to-lagged assets,Novy-Marx,2013,JFE,gp_atl1
-247,Gross profits-to-lagged assets (quarterly),Novy-Marx,2013,JFE,
-248,Asset liquidity to book assets,Ortiz-Molina and Phillips,2014,JFQA,aliq_at
-249,Asset liquidity to book assets (quarterly),Ortiz-Molina and Phillips,2014,JFQA,
-250,Asset liquidity to market assets,Ortiz-Molina and Phillips,2014,JFQA,aliq_mat
-251,Asset liquidity to market assets (quarterly),Ortiz-Molina and Phillips,2014,JFQA,
-252,Cash flow-to-debt,Ou and Penman,1989,JAR,cashdebt
-253,Change in current ratio,Ou and Penman,1989,JAR,pchcurrat
-254,Change in quick ratio,Ou and Penman,1989,JAR,pchquick
-255,Change in sales to inventory,Ou and Penman,1989,JAR,pchsaleinv
-256,Current ratio,Ou and Penman,1989,JAR,currat
-257,Quick ratio,Ou and Penman,1989,JAR,quick
-258,Sales-to-cash,Ou and Penman,1989,JAR,salecash
-259,Sales-to-inventory,Ou and Penman,1989,JAR,saleinv
-260,Sales-to-receivables,Ou and Penman,1989,JAR,salerec
-261,Cash-to-assets,Palazzo,2012,JFE,cash_at
-262,Pastor-Stambaugh liquidity beta,Pastor and Stambaugh,2003,JPE,
-263,Book-to-market enterprise value,"Penman, Richardson, and Tuna",2007,JAR,bev_mev
-264,Book-to-market enterprise value (quarterly),"Penman, Richardson, and Tuna",2007,JAR,
-265,Net debt-to-price,"Penman, Richardson, and Tuna",2007,JAR,netdebt_me
-266,Net debt-to-price (quarterly),"Penman, Richardson, and Tuna",2007,JAR,
-267,Piotroski F-score (JKP),Piotroski,2000,AR,f_score
-268,"Piotroski F-score (GHZ, Org)",Piotroski,2000,AR,ps
-269,Piotroski F-score (quarterly),Piotroski,2000,AR,
-270,"Net stock issues (JKP, Org)",Pontiff and Woodgate,2008,JF,chcsho_12m
-271,Net stock issues (GHZ),Pontiff and Woodgate,2008,JF,chcsho
-272,Order backlog,"Rajgopal, Shevlin, and Venkatachalam",2003,RAS,
-273,Unexpected quarterly earnings ,"Rendelman, Jones, and Latane",1982,JFE,
-274,Chage in common equity,Richardson et al.,2005,JAE,be_gr1a
-275,Chagne in long-term investments ,Richardson et al.,2005,JAE,lti_gr1a
-276,Change in current Ooperating liabilities,Richardson et al.,2005,JAE,col_gr1a
-277,Change in current operating assets,Richardson et al.,2005,JAE,coa_gr1a
-278,Change in financial liabilities,Richardson et al.,2005,JAE,fnl_gr1a
-279,Change in long-term debt,Richardson et al.,2005,JAE,lgr
-280,Change in net financial assets,Richardson et al.,2005,JAE,nfna_gr1a
-281,Change in net non-cash working capital,Richardson et al.,2005,JAE,cowc_gr1a
-282,Change in net non-current operating assets,Richardson et al.,2005,JAE,nncoa_gr1a
-283,Change in non-current operating assets,Richardson et al.,2005,JAE,ncoa_gr1a
-284,Change in non-current operating liabilities,Richardson et al.,2005,JAE,ncol_gr1a
-285,Change in short-term investments,Richardson et al.,2005,JAE,sti_gr1a
-286,Total accruals,Richardson et al.,2005,JAE,taccruals_at
-287,"Book to market (December ME, quarterly)","Rosenberg, Reid, and Lanstein",1985,JF,
-288,Book-to-market (December ME),"Rosenberg, Reid, and Lanstein",1985,JF,be_me
-289,Change in analyst coverage,Scherbina,2008,ROF,
-290,Operating accruals (JKP),Sloan,1996,AR,oaccruals_at
-291,"Operating accruals (GHZ, Org)",Sloan,1996,AR,acc
-292,Asset turnover,Soliman,2008,AR,sale_bev
-293,Asset turnover (quarterly),Soliman,2008,AR,
-294,Change in asset turnover,Soliman,2008,AR,chatoia
-295,Change in profit margin,Soliman,2008,AR,chpmia
-296,Profit margin,Soliman,2008,AR,ebit_sale
-297,Profit margin (quarterly),Soliman,2008,AR,
-298,Return on net operating assets,Soliman,2008,AR,ebit_bev
-299,Return on net operating assets (quarterly),Soliman,2008,AR,
-300,Mispricing factor: Management,Stambaugh and Yuan,2016,RFS,mispricing_mgmt
-301,Mispricing factor: Performance,Stambaugh and Yuan,2016,RFS,mispricing_perf
-302,Inventory change,Thomas and Zhang,2002,RAS,inv_gr1a
-303,Tax expense surprise,Thomas and Zhang,2011,JAR,chtx
-304,Abnormal corporate investment,"Titman, Wei, and Xie",2004,JFQA,capex_abn
-305,Real estate holdings,Tuzel,2010,RFS,realestate
-306,Convertible debt indicator,Valta,2016,JFQA,convind
-307,Convertible debt-to-total debt,Valta,2016,JFQA,
-308,Secured debt indicator,Valta,2016,JFQA,securedind
-309,Secured debt-to-total debt,Valta,2016,JFQA,secured
-310,Whited-Wu index,Whited and Wu,2006,RFS,
-311,Whited-Wu index (quarterly),Whited and Wu,2006,RFS,
-312,CAPEX growth (1 year),Xie,2001,AR,capx_gr1
-313,Discretionay accruals,Xie,2001,AR,
+163,Trend factor,"Han, Zhou, and Zhu",2016,JFE,trend_factor
+164,Coskewness,Harvey and Siddique,2000,JF,coskew_21d
+165,Capital turnover,Haugen and Baker,1996,JFE,at_turnover
+166,Capital turnover (quarterly),Haugen and Baker,1996,JFE,
+167,Return on equity,Haugen and Baker,1996,JFE,ni_be
+168,Analysts' forecast change,"Hawkins, Chamberlin, and Daniel",1984,FAJ,
+169,Revisions in analyst's' earnings forecasts,"Hawkins, Chamberlin, and Daniel",1984,FAJ,
+170,"Year 1-lagged return, annual",Heston and Sadka,2008,JFE,seas_1_1an
+171,"Year 1-lagged return, nonannual",Heston and Sadka,2008,JFE,seas_1_1na
+172,"Years 2-5 lagged returns, annual",Heston and Sadka,2008,JFE,seas_2_5an
+173,"Years 2-5 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_2_5na
+174,"Years 6-10 lagged returns, annual",Heston and Sadka,2008,JFE,seas_6_10an
+175,"Years 6-10 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_6_10na
+176,"Years 11-15 lagged returns, annual",Heston and Sadka,2008,JFE,seas_11_15an
+177,"Years 11-15 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_11_15na
+178,"Years 16-20 lagged returns, annual",Heston and Sadka,2008,JFE,seas_16_20an
+179,"Years 16-20 lagged returns, nonannual",Heston and Sadka,2008,JFE,seas_16_20na
+180,Citations to R&D expenses,"Hirschleifer, Hsu, and Li",2013,JFE,
+181,Patents to R&D expenses,"Hirschleifer, Hsu, and Li",2013,JFE,
+182,Change in net operating assets,Hirshleifer et al.,2004,JAE,noa_gr1a
+183,Net operating assets,Hirshleifer et al.,2004,JAE,noa_at
+184,Change in depreciation to PP&E,Holthausen and Larcker,1992,JAE,pchdepr
+185,Depreciation to PP&E,Holthausen and Larcker,1992,JAE,depr
+186,Sin stock,Hong and Kacperczyk,2009,JFE,sin
+187,Industry lead-lag effect in earnings surprises,Hou,2007,RFS,
+188,Industry lead-lag effect in prior returns,Hou,2007,RFS,
+189,Bid-ask spread (TAQ),Hou and Loh ,2016,JFE,
+190,Price delay based on R-squared,Hou and Moskowitz,2005,RFS,pricedelay
+191,Price delay based on SE-adjusted slopes,Hou and Moskowitz,2005,RFS,
+192,Price delay based on slopes,Hou and Moskowitz,2005,RFS,pricedelay_slope
+193,Industry concentration (book equity),Hou and Robinson,2006,JF,herf_be
+194,Industry concentration (sales),Hou and Robinson,2006,JF,herf_sale
+195,Industry concentration (total assets),Hou and Robinson,2006,JF,herf_at
+196,Return on equity (quarterly),"Hou, Xue, and Zhang",2015,RFS,niq_be
+197,Cash flow volatility,Huang,2009,JEF,ocfq_saleq_std
+198,Short-term reversal,Jegadeesh,1990,JF,ret_1_0
+199,Revenue surprise,Jegadeesh and Livnat,2006,JFE,saleq_su
+200,Momentum (12 month),Jegadeesh and Titman,1993,JF,ret_12_1
+201,Momentum (3 month),Jegadeesh and Titman,1993,JF,ret_3_1
+202,Momentum (6 month),Jegadeesh and Titman,1993,JF,ret_6_1
+203,Momentum (9 month),Jegadeesh and Titman,1993,JF,ret_9_1
+204,Firm age,"Jiang, Lee, and Zhang",2005,RAS,age
+205,Revenue surprise (Karma),Karma,2009,JBFA,rsup
+206,Tail risk,Kelly and Jiang,2014,RFS,
+207,Earnings announcement return (Kishore et al.),Kishore et al.,2008,WP,
+208,Long-term EPS forecast,La Porta,1996,JF,
+209,Long-term EPS forecast (monthly sort),La Porta,1996,JF,
+210,Annual sales growth,"Lakonishok, Shleifer, and Vishny",1994,JF,sale_gr1
+211,Annual sales growth (quarterly),"Lakonishok, Shleifer, and Vishny",1994,JF,
+212,Cash flow-to-price,"Lakonishok, Shleifer, and Vishny",1994,JF,fcf_me
+213,Cash flow-to-price (quarterly),"Lakonishok, Shleifer, and Vishny",1994,JF,
+214,Five-year sales growth rank,"Lakonishok, Shleifer, and Vishny",1994,JF,
+215,Three-year sales growth,"Lakonishok, Shleifer, and Vishny",1994,JF,sale_gr3
+216,Kaplan-Zingales index,"Lamont, Polk, and Saa-Requejo",2001,RFS,kz_index
+217,Kaplan-Zingales index (quarterly),"Lamont, Polk, and Saa-Requejo",2001,RFS,
+218,Abnormal volume in earnings announcement month,"Lerman, Livnat, and Mendenhall",2008,WP,
+219,Taxable income to income (JKP),Lev and Nissim,2004,AR,pi_nix
+220,"Taxable income to income (Org, GHZ)",Lev and Nissim,2004,AR,tb
+221,Taxable income to income (quarterly),Lev and Nissim,2004,AR,
+222,R&D capital-to-assets,Li,2011,RFS,rd5_at
+223,Dividend yield (JKP),Litzenberger and Ramaswamy,1979,JF,div12m_me
+224,Dividend yield (GHZ),Litzenberger and Ramaswamy,1979,JF,dy
+225,Dividend yield (quarterly),Litzenberger and Ramaswamy,1979,JF,
+226,Zero-trading days (1 month),Liu,2006,JFE,zero_trades_21d
+227,Zero-trading days (6 months),Liu,2006,JFE,zero_trades_126d
+228,Zero-trading days (12 months),Liu,2006,JFE,zero_trades_252d
+229,Growth in advertising expenses,Lou,2014,RFS,
+230,Initial public offerings,Loughran and Ritter,1995,JF,ipo
+231,Enterprise multiple,Loughran and Wellman,2011,JFQA,ebitda_mev
+232,Enterprise multiple (quarterly),Loughran and Wellman,2011,JFQA,
+233,Changes in PPE and inventory/assets,"Lyandres, Sun, and Zhang",2008,RFS,ppeinv_gr1a
+234,Composite debt issuance,"Lyandres, Sun, and Zhang",2008,RFS,debt_gr3
+235,Customer industries momentum,Menzly and Ozbas,2010,JF,
+236,Supplier industries momentum,Menzly and Ozbas,2010,JF,
+237,Dividend initiation,"Michaely, Thaler, and Womack",1995,JF,divi
+238,Dividend omission,"Michaely, Thaler, and Womack",1995,JF,divo
+239,Share price,Miller and Scholes,1982,JPE,price
+240,Mohanram G-score,Mohanram,2005,RAS,
+241,Quarterly sales growth,Mohanram,2005,RAS,saleq_gr1
+242,Industry momentum ,Moskowitz and Grinblatt,1999,JFE,indmom
+243,Operating leverage,Novy-Marx,2011,JFE,opex_at
+244,Operating leverage (quarterly),Novy-Marx,2011,JFE,
+245,Intermediate momentum (7-12),Novy-Marx,2012,ROF,ret_12_6
+246,Gross profits-to-assets,Novy-Marx,2013,JFE,gp_at
+247,Gross profits-to-lagged assets,Novy-Marx,2013,JFE,gp_atl1
+248,Gross profits-to-lagged assets (quarterly),Novy-Marx,2013,JFE,
+249,Asset liquidity to book assets,Ortiz-Molina and Phillips,2014,JFQA,aliq_at
+250,Asset liquidity to book assets (quarterly),Ortiz-Molina and Phillips,2014,JFQA,
+251,Asset liquidity to market assets,Ortiz-Molina and Phillips,2014,JFQA,aliq_mat
+252,Asset liquidity to market assets (quarterly),Ortiz-Molina and Phillips,2014,JFQA,
+253,Cash flow-to-debt,Ou and Penman,1989,JAR,cashdebt
+254,Change in current ratio,Ou and Penman,1989,JAR,pchcurrat
+255,Change in quick ratio,Ou and Penman,1989,JAR,pchquick
+256,Change in sales to inventory,Ou and Penman,1989,JAR,pchsaleinv
+257,Current ratio,Ou and Penman,1989,JAR,currat
+258,Quick ratio,Ou and Penman,1989,JAR,quick
+259,Sales-to-cash,Ou and Penman,1989,JAR,salecash
+260,Sales-to-inventory,Ou and Penman,1989,JAR,saleinv
+261,Sales-to-receivables,Ou and Penman,1989,JAR,salerec
+262,Cash-to-assets,Palazzo,2012,JFE,cash_at
+263,Pastor-Stambaugh liquidity beta,Pastor and Stambaugh,2003,JPE,
+264,Book-to-market enterprise value,"Penman, Richardson, and Tuna",2007,JAR,bev_mev
+265,Book-to-market enterprise value (quarterly),"Penman, Richardson, and Tuna",2007,JAR,
+266,Net debt-to-price,"Penman, Richardson, and Tuna",2007,JAR,netdebt_me
+267,Net debt-to-price (quarterly),"Penman, Richardson, and Tuna",2007,JAR,
+268,Piotroski F-score (JKP),Piotroski,2000,AR,f_score
+269,"Piotroski F-score (GHZ, Org)",Piotroski,2000,AR,ps
+270,Piotroski F-score (quarterly),Piotroski,2000,AR,
+271,"Net stock issues (JKP, Org)",Pontiff and Woodgate,2008,JF,chcsho_12m
+272,Net stock issues (GHZ),Pontiff and Woodgate,2008,JF,chcsho
+273,Order backlog,"Rajgopal, Shevlin, and Venkatachalam",2003,RAS,
+274,Unexpected quarterly earnings ,"Rendelman, Jones, and Latane",1982,JFE,
+275,Chage in common equity,Richardson et al.,2005,JAE,be_gr1a
+276,Chagne in long-term investments ,Richardson et al.,2005,JAE,lti_gr1a
+277,Change in current Ooperating liabilities,Richardson et al.,2005,JAE,col_gr1a
+278,Change in current operating assets,Richardson et al.,2005,JAE,coa_gr1a
+279,Change in financial liabilities,Richardson et al.,2005,JAE,fnl_gr1a
+280,Change in long-term debt,Richardson et al.,2005,JAE,lgr
+281,Change in net financial assets,Richardson et al.,2005,JAE,nfna_gr1a
+282,Change in net non-cash working capital,Richardson et al.,2005,JAE,cowc_gr1a
+283,Change in net non-current operating assets,Richardson et al.,2005,JAE,nncoa_gr1a
+284,Change in non-current operating assets,Richardson et al.,2005,JAE,ncoa_gr1a
+285,Change in non-current operating liabilities,Richardson et al.,2005,JAE,ncol_gr1a
+286,Change in short-term investments,Richardson et al.,2005,JAE,sti_gr1a
+287,Total accruals,Richardson et al.,2005,JAE,taccruals_at
+288,"Book to market (December ME, quarterly)","Rosenberg, Reid, and Lanstein",1985,JF,
+289,Book-to-market (December ME),"Rosenberg, Reid, and Lanstein",1985,JF,be_me
+290,Change in analyst coverage,Scherbina,2008,ROF,
+291,Operating accruals (JKP),Sloan,1996,AR,oaccruals_at
+292,"Operating accruals (GHZ, Org)",Sloan,1996,AR,acc
+293,Asset turnover,Soliman,2008,AR,sale_bev
+294,Asset turnover (quarterly),Soliman,2008,AR,
+295,Change in asset turnover,Soliman,2008,AR,chatoia
+296,Change in profit margin,Soliman,2008,AR,chpmia
+297,Profit margin,Soliman,2008,AR,ebit_sale
+298,Profit margin (quarterly),Soliman,2008,AR,
+299,Return on net operating assets,Soliman,2008,AR,ebit_bev
+300,Return on net operating assets (quarterly),Soliman,2008,AR,
+301,Mispricing factor: Management,Stambaugh and Yuan,2016,RFS,mispricing_mgmt
+302,Mispricing factor: Performance,Stambaugh and Yuan,2016,RFS,mispricing_perf
+303,Inventory change,Thomas and Zhang,2002,RAS,inv_gr1a
+304,Tax expense surprise,Thomas and Zhang,2011,JAR,chtx
+305,Abnormal corporate investment,"Titman, Wei, and Xie",2004,JFQA,capex_abn
+306,Real estate holdings,Tuzel,2010,RFS,realestate
+307,Convertible debt indicator,Valta,2016,JFQA,convind
+308,Convertible debt-to-total debt,Valta,2016,JFQA,
+309,Secured debt indicator,Valta,2016,JFQA,securedind
+310,Secured debt-to-total debt,Valta,2016,JFQA,secured
+311,Whited-Wu index,Whited and Wu,2006,RFS,
+312,Whited-Wu index (quarterly),Whited and Wu,2006,RFS,
+313,CAPEX growth (1 year),Xie,2001,AR,capx_gr1
+314,Discretionay accruals,Xie,2001,AR,
