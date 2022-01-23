@@ -694,14 +694,23 @@ class FUNDA(Panel):
         """Enterprise multiple. Loughran and Wellman (2011)"""
 
         fa = self.data
-        mev = fa.me + fa.debt - fa.che.fillna(0)
 
-        if REPLICATE_JKP:
-            char = fa.ebitda / mev  # in JKP. HXZ add pstkrv in the enterprise value.
-            char[mev < ZERO] = np.nan
-        else:
-            char = mev / fa.ebitda  # This is the correct definition of enterprise multiple.
-            char[fa.ebitda < ZERO] = np.nan
+        mev = fa.me + fa.debt - fa.che.fillna(0)
+        char = fa.ebitda / mev
+        char[mev < ZERO] = np.nan
+
+        return char
+
+    def c_enterprise_multiple(self):
+        """Enterprise multiple. Loughran and Wellman (2011)"""
+        # This is the correct definition of enterprise multiple.
+
+        fa = self.data
+
+        char = (fa.me + fa.debt + fa.pstkrv - fa.che.fillna(0)) / fa.oibdp
+        char[fa.oibdp < ZERO] = np.nan
+
+        return char
 
     def c_ocf_at(self):
         """Operating cash flow to assets. Bouchard et al. (2019)"""

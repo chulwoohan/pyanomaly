@@ -229,17 +229,17 @@ Scherbina",2002,JF,
 228,Zero-trading days (12 months),Liu,2006,JFE,zero_trades_252d
 229,Growth in advertising expenses,Lou,2014,RFS,
 230,Initial public offerings,Loughran and Ritter,1995,JF,ipo
-231,Enterprise multiple,Loughran and Wellman,2011,JFQA,ebitda_mev
-232,Enterprise multiple (quarterly),Loughran and Wellman,2011,JFQA,
-233,Changes in PPE and inventory/assets,"Lyandres, Sun, and Zhang",2008,RFS,ppeinv_gr1a
-234,Composite debt issuance,"Lyandres, Sun, and Zhang",2008,RFS,debt_gr3
-235,Customer industries momentum,Menzly and Ozbas,2010,JF,
-236,Supplier industries momentum,Menzly and Ozbas,2010,JF,
-237,Dividend initiation,"Michaely, Thaler, and Womack",1995,JF,divi
-238,Dividend omission,"Michaely, Thaler, and Womack",1995,JF,divo
-239,Share price,Miller and Scholes,1982,JPE,price
-240,Mohanram G-score,Mohanram,2005,RAS,
-241,Quarterly sales growth,Mohanram,2005,RAS,saleq_gr1
+231,Enterprise multiple,Loughran and Wellman,2011,JFQA,enterprise_multiple
+232,Enterprise multiple (JKP),Loughran and Wellman,2011,JFQA,ebitda_mev
+233,Enterprise multiple (quarterly),Loughran and Wellman,2011,JFQA,
+234,Changes in PPE and inventory/assets,"Lyandres, Sun, and Zhang",2008,RFS,ppeinv_gr1a
+235,Composite debt issuance,"Lyandres, Sun, and Zhang",2008,RFS,debt_gr3
+236,Customer industries momentum,Menzly and Ozbas,2010,JF,
+237,Supplier industries momentum,Menzly and Ozbas,2010,JF,
+238,Dividend initiation,"Michaely, Thaler, and Womack",1995,JF,divi
+239,Dividend omission,"Michaely, Thaler, and Womack",1995,JF,divo
+240,Share price,Miller and Scholes,1982,JPE,price
+241,Mohanram G-score,Mohanram,2005,RAS,
 242,Industry momentum ,Moskowitz and Grinblatt,1999,JFE,indmom
 243,Operating leverage,Novy-Marx,2011,JFE,opex_at
 244,Operating leverage (quarterly),Novy-Marx,2011,JFE,
