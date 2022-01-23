@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyanomaly &mdash; PyAnomaly 0.922 documentation</title>
+  <title>pyanomaly &mdash; PyAnomaly 0.930 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -837,6 +837,12 @@ Without calling this function, me and me_fiscal are set to me of funda (prcc_f *
 <dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDA.c_emp_gr1">
 <span class="sig-name descname"><span class="pre">c_emp_gr1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDA.c_emp_gr1" title="Permalink to this definition"></a></dt>
 <dd><p>Employee growth. Belo, Lin, and Bazdresch (2014)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyanomaly.characteristics.FUNDA.c_enterprise_multiple">
+<span class="sig-name descname"><span class="pre">c_enterprise_multiple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.FUNDA.c_enterprise_multiple" title="Permalink to this definition"></a></dt>
+<dd><p>Enterprise multiple. Loughran and Wellman (2011)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2074,6 +2080,12 @@ characteristic names.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.c_trend_factor">
+<span class="sig-name descname"><span class="pre">c_trend_factor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.c_trend_factor" title="Permalink to this definition"></a></dt>
+<dd><p>Trend factor. Han, Zhou, and Zhu (2016)</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.CRSPD.c_turnover_126d">
 <span class="sig-name descname"><span class="pre">c_turnover_126d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.CRSPD.c_turnover_126d" title="Permalink to this definition"></a></dt>
 <dd><p>Share turnover (JKP). Datar, Naik, and Radcliffe (1998)</p>
@@ -2265,16 +2277,16 @@ This method can be overridden to add code to trim or winsorize characteristics.<
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyanomaly.characteristics.Merge.preprocess">
-<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crspm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crspd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fundq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.Merge.preprocess" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crspm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crspd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fundq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyanomaly.characteristics.Merge.preprocess" title="Permalink to this definition"></a></dt>
 <dd><p>Merge crspm, crspd, funda, and fundq by left-joining crspd, funda, and fundq to crspm. The resulting data has
 index = date/permno.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>crspm</strong> – CRSPM instance</p></li>
-<li><p><strong>crspd</strong> – CRSPD instance</p></li>
-<li><p><strong>funda</strong> – FUNDA instance</p></li>
-<li><p><strong>fundq</strong> – FUNDQ instance</p></li>
+<li><p><strong>crspm</strong> – CRSPM instance.</p></li>
+<li><p><strong>crspd</strong> – CRSPD instance.</p></li>
+<li><p><strong>funda</strong> – FUNDA instance.</p></li>
+<li><p><strong>fundq</strong> – FUNDQ instance.</p></li>
 <li><p><strong>delete_data</strong> – True to delete the data of crspm, crspd, funda, and fundq after merge to save memory.</p></li>
 </ul>
 </dd>
