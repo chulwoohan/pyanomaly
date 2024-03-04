@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; PyAnomaly 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -104,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <p>You can install PyAnomaly either  using <code class="docutils literal notranslate"><span class="pre">pip</span></code> or from the source.
 If you intend to use PyAnomaly ‘’as-is’’, we recommend <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
 If you need to refer to the source code frequently, e.g., to add new firm characteristics or functions,
@@ -113,7 +115,7 @@ you may want to copy the source to your project directory.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyassetpricing</span>
 </pre></div>
 </div>
-<p>After installing pyanomaly, download the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/examples.py">examples</a>.</p>
+<p>After installing pyanomaly, download the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and the <a class="reference external" href="https://github.com/chulwoohan/examples">examples</a>.</p>
 <p><strong>From the source</strong></p>
 <p>Download the source from the link below to your project directory.</p>
 <blockquote>
@@ -145,9 +147,9 @@ you may want to copy the source to your project directory.</p>
 please contact us.</p>
 </section>
 <section id="generating-characteristics">
-<h1>Generating Characteristics<a class="headerlink" href="#generating-characteristics" title="Permalink to this heading"></a></h1>
+<h1>Generating Characteristics<a class="headerlink" href="#generating-characteristics" title="Link to this heading"></a></h1>
 <section id="process-flow">
-<h2>Process Flow<a class="headerlink" href="#process-flow" title="Permalink to this heading"></a></h2>
+<h2>Process Flow<a class="headerlink" href="#process-flow" title="Link to this heading"></a></h2>
 <p>A high-level process to generate firm characteristics is as follows.</p>
 <ol class="arabic simple">
 <li><p>Download data from WRDS and save them to files.</p></li>
@@ -167,7 +169,7 @@ Then, you can load them from files instead of generating them every time you gen
 </ul>
 </section>
 <section id="sec-mapping-file">
-<span id="id1"></span><h2>Mapping File<a class="headerlink" href="#sec-mapping-file" title="Permalink to this heading"></a></h2>
+<span id="id1"></span><h2>Mapping File<a class="headerlink" href="#sec-mapping-file" title="Link to this heading"></a></h2>
 <p>The <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> defines the mapping between firm characteristics and functions, and functions and characteristic names
 used in other papers. The file can be used to select the characteristics you want to generate and give them aliases.
 A part of the file is shown below.</p>
@@ -311,7 +313,7 @@ For example, if you add a column ‘my chars’ as shown in the table and set <c
 </table>
 </section>
 <section id="output-files">
-<h2>Output Files<a class="headerlink" href="#output-files" title="Permalink to this heading"></a></h2>
+<h2>Output Files<a class="headerlink" href="#output-files" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">FCPanel</span></code> and its derived classes (<code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>) have an attribute
 <code class="docutils literal notranslate"><span class="pre">data</span></code>, which is a DataFrame that contains the raw data and the firm characteristics. An exception is <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>.
 <code class="docutils literal notranslate"><span class="pre">CRSPD.data</span></code> only contains firm characteristics and the raw crspd data is stored in <code class="docutils literal notranslate"><span class="pre">CRSPD.cd.data</span></code>.

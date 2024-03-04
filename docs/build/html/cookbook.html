@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cookbook &mdash; PyAnomaly 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -108,12 +110,12 @@
            <div itemprop="articleBody">
              
   <section id="cookbook">
-<span id="id1"></span><h1>Cookbook<a class="headerlink" href="#cookbook" title="Permalink to this heading"></a></h1>
-<p>All the examples presented here can be found in <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/examples.py">examples</a>.
+<span id="id1"></span><h1>Cookbook<a class="headerlink" href="#cookbook" title="Link to this heading"></a></h1>
+<p>All the examples presented here can be found in <a class="reference external" href="https://github.com/chulwoohan/examples">examples</a>.
 For the details of each function or class, refer to the <a class="reference internal" href="pyanomaly_edited.html#pyanomaly"><span class="std std-ref">API</span></a> documentation.
 All examples were tested on a desktop with 12th Gen Intel(R) Core(TM) i9-12900KS and 128GB RAM and 1GB network</p>
 <section id="module-examples.example1">
-<span id="example-1-generating-firm-characteristics"></span><h2>Example 1. Generating firm characteristics<a class="headerlink" href="#module-examples.example1" title="Permalink to this heading"></a></h2>
+<span id="example-1-generating-firm-characteristics"></span><h2>Example 1. Generating firm characteristics<a class="headerlink" href="#module-examples.example1" title="Link to this heading"></a></h2>
 <p>Firm characteristics generation</p>
 <p>This example shows the full process of i) data download, ii) factor generation, and iii) firm characteristic
 generation.
@@ -130,7 +132,7 @@ In this example,</p>
 saved to ‘./output/merge’.</p>
 <p>Processing time: approx. 45 minutes to download data and 15 minutes for the rest.</p>
 <section id="initialization">
-<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h3>
 <p>Import packages</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyanomaly.globals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pyanomaly.wrdsdata</span> <span class="kn">import</span> <span class="n">WRDS</span>
@@ -152,7 +154,7 @@ saved to ‘./output/merge’.</p>
 </div>
 </section>
 <section id="download-data-frm-wrds">
-<h3>Download data frm WRDS<a class="headerlink" href="#download-data-frm-wrds" title="Permalink to this heading"></a></h3>
+<h3>Download data frm WRDS<a class="headerlink" href="#download-data-frm-wrds" title="Link to this heading"></a></h3>
 <p><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS" title="pyanomaly.wrdsdata.WRDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">WRDS</span></code></a> is a class to download data from WRDS.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrds</span> <span class="o">=</span> <span class="n">WRDS</span><span class="p">(</span><span class="n">wrds_username</span><span class="p">)</span>  <span class="c1"># Use your WRDS user id.</span>
 
@@ -166,7 +168,7 @@ saved to ‘./output/merge’.</p>
 </div>
 </section>
 <section id="factor-generation">
-<h3>Factor generation<a class="headerlink" href="#factor-generation" title="Permalink to this heading"></a></h3>
+<h3>Factor generation<a class="headerlink" href="#factor-generation" title="Link to this heading"></a></h3>
 <p>Make factor portfolios: FF3, FF5, HXZ4, and SY4.
 These are used in some firm characteristics, such as the residual momentum.</p>
 <p>References: <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_all_factor_portfolios" title="pyanomaly.factors.make_all_factor_portfolios"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_all_factor_portfolios()</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_factor_portfolios" title="pyanomaly.factors.make_factor_portfolios"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_factor_portfolios()</span></code></a></p>
@@ -175,7 +177,7 @@ These are used in some firm characteristics, such as the residual momentum.</p>
 </div>
 </section>
 <section id="firm-characteristic-generation">
-<h3>Firm characteristic generation<a class="headerlink" href="#firm-characteristic-generation" title="Permalink to this heading"></a></h3>
+<h3>Firm characteristic generation<a class="headerlink" href="#firm-characteristic-generation" title="Link to this heading"></a></h3>
 <p>Firm characteristics are generated by <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA" title="pyanomaly.characteristics.FUNDA"><code class="xref py py-class docutils literal notranslate"><span class="pre">FUNDA</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDQ" title="pyanomaly.characteristics.FUNDQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">FUNDQ</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM" title="pyanomaly.characteristics.CRSPM"><code class="xref py py-class docutils literal notranslate"><span class="pre">CRSPM</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD" title="pyanomaly.characteristics.CRSPD"><code class="xref py py-class docutils literal notranslate"><span class="pre">CRSPD</span></code></a>,
 and <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.Merge" title="pyanomaly.characteristics.Merge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Merge</span></code></a> classes.</p>
 <p>To generate characteristics in a certain column of mapping.xlsx, set <code class="docutils literal notranslate"><span class="pre">alias</span></code> = column name.
@@ -339,7 +341,7 @@ Merge.data contains all firm characteristics and raw data from FUNDA, FUNDQ, CRS
 </section>
 </section>
 <section id="module-examples.example2">
-<span id="example-2-sorting-based-portfolio-analysis"></span><h2>Example 2. Sorting-based portfolio analysis<a class="headerlink" href="#module-examples.example2" title="Permalink to this heading"></a></h2>
+<span id="example-2-sorting-based-portfolio-analysis"></span><h2>Example 2. Sorting-based portfolio analysis<a class="headerlink" href="#module-examples.example2" title="Link to this heading"></a></h2>
 <p>Sorting-based portfolio analysis.</p>
 <p>This example demonstrates how to construct quantile portfolios and carry out 1-D or 2-D sorts.</p>
 <blockquote>
@@ -357,7 +359,7 @@ computed.</p></li>
 <p>See also <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_char_portfolios" title="pyanomaly.factors.make_char_portfolios"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_char_portfolios()</span></code></a> for characteristic portfolio creation replicating JKP’s SAS code.</p>
 <p>Processing time: approx. 10 seconds.</p>
 <section id="id2">
-<h3>Initialization<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
 <p>Import packages</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyanomaly.fileio</span> <span class="kn">import</span> <span class="n">read_from_file</span>
 <span class="kn">from</span> <span class="nn">pyanomaly.analytics</span> <span class="kn">import</span> <span class="o">*</span>
@@ -373,7 +375,7 @@ computed.</p></li>
 </div>
 </section>
 <section id="set-variables">
-<h3>Set variables<a class="headerlink" href="#set-variables" title="Permalink to this heading"></a></h3>
+<h3>Set variables<a class="headerlink" href="#set-variables" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="o">=</span> <span class="s1">&#39;ret_12_1&#39;</span>  <span class="c1"># 12-month momentum</span>
 <span class="n">char_class</span> <span class="o">=</span> <span class="n">char</span> <span class="o">+</span> <span class="s1">&#39;_class&#39;</span>  <span class="c1"># Momentum class column</span>
 <span class="n">ret_col</span> <span class="o">=</span> <span class="s1">&#39;exret&#39;</span>  <span class="c1"># Return column</span>
@@ -384,7 +386,7 @@ computed.</p></li>
 </div>
 </section>
 <section id="load-and-prepare-data">
-<h3>Load and prepare data<a class="headerlink" href="#load-and-prepare-data" title="Permalink to this heading"></a></h3>
+<h3>Load and prepare data<a class="headerlink" href="#load-and-prepare-data" title="Link to this heading"></a></h3>
 <p>References: <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.shift" title="pyanomaly.datatools.shift"><code class="xref py py-func docutils literal notranslate"><span class="pre">datatools.shift()</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.filter" title="pyanomaly.datatools.filter"><code class="xref py py-func docutils literal notranslate"><span class="pre">filter()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read crspm data (not raw data but the output data).</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">read_from_file</span><span class="p">(</span><span class="s1">&#39;crspm&#39;</span><span class="p">)</span>
@@ -408,7 +410,7 @@ computed.</p></li>
 </div>
 </section>
 <section id="d-sort">
-<h3>1-D sort<a class="headerlink" href="#d-sort" title="Permalink to this heading"></a></h3>
+<h3>1-D sort<a class="headerlink" href="#d-sort" title="Link to this heading"></a></h3>
 <p>References: <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.classify" title="pyanomaly.datatools.classify"><code class="xref py py-func docutils literal notranslate"><span class="pre">classify()</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.one_dim_sort" title="pyanomaly.analytics.one_dim_sort"><code class="xref py py-func docutils literal notranslate"><span class="pre">one_dim_sort()</span></code></a>, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.time_series_average" title="pyanomaly.analytics.time_series_average"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_series_average()</span></code></a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed_time</span><span class="p">(</span><span class="s1">&#39;1D sort start.&#39;</span><span class="p">)</span>
 
@@ -479,7 +481,7 @@ computed.</p></li>
 </div>
 </section>
 <section id="id3">
-<h3>2-D sort<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<h3>2-D sort<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <p>References: <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.two_dim_sort" title="pyanomaly.analytics.two_dim_sort"><code class="xref py py-func docutils literal notranslate"><span class="pre">two_dim_sort()</span></code></a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed_time</span><span class="p">(</span><span class="s1">&#39;2D sort start.&#39;</span><span class="p">)</span>
 
@@ -536,7 +538,7 @@ computed.</p></li>
 </div>
 </section>
 <section id="firm-level-cross-sectional-regression">
-<h3>Firm-level cross-sectional regression<a class="headerlink" href="#firm-level-cross-sectional-regression" title="Permalink to this heading"></a></h3>
+<h3>Firm-level cross-sectional regression<a class="headerlink" href="#firm-level-cross-sectional-regression" title="Link to this heading"></a></h3>
 <p>References: <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.crosssectional_regression" title="pyanomaly.analytics.crosssectional_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">crosssectional_regression()</span></code></a></p>
 <ul class="simple">
 <li><p>Cross-sectionally regress return at t on t-1 momentum and size.</p></li>
@@ -580,7 +582,7 @@ computed.</p></li>
 </div>
 </section>
 <section id="factor-regression">
-<h3>Factor regression<a class="headerlink" href="#factor-regression" title="Permalink to this heading"></a></h3>
+<h3>Factor regression<a class="headerlink" href="#factor-regression" title="Link to this heading"></a></h3>
 <p>Regress quantile portfolios’ returns on the FF-3 factors.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed_time</span><span class="p">(</span><span class="s1">&#39;Factor regression start.&#39;</span><span class="p">)</span>
 
@@ -630,7 +632,7 @@ computed.</p></li>
 </section>
 </section>
 <section id="module-examples.example3">
-<span id="example-3-quantile-portfolio-construction-and-evaluation"></span><h2>Example 3. Quantile portfolio construction and evaluation<a class="headerlink" href="#module-examples.example3" title="Permalink to this heading"></a></h2>
+<span id="example-3-quantile-portfolio-construction-and-evaluation"></span><h2>Example 3. Quantile portfolio construction and evaluation<a class="headerlink" href="#module-examples.example3" title="Link to this heading"></a></h2>
 <p>Quantile portfolio construction and evaluation.</p>
 <p>This example demonstrates how to construct quantile portfolios (and the long-short) based on a firm characteristic
 and evaluate their performance.</p>
@@ -645,7 +647,7 @@ and evaluate their performance.</p>
 </ul>
 <p>Processing time: approx. 10 seconds.</p>
 <section id="id4">
-<h3>Initialization<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
 <p>Import packages</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -666,7 +668,7 @@ and evaluate their performance.</p>
 </div>
 </section>
 <section id="id5">
-<h3>Set variables<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<h3>Set variables<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="o">=</span> <span class="s1">&#39;ret_12_1&#39;</span>  <span class="c1"># 12-month momentum</span>
 <span class="n">char_class</span> <span class="o">=</span> <span class="n">char</span> <span class="o">+</span> <span class="s1">&#39;_class&#39;</span>  <span class="c1"># Momentum class column</span>
 <span class="n">ret_col</span> <span class="o">=</span> <span class="s1">&#39;exret&#39;</span>  <span class="c1"># Return column</span>
@@ -677,7 +679,7 @@ and evaluate their performance.</p>
 </div>
 </section>
 <section id="id6">
-<h3>Load and prepare data<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<h3>Load and prepare data<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read crspm data (not raw data but the output data).</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">read_from_file</span><span class="p">(</span><span class="s1">&#39;crspm&#39;</span><span class="p">)</span>
 
@@ -697,7 +699,7 @@ and evaluate their performance.</p>
 </div>
 </section>
 <section id="transaction-costs">
-<h3>Transaction costs<a class="headerlink" href="#transaction-costs" title="Permalink to this heading"></a></h3>
+<h3>Transaction costs<a class="headerlink" href="#transaction-costs" title="Link to this heading"></a></h3>
 <p>PyAnomaly provides a powerful way to set transaction costs via <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost" title="pyanomaly.tcost.TransactionCost"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransactionCost</span></code></a> and <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TimeVaryingCost" title="pyanomaly.tcost.TimeVaryingCost"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeVaryingCost</span></code></a>
 classes. Below are some examples of setting transaction costs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># No transaction costs.</span>
@@ -716,7 +718,7 @@ classes. Below are some examples of setting transaction costs.</p>
 </div>
 </section>
 <section id="make-tercile-portfolios">
-<h3>Make tercile portfolios<a class="headerlink" href="#make-tercile-portfolios" title="Permalink to this heading"></a></h3>
+<h3>Make tercile portfolios<a class="headerlink" href="#make-tercile-portfolios" title="Link to this heading"></a></h3>
 <p>In PyAnomaly, <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio" title="pyanomaly.portfolio.Portfolio"><code class="xref py py-class docutils literal notranslate"><span class="pre">Portfolio</span></code></a> class is used to make a portfolio and <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios" title="pyanomaly.portfolio.Portfolios"><code class="xref py py-class docutils literal notranslate"><span class="pre">Portfolios</span></code></a> class is used to
 handle a group of portfolios. <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.make_quantile_portfolios" title="pyanomaly.analytics.make_quantile_portfolios"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_quantile_portfolios()</span></code></a> uses these classes to construct quantile portfolios.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exclude bottom 20% based on NYSE size. This should come after setting the time varying cost</span>
@@ -731,7 +733,7 @@ handle a group of portfolios. <a class="reference internal" href="pyanomaly_edit
 </div>
 </section>
 <section id="evaluate-the-portfolios">
-<h3>Evaluate the portfolios<a class="headerlink" href="#evaluate-the-portfolios" title="Permalink to this heading"></a></h3>
+<h3>Evaluate the portfolios<a class="headerlink" href="#evaluate-the-portfolios" title="Link to this heading"></a></h3>
 <p>Portfolios can be evaluated using <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.eval" title="pyanomaly.portfolio.Portfolio.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code></a> for a single portfolio or <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.eval" title="pyanomaly.portfolio.Portfolios.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Portfolios.eval()</span></code></a> for a
 group of portfolios.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># `annualize_factor=12` will annualize the results as crspm is monthly data.</span>
@@ -879,7 +881,7 @@ group of portfolios.</p>
 </section>
 </section>
 <section id="module-examples.example4">
-<span id="example-4-defining-a-new-characteristic"></span><h2>Example 4. Defining a new characteristic<a class="headerlink" href="#module-examples.example4" title="Permalink to this heading"></a></h2>
+<span id="example-4-defining-a-new-characteristic"></span><h2>Example 4. Defining a new characteristic<a class="headerlink" href="#module-examples.example4" title="Link to this heading"></a></h2>
 <p>Define a new characteristic</p>
 <p>This example demonstrates how to define a new characteristic by inheriting CRSPM.</p>
 <p>A new characteristic, ‘excess_ret_change’, will be defined, which is the excess return over the market return
@@ -889,7 +891,7 @@ divided by the one-year average excess return (I have no idea if this has any pr
 </ul>
 <p>Processing time: approx. 18 seconds.</p>
 <section id="id7">
-<h3>Initialization<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
 <p>Import packages</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyanomaly.globals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pyanomaly.characteristics</span> <span class="kn">import</span> <span class="n">CRSPM</span>
@@ -903,7 +905,7 @@ divided by the one-year average excess return (I have no idea if this has any pr
 </div>
 </section>
 <section id="define-a-new-characteristic-method">
-<h3>Define a new characteristic method<a class="headerlink" href="#define-a-new-characteristic-method" title="Permalink to this heading"></a></h3>
+<h3>Define a new characteristic method<a class="headerlink" href="#define-a-new-characteristic-method" title="Link to this heading"></a></h3>
 <p>Inherit <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM" title="pyanomaly.characteristics.CRSPM"><code class="xref py py-class docutils literal notranslate"><span class="pre">CRSPM</span></code></a> and add a new method <code class="docutils literal notranslate"><span class="pre">c_excess_ret_change()</span></code> that defines the new characteristic.
 Method name should be of the form ‘c_[characteristic name]’.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCRSPM</span><span class="p">(</span><span class="n">CRSPM</span><span class="p">):</span>
@@ -929,7 +931,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </div>
 </section>
 <section id="generate-the-firm-characteristic">
-<h3>Generate the firm characteristic<a class="headerlink" href="#generate-the-firm-characteristic" title="Permalink to this heading"></a></h3>
+<h3>Generate the firm characteristic<a class="headerlink" href="#generate-the-firm-characteristic" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a MyCRSPM instance.</span>
 <span class="n">crspm</span> <span class="o">=</span> <span class="n">MyCRSPM</span><span class="p">()</span>
 
@@ -1032,7 +1034,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </section>
 </section>
 <section id="module-examples.example5">
-<span id="example-5-firm-characteristics-using-year-end-me"></span><h2>Example 5. Firm characteristics using year-end ME<a class="headerlink" href="#module-examples.example5" title="Permalink to this heading"></a></h2>
+<span id="example-5-firm-characteristics-using-year-end-me"></span><h2>Example 5. Firm characteristics using year-end ME<a class="headerlink" href="#module-examples.example5" title="Link to this heading"></a></h2>
 <p>Firm characteristics using year-end ME</p>
 <p>This example demonstrates how to generate funda firm characteristics using year-end ME instead of the latest ME.</p>
 <blockquote>
@@ -1048,7 +1050,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </ul>
 <p>Processing time: approx. 105 seconds.</p>
 <section id="id8">
-<h3>Initialization<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
 <p>Import packages</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyanomaly.characteristics</span> <span class="kn">import</span> <span class="n">FUNDA</span><span class="p">,</span> <span class="n">CRSPM</span>
 <span class="kn">from</span> <span class="nn">pyanomaly.analytics</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1061,7 +1063,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </div>
 </section>
 <section id="market-equity-from-crsp">
-<h3>Market equity (from CRSP)<a class="headerlink" href="#market-equity-from-crsp" title="Permalink to this heading"></a></h3>
+<h3>Market equity (from CRSP)<a class="headerlink" href="#market-equity-from-crsp" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load crspm.</span>
 <span class="n">crspm</span> <span class="o">=</span> <span class="n">CRSPM</span><span class="p">()</span>
 <span class="n">crspm</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -1079,7 +1081,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </div>
 </section>
 <section id="funda-firm-characteristics">
-<h3>FUNDA firm characteristics<a class="headerlink" href="#funda-firm-characteristics" title="Permalink to this heading"></a></h3>
+<h3>FUNDA firm characteristics<a class="headerlink" href="#funda-firm-characteristics" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load funda.</span>
 <span class="n">funda</span> <span class="o">=</span> <span class="n">FUNDA</span><span class="p">()</span>
 <span class="n">funda</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -1110,7 +1112,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </section>
 </section>
 <section id="module-examples.example6">
-<span id="example-6-playing-with-panel"></span><h2>Example 6. Playing with Panel<a class="headerlink" href="#module-examples.example6" title="Permalink to this heading"></a></h2>
+<span id="example-6-playing-with-panel"></span><h2>Example 6. Playing with Panel<a class="headerlink" href="#module-examples.example6" title="Link to this heading"></a></h2>
 <p>Playing with Panel</p>
 <p>This example demonstrates how to use <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel" title="pyanomaly.panel.Panel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Panel</span></code></a> class.</p>
 <p>Import packages</p>
@@ -1119,7 +1121,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </pre></div>
 </div>
 <section id="monthly-data">
-<h3>Monthly data<a class="headerlink" href="#monthly-data" title="Permalink to this heading"></a></h3>
+<h3>Monthly data<a class="headerlink" href="#monthly-data" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
     <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2023-03-31&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-04-30&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-05-31&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-03-31&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-04-30&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-05-31&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-03-31&#39;</span><span class="p">,</span>
@@ -1186,7 +1188,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </div>
 </section>
 <section id="quarterly-data">
-<h3>Quarterly data<a class="headerlink" href="#quarterly-data" title="Permalink to this heading"></a></h3>
+<h3>Quarterly data<a class="headerlink" href="#quarterly-data" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
     <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2023-03-31&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-06-30&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-09-30&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-01-31&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-04-30&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-07-31&#39;</span><span class="p">],</span>
@@ -1237,7 +1239,7 @@ Method name should be of the form ‘c_[characteristic name]’.</p>
 </div>
 </section>
 <section id="id-level-operations">
-<h3>Id-level operations<a class="headerlink" href="#id-level-operations" title="Permalink to this heading"></a></h3>
+<h3>Id-level operations<a class="headerlink" href="#id-level-operations" title="Link to this heading"></a></h3>
 <p>The methods below perform the operation per id and accounting for the data frequency.
 For instance, if a data is a quarterly data populated monthly, <code class="docutils literal notranslate"><span class="pre">shift(1)</span></code> will shift the data by 3 (one quarter)
 within each id.</p>
@@ -1421,7 +1423,7 @@ Below is the same as the above except that the return value is ndarray.</p>
 </div>
 </section>
 <section id="date-level-operations">
-<h3>Date-level operations<a class="headerlink" href="#date-level-operations" title="Permalink to this heading"></a></h3>
+<h3>Date-level operations<a class="headerlink" href="#date-level-operations" title="Link to this heading"></a></h3>
 <p>To apply a user-defined function to each date, use <code class="docutils literal notranslate"><span class="pre">apply_to_dates()</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Functino to apply: sum of each column.</span>
 <span class="k">def</span> <span class="nf">sum0</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
@@ -1438,7 +1440,7 @@ Below is the same as the above except that the return value is ndarray.</p>
 </div>
 </section>
 <section id="rolling-regression">
-<h3>Rolling regression<a class="headerlink" href="#rolling-regression" title="Permalink to this heading"></a></h3>
+<h3>Rolling regression<a class="headerlink" href="#rolling-regression" title="Link to this heading"></a></h3>
 <p>The first column of the first argument is used as the dependent variable and the rest as the independent variables.
 First K (number of independent varialbes) columns of the return are coefficients, the next column is R-squared,
 and the last column is idiosyncratic volatility (standard deviation of residuals).</p>
@@ -1462,7 +1464,7 @@ and the last column is idiosyncratic volatility (standard deviation of residuals
 </div>
 </section>
 <section id="panel-merge">
-<h3>Panel merge<a class="headerlink" href="#panel-merge" title="Permalink to this heading"></a></h3>
+<h3>Panel merge<a class="headerlink" href="#panel-merge" title="Link to this heading"></a></h3>
 <p>Two panels can be merged as follows.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">panel1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">panel2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">panel1</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -1484,13 +1486,13 @@ and the last column is idiosyncratic volatility (standard deviation of residuals
 </section>
 </section>
 <section id="module-examples.example7">
-<span id="example-7-table-download"></span><h2>Example 7. Table download<a class="headerlink" href="#module-examples.example7" title="Permalink to this heading"></a></h2>
+<span id="example-7-table-download"></span><h2>Example 7. Table download<a class="headerlink" href="#module-examples.example7" title="Link to this heading"></a></h2>
 <p>Table download</p>
 <p>This example demonstrates how to download a new table from WRDS.
 Different ways of downloading comp.secm table are demonstrated.</p>
 <p>The table will be saved to ‘./input/comp/secm’.</p>
 <section id="id9">
-<h3>Initialization<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
 <p>Import packages</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyanomaly.globals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pyanomaly.wrdsdata</span> <span class="kn">import</span> <span class="n">WRDS</span>
@@ -1503,14 +1505,14 @@ Different ways of downloading comp.secm table are demonstrated.</p>
 </div>
 </section>
 <section id="wrds-instantiation">
-<h3>WRDS instantiation<a class="headerlink" href="#wrds-instantiation" title="Permalink to this heading"></a></h3>
+<h3>WRDS instantiation<a class="headerlink" href="#wrds-instantiation" title="Link to this heading"></a></h3>
 <p>References: <a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS" title="pyanomaly.wrdsdata.WRDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">WRDS</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrds</span> <span class="o">=</span> <span class="n">WRDS</span><span class="p">(</span><span class="n">wrds_usename</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="data-download">
-<h3>Data download<a class="headerlink" href="#data-download" title="Permalink to this heading"></a></h3>
+<h3>Data download<a class="headerlink" href="#data-download" title="Link to this heading"></a></h3>
 <p>Method 1: Download the entire table at once.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrds</span><span class="o">.</span><span class="n">download_table</span><span class="p">(</span><span class="s1">&#39;comp&#39;</span><span class="p">,</span> <span class="s1">&#39;secm&#39;</span><span class="p">,</span> <span class="n">date_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datadate&#39;</span><span class="p">])</span>  <span class="c1"># &#39;datadate&#39;s type will be converted to datetime.</span>
 </pre></div>

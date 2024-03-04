@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyanomaly &mdash; PyAnomaly 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -97,8 +99,277 @@
            <div itemprop="articleBody">
              
   <section id="pyanomaly">
-<h1>pyanomaly<a class="headerlink" href="#pyanomaly" title="Permalink to this heading"></a></h1>
+<h1>pyanomaly<a class="headerlink" href="#pyanomaly" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyanomaly_edited.html">pyanomaly</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.analytics">analytics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.append_long_short"><code class="docutils literal notranslate"><span class="pre">append_long_short()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.crosssectional_regression"><code class="docutils literal notranslate"><span class="pre">crosssectional_regression()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.future_return"><code class="docutils literal notranslate"><span class="pre">future_return()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.grs_test"><code class="docutils literal notranslate"><span class="pre">grs_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.make_long_short_portfolio"><code class="docutils literal notranslate"><span class="pre">make_long_short_portfolio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.make_portfolio"><code class="docutils literal notranslate"><span class="pre">make_portfolio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.make_position"><code class="docutils literal notranslate"><span class="pre">make_position()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.make_quantile_portfolios"><code class="docutils literal notranslate"><span class="pre">make_quantile_portfolios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.one_dim_sort"><code class="docutils literal notranslate"><span class="pre">one_dim_sort()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.relabel_class"><code class="docutils literal notranslate"><span class="pre">relabel_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.t_stat"><code class="docutils literal notranslate"><span class="pre">t_stat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.time_series_average"><code class="docutils literal notranslate"><span class="pre">time_series_average()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.two_dim_sort"><code class="docutils literal notranslate"><span class="pre">two_dim_sort()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.analytics.weighted_mean"><code class="docutils literal notranslate"><span class="pre">weighted_mean()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.characteristics">characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#funda">FUNDA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA"><code class="docutils literal notranslate"><span class="pre">FUNDA</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#fundq">FUNDQ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDQ"><code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#crspm">CRSPM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM"><code class="docutils literal notranslate"><span class="pre">CRSPM</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#crspd">CRSPD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw"><code class="docutils literal notranslate"><span class="pre">CRSPDRaw</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD"><code class="docutils literal notranslate"><span class="pre">CRSPD</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#merge">Merge</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.characteristics.Merge"><code class="docutils literal notranslate"><span class="pre">Merge</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.config">config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.config.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.config.set_config"><code class="docutils literal notranslate"><span class="pre">set_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.datatools">datatools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.add_months"><code class="docutils literal notranslate"><span class="pre">add_months()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.apply_to_groups"><code class="docutils literal notranslate"><span class="pre">apply_to_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.apply_to_groups_jit"><code class="docutils literal notranslate"><span class="pre">apply_to_groups_jit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.apply_to_groups_reduce_jit"><code class="docutils literal notranslate"><span class="pre">apply_to_groups_reduce_jit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.classify"><code class="docutils literal notranslate"><span class="pre">classify()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.compare_data"><code class="docutils literal notranslate"><span class="pre">compare_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.filter"><code class="docutils literal notranslate"><span class="pre">filter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.inspect_data"><code class="docutils literal notranslate"><span class="pre">inspect_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.merge"><code class="docutils literal notranslate"><span class="pre">merge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.populate"><code class="docutils literal notranslate"><span class="pre">populate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.to_month_end"><code class="docutils literal notranslate"><span class="pre">to_month_end()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.trim"><code class="docutils literal notranslate"><span class="pre">trim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.datatools.winsorize"><code class="docutils literal notranslate"><span class="pre">winsorize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.factors">factors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_all_factor_portfolios"><code class="docutils literal notranslate"><span class="pre">make_all_factor_portfolios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_char_portfolios"><code class="docutils literal notranslate"><span class="pre">make_char_portfolios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_factor_portfolio"><code class="docutils literal notranslate"><span class="pre">make_factor_portfolio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.make_factor_portfolios"><code class="docutils literal notranslate"><span class="pre">make_factor_portfolios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.factors.prepare_data_for_factors"><code class="docutils literal notranslate"><span class="pre">prepare_data_for_factors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.ff">ff</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.ff.make_ff_factors"><code class="docutils literal notranslate"><span class="pre">make_ff_factors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.ff.make_ff_factors_wrds"><code class="docutils literal notranslate"><span class="pre">make_ff_factors_wrds()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.fileio">fileio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.fileio.read_from_file"><code class="docutils literal notranslate"><span class="pre">read_from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.fileio.write_to_file"><code class="docutils literal notranslate"><span class="pre">write_to_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.globals">globals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.log">log</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.drawline"><code class="docutils literal notranslate"><span class="pre">drawline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.elapsed_time"><code class="docutils literal notranslate"><span class="pre">elapsed_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.err"><code class="docutils literal notranslate"><span class="pre">err()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.log"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.set_log_path"><code class="docutils literal notranslate"><span class="pre">set_log_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.start_timer"><code class="docutils literal notranslate"><span class="pre">start_timer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.log.warn"><code class="docutils literal notranslate"><span class="pre">warn()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.numba_support">numba_support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.add_constant"><code class="docutils literal notranslate"><span class="pre">add_constant()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.bivariate_regression"><code class="docutils literal notranslate"><span class="pre">bivariate_regression()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.isnan1"><code class="docutils literal notranslate"><span class="pre">isnan1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.nanmean"><code class="docutils literal notranslate"><span class="pre">nanmean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.nanskew"><code class="docutils literal notranslate"><span class="pre">nanskew()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.nanstd"><code class="docutils literal notranslate"><span class="pre">nanstd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.nansum"><code class="docutils literal notranslate"><span class="pre">nansum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.nanvar"><code class="docutils literal notranslate"><span class="pre">nanvar()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.rank"><code class="docutils literal notranslate"><span class="pre">rank()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.regression"><code class="docutils literal notranslate"><span class="pre">regression()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.roll_mean"><code class="docutils literal notranslate"><span class="pre">roll_mean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.roll_std"><code class="docutils literal notranslate"><span class="pre">roll_std()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.roll_sum"><code class="docutils literal notranslate"><span class="pre">roll_sum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.roll_var"><code class="docutils literal notranslate"><span class="pre">roll_var()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.rolling_regression"><code class="docutils literal notranslate"><span class="pre">rolling_regression()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.set_to_nan"><code class="docutils literal notranslate"><span class="pre">set_to_nan()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.numba_support.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.panel">panel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel"><code class="docutils literal notranslate"><span class="pre">FCPanel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.data"><code class="docutils literal notranslate"><span class="pre">FCPanel.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.freq"><code class="docutils literal notranslate"><span class="pre">FCPanel.freq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.base_freq"><code class="docutils literal notranslate"><span class="pre">FCPanel.base_freq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.char_map"><code class="docutils literal notranslate"><span class="pre">FCPanel.char_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.create_chars"><code class="docutils literal notranslate"><span class="pre">FCPanel.create_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.created"><code class="docutils literal notranslate"><span class="pre">FCPanel.created()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.get_available_chars"><code class="docutils literal notranslate"><span class="pre">FCPanel.get_available_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.get_char_list"><code class="docutils literal notranslate"><span class="pre">FCPanel.get_char_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.load"><code class="docutils literal notranslate"><span class="pre">FCPanel.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.prepare"><code class="docutils literal notranslate"><span class="pre">FCPanel.prepare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.remove_rawdata"><code class="docutils literal notranslate"><span class="pre">FCPanel.remove_rawdata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.rename_chars"><code class="docutils literal notranslate"><span class="pre">FCPanel.rename_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.save"><code class="docutils literal notranslate"><span class="pre">FCPanel.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.show_available_chars"><code class="docutils literal notranslate"><span class="pre">FCPanel.show_available_chars()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel"><code class="docutils literal notranslate"><span class="pre">Panel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.data"><code class="docutils literal notranslate"><span class="pre">Panel.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.freq"><code class="docutils literal notranslate"><span class="pre">Panel.freq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.base_freq"><code class="docutils literal notranslate"><span class="pre">Panel.base_freq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.apply_to_dates"><code class="docutils literal notranslate"><span class="pre">Panel.apply_to_dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.apply_to_ids"><code class="docutils literal notranslate"><span class="pre">Panel.apply_to_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.clean_memory"><code class="docutils literal notranslate"><span class="pre">Panel.clean_memory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.copy"><code class="docutils literal notranslate"><span class="pre">Panel.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.copy_from"><code class="docutils literal notranslate"><span class="pre">Panel.copy_from()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.cumret"><code class="docutils literal notranslate"><span class="pre">Panel.cumret()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.date_idx"><code class="docutils literal notranslate"><span class="pre">Panel.date_idx()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.date_values"><code class="docutils literal notranslate"><span class="pre">Panel.date_values()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.diff"><code class="docutils literal notranslate"><span class="pre">Panel.diff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.filter"><code class="docutils literal notranslate"><span class="pre">Panel.filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.futret"><code class="docutils literal notranslate"><span class="pre">Panel.futret()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_date_group"><code class="docutils literal notranslate"><span class="pre">Panel.get_date_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_date_group_index"><code class="docutils literal notranslate"><span class="pre">Panel.get_date_group_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_date_group_size"><code class="docutils literal notranslate"><span class="pre">Panel.get_date_group_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_id_group"><code class="docutils literal notranslate"><span class="pre">Panel.get_id_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_id_group_index"><code class="docutils literal notranslate"><span class="pre">Panel.get_id_group_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_id_group_size"><code class="docutils literal notranslate"><span class="pre">Panel.get_id_group_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_row_count"><code class="docutils literal notranslate"><span class="pre">Panel.get_row_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.id_idx"><code class="docutils literal notranslate"><span class="pre">Panel.id_idx()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.id_values"><code class="docutils literal notranslate"><span class="pre">Panel.id_values()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.inspect_data"><code class="docutils literal notranslate"><span class="pre">Panel.inspect_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.is_sorted"><code class="docutils literal notranslate"><span class="pre">Panel.is_sorted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.load"><code class="docutils literal notranslate"><span class="pre">Panel.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.merge"><code class="docutils literal notranslate"><span class="pre">Panel.merge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.pct_change"><code class="docutils literal notranslate"><span class="pre">Panel.pct_change()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.populate"><code class="docutils literal notranslate"><span class="pre">Panel.populate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.remove_rows"><code class="docutils literal notranslate"><span class="pre">Panel.remove_rows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.rolling"><code class="docutils literal notranslate"><span class="pre">Panel.rolling()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.rolling_regression"><code class="docutils literal notranslate"><span class="pre">Panel.rolling_regression()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.save"><code class="docutils literal notranslate"><span class="pre">Panel.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.panel.Panel.shift"><code class="docutils literal notranslate"><span class="pre">Panel.shift()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.portfolio">portfolio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio"><code class="docutils literal notranslate"><span class="pre">Portfolio</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.name"><code class="docutils literal notranslate"><span class="pre">Portfolio.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.position"><code class="docutils literal notranslate"><span class="pre">Portfolio.position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.value"><code class="docutils literal notranslate"><span class="pre">Portfolio.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.fposition"><code class="docutils literal notranslate"><span class="pre">Portfolio.fposition</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.performance"><code class="docutils literal notranslate"><span class="pre">Portfolio.performance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.costfcn"><code class="docutils literal notranslate"><span class="pre">Portfolio.costfcn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.copy"><code class="docutils literal notranslate"><span class="pre">Portfolio.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.cum_return"><code class="docutils literal notranslate"><span class="pre">Portfolio.cum_return()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.cum_returns"><code class="docutils literal notranslate"><span class="pre">Portfolio.cum_returns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.drawdown"><code class="docutils literal notranslate"><span class="pre">Portfolio.drawdown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.eval"><code class="docutils literal notranslate"><span class="pre">Portfolio.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.eval_series"><code class="docutils literal notranslate"><span class="pre">Portfolio.eval_series()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.from_portfolo_return"><code class="docutils literal notranslate"><span class="pre">Portfolio.from_portfolo_return()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.max_drawdown"><code class="docutils literal notranslate"><span class="pre">Portfolio.max_drawdown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.max_succdown"><code class="docutils literal notranslate"><span class="pre">Portfolio.max_succdown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.mean_return"><code class="docutils literal notranslate"><span class="pre">Portfolio.mean_return()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.returns"><code class="docutils literal notranslate"><span class="pre">Portfolio.returns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.set_position"><code class="docutils literal notranslate"><span class="pre">Portfolio.set_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.set_return_type"><code class="docutils literal notranslate"><span class="pre">Portfolio.set_return_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.sharpe_ratio"><code class="docutils literal notranslate"><span class="pre">Portfolio.sharpe_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.std_return"><code class="docutils literal notranslate"><span class="pre">Portfolio.std_return()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.succdown"><code class="docutils literal notranslate"><span class="pre">Portfolio.succdown()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios"><code class="docutils literal notranslate"><span class="pre">Portfolios</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.members"><code class="docutils literal notranslate"><span class="pre">Portfolios.members</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.value"><code class="docutils literal notranslate"><span class="pre">Portfolios.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.performance"><code class="docutils literal notranslate"><span class="pre">Portfolios.performance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.add"><code class="docutils literal notranslate"><span class="pre">Portfolios.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.eval"><code class="docutils literal notranslate"><span class="pre">Portfolios.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.set"><code class="docutils literal notranslate"><span class="pre">Portfolios.set()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.tcost">tcost</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TimeVaryingCost"><code class="docutils literal notranslate"><span class="pre">TimeVaryingCost</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TimeVaryingCost.set_params"><code class="docutils literal notranslate"><span class="pre">TimeVaryingCost.set_params()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost"><code class="docutils literal notranslate"><span class="pre">TransactionCost</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost.params"><code class="docutils literal notranslate"><span class="pre">TransactionCost.params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost.get_cost"><code class="docutils literal notranslate"><span class="pre">TransactionCost.get_cost()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost.set_params"><code class="docutils literal notranslate"><span class="pre">TransactionCost.set_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.util">util</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.drop_columns"><code class="docutils literal notranslate"><span class="pre">drop_columns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.is_bool_array"><code class="docutils literal notranslate"><span class="pre">is_bool_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.is_float"><code class="docutils literal notranslate"><span class="pre">is_float()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.is_int"><code class="docutils literal notranslate"><span class="pre">is_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.is_iterable"><code class="docutils literal notranslate"><span class="pre">is_iterable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.is_numeric"><code class="docutils literal notranslate"><span class="pre">is_numeric()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.is_zero"><code class="docutils literal notranslate"><span class="pre">is_zero()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.keep_columns"><code class="docutils literal notranslate"><span class="pre">keep_columns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.nansum1"><code class="docutils literal notranslate"><span class="pre">nansum1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.to_list"><code class="docutils literal notranslate"><span class="pre">to_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.util.unique_list"><code class="docutils literal notranslate"><span class="pre">unique_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanomaly_edited.html#module-pyanomaly.wrdsdata">wrdsdata</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS"><code class="docutils literal notranslate"><span class="pre">WRDS</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.db"><code class="docutils literal notranslate"><span class="pre">WRDS.db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.add_gvkey_to_crsp"><code class="docutils literal notranslate"><span class="pre">WRDS.add_gvkey_to_crsp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.add_gvkey_to_crsp_cusip"><code class="docutils literal notranslate"><span class="pre">WRDS.add_gvkey_to_crsp_cusip()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.convert_fund_currency_to_usd"><code class="docutils literal notranslate"><span class="pre">WRDS.convert_fund_currency_to_usd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.create_crsp_comp_linktable"><code class="docutils literal notranslate"><span class="pre">WRDS.create_crsp_comp_linktable()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.create_pgpass_file"><code class="docutils literal notranslate"><span class="pre">WRDS.create_pgpass_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_all"><code class="docutils literal notranslate"><span class="pre">WRDS.download_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_funda"><code class="docutils literal notranslate"><span class="pre">WRDS.download_funda()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_fundq"><code class="docutils literal notranslate"><span class="pre">WRDS.download_fundq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_g_secd"><code class="docutils literal notranslate"><span class="pre">WRDS.download_g_secd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_seall"><code class="docutils literal notranslate"><span class="pre">WRDS.download_seall()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_secd"><code class="docutils literal notranslate"><span class="pre">WRDS.download_secd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_sf"><code class="docutils literal notranslate"><span class="pre">WRDS.download_sf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_table"><code class="docutils literal notranslate"><span class="pre">WRDS.download_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_table_async"><code class="docutils literal notranslate"><span class="pre">WRDS.download_table_async()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.get_risk_free_rate"><code class="docutils literal notranslate"><span class="pre">WRDS.get_risk_free_rate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.merge_sf_with_seall"><code class="docutils literal notranslate"><span class="pre">WRDS.merge_sf_with_seall()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.preprocess_crsp"><code class="docutils literal notranslate"><span class="pre">WRDS.preprocess_crsp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.read_data"><code class="docutils literal notranslate"><span class="pre">WRDS.read_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.save_as_csv"><code class="docutils literal notranslate"><span class="pre">WRDS.save_as_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.save_data"><code class="docutils literal notranslate"><span class="pre">WRDS.save_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 

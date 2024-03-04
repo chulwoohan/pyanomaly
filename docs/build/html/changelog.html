@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Changelog &mdash; PyAnomaly 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -106,28 +108,28 @@
            <div itemprop="articleBody">
              
   <section id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
 <section id="v0-9-2022-01-15">
-<h2>v0.9 - 2022.01.15<a class="headerlink" href="#v0-9-2022-01-15" title="Permalink to this heading"></a></h2>
+<h2>v0.9 - 2022.01.15<a class="headerlink" href="#v0-9-2022-01-15" title="Link to this heading"></a></h2>
 <p>Initial version.</p>
 </section>
 <section id="v0-923-2022-01-16">
-<h2>v0.923 - 2022.01.16<a class="headerlink" href="#v0-923-2022-01-16" title="Permalink to this heading"></a></h2>
+<h2>v0.923 - 2022.01.16<a class="headerlink" href="#v0-923-2022-01-16" title="Link to this heading"></a></h2>
 <p>Multiprocessing in <code class="docutils literal notranslate"><span class="pre">datatools.populate()</span></code> has been updated to increase the speed.</p>
 </section>
 <section id="v0-930-2022-01-17">
-<h2>v0.930 - 2022.01.17<a class="headerlink" href="#v0-930-2022-01-17" title="Permalink to this heading"></a></h2>
+<h2>v0.930 - 2022.01.17<a class="headerlink" href="#v0-930-2022-01-17" title="Link to this heading"></a></h2>
 <p>The trend factor of Han, Zhou, and Zhu (2016) has been added. We thank Guofu Zhou for this suggestion.</p>
 </section>
 <section id="v0-931-2022-01-23">
-<h2>v0.931 - 2022.01.23<a class="headerlink" href="#v0-931-2022-01-23" title="Permalink to this heading"></a></h2>
+<h2>v0.931 - 2022.01.23<a class="headerlink" href="#v0-931-2022-01-23" title="Link to this heading"></a></h2>
 <p>A bug of not returning the result in <code class="docutils literal notranslate"><span class="pre">FUNDA.c_ebitda_mev()</span></code> has been fixed.</p>
 <p>A new characteristic method for Enterprise multiple (Loughran and Wellman, 2011), <code class="docutils literal notranslate"><span class="pre">c_enterprise_multiple()</span></code>,
 has been added to <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, as the previous one (<code class="docutils literal notranslate"><span class="pre">c_ebitda_mev()</span></code>) that implements JKP’s SAS code uses a different
 definition from the original definition. This new method uses the original definition.</p>
 </section>
 <section id="v0-932-2022-01-25">
-<h2>v0.932 - 2022.01.25<a class="headerlink" href="#v0-932-2022-01-25" title="Permalink to this heading"></a></h2>
+<h2>v0.932 - 2022.01.25<a class="headerlink" href="#v0-932-2022-01-25" title="Link to this heading"></a></h2>
 <p>Bug fix for missing classes</p>
 <blockquote>
 <div><p>When data has not enough distinct values, some classes can be missing when data is sorted into classes (quantiles).
@@ -136,7 +138,7 @@ missing classes.</p>
 </div></blockquote>
 </section>
 <section id="v1-0-2024-02-28-major-update">
-<h2>v1.0 - 2024.02.28 (Major Update)<a class="headerlink" href="#v1-0-2024-02-28-major-update" title="Permalink to this heading"></a></h2>
+<h2>v1.0 - 2024.02.28 (Major Update)<a class="headerlink" href="#v1-0-2024-02-28-major-update" title="Link to this heading"></a></h2>
 <p>There are several important updates in this version and some functions are not backward compatible.
 See the examples in <a class="reference internal" href="cookbook.html#cookbook"><span class="std std-ref">Cookbook</span></a> for changes.</p>
 <p><strong>Major updates</strong></p>

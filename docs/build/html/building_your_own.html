@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bulding Your Own &mdash; PyAnomaly 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -103,14 +105,14 @@
            <div itemprop="articleBody">
              
   <section id="bulding-your-own">
-<h1>Bulding Your Own<a class="headerlink" href="#bulding-your-own" title="Permalink to this heading"></a></h1>
+<h1>Bulding Your Own<a class="headerlink" href="#bulding-your-own" title="Link to this heading"></a></h1>
 <p>PyAnomaly is highly configurable and customizable, and you can easily add new firm characteristics or functions.
 When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary.
 This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you
 update the library.</p>
 <p>If you want some of your modules to be added to PyAnomaly, please contact us.</p>
 <section id="coding-rule">
-<h2>Coding Rule<a class="headerlink" href="#coding-rule" title="Permalink to this heading"></a></h2>
+<h2>Coding Rule<a class="headerlink" href="#coding-rule" title="Link to this heading"></a></h2>
 <p>There are a few coding rules we follow and we suggest you follow them when developing your own library based on PyAnomaly.</p>
 <ol class="arabic">
 <li><dl>
@@ -179,7 +181,7 @@ methods, and attributes).</p>
 </ol>
 </section>
 <section id="performance-tips">
-<h2>Performance Tips<a class="headerlink" href="#performance-tips" title="Permalink to this heading"></a></h2>
+<h2>Performance Tips<a class="headerlink" href="#performance-tips" title="Link to this heading"></a></h2>
 <p>Jitted functions (a function with <code class="docutils literal notranslate"><span class="pre">&#64;njit</span></code> decorator) can be slow at the first call due to compile time.
 While most jitted functions are cached to minimize overhead, <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code> and
 <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code> cannot be cached as they receive a function as an argument.
