@@ -20,11 +20,11 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 # -- Project information -----------------------------------------------------
 
 project = 'PyAnomaly'
-copyright = '2021, Chulwoo Han and Jongho Kang'
+copyright = '2024, Chulwoo Han and Jongho Kang'
 author = 'Chulwoo Han and Jongho Kang'
 
 # The full version, including alpha/beta/rc tags
-release = '0.931'
+release = '1.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -39,7 +39,21 @@ extensions = [
     'sphinx.ext.todo',
     #    'sphinxcontrib.bibtex'
  ]
- 
+
+autodoc_default_options = {
+    # 'members': 'var1, var2',
+    'member-order': 'alphabetical',  # 'bysource', 'alphabetical'
+    # 'special-members': '__init__',
+    # 'undoc-members': True,
+    # 'exclude-members': '__weakref__'
+}
+
+# generate autosummary even if no references
+# autosummary_generate = True
+# autosummary_imported_members = True
+
+# pygments_style = 'sphinx'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -57,7 +71,7 @@ exclude_patterns = []
 # html_theme = 'alabaster'
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
-    'navigation_depth': 2,
+    'navigation_depth': 2,  # Depth of the menu on the left panel.
 }
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -69,12 +83,12 @@ html_css_files = [
 
 todo_include_todos = False
 
-autodoc_mock_imports = ['numpy', 'pandas', 'wrds', 'numba', 'scipy', 'statsmodels', 'openpyxl', 'matplotlib']
+autodoc_mock_imports = ['numpy', 'pandas', 'wrds', 'numba', 'scipy', 'statsmodels', 'openpyxl', 'matplotlib', 'sklearn']
 
 # -- rst prolog
 # Substitutions
 rst_prolog = """
-.. |email| replace:: chulwoo.han@durham.ac.uk
+.. |email| replace:: chulwoo.han@skku.edu
 .. _PyAnomaly repository: https://github.com/chulwoohan/pyanomaly
 .. _mapping file: https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx
 .. _examples: https://github.com/chulwoohan/pyanomaly/blob/master/examples.py

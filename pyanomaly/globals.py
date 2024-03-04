@@ -1,7 +1,26 @@
-from .datatypes import iterstruct
+"""This module defines global constants. Importing this module will also import frequently used modules:
+:mod:`~pyanomaly.config`, :mod:`~pyanomaly.log`, and :mod:`~pyanomaly.util`.
+
+Constants
+---------
+
+Weight_scheme
+    * VW: value-weight
+    * EW: equal-weight
+
+Data frequency
+    * ANNUAL
+    * QUARTERLY
+    * MONTHLY
+    * DAILY
+"""
+
+from .datatypes import struct
+# from memory_profiler import profile
 from .config import *
 from .log import *
 from .util import *
+
 
 # weight_scheme
 VW = 'vw'  # value-weight
@@ -17,13 +36,13 @@ DAILY = 365
 freq_map = {
     ANNUAL: 'Y',
     QUARTERLY: 'Q',
-    MONTHLY: 'M',
+    MONTHLY: 'M' if str(pd.__version__) < '2.2.0' else 'ME',
     DAILY: 'D'
 }
 
 # Colour codes
 # https://github.com/vega/vega/wiki/Scales#scale-range-literals
-COLOR10 = iterstruct(
+COLOR10 = struct(
     blue = '#1f77b4',
     orange = '#ff7f0e',
     green = '#2ca02c',
@@ -36,7 +55,7 @@ COLOR10 = iterstruct(
     sky = '#17becf'
 )
 
-COLOR20 = iterstruct(
+COLOR20 = struct(
     blue1 = '#1f77b4',
     blue0 = '#aec7e8',
     orange1 = '#ff7f0e',

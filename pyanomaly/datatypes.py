@@ -1,6 +1,10 @@
+"""This module defines data types.
+
+    * `struct`: Dict that can access items using '.' expression or integer indexing.
+"""
 
 class struct(dict):
-    """dict that allows '.' expression.
+    """Dict that can access items using '.' expression or integer indexing.
 
     Examples:
         >>> x = struct(
@@ -10,6 +14,8 @@ class struct(dict):
         >>> x['a']
         py
         >>> x.a
+        py
+        >>> x[0]
         py
     """
 
@@ -22,13 +28,21 @@ class struct(dict):
             self.__dict__[k] = v
 
     def __setitem__(self, k, value):
+        # struct['x'] = y
         self.__dict__[k] = value
         super().__setitem__(k, value)
 
     def __setattr__(self, k, value):
+        # struct.x = y
         self.__dict__[k] = value
         if k in self.keys():  # update dict only when the key already exists.
             super().__setitem__(k, value)
+
+    def __getitem__(self, k):
+        if type(k) == str:
+            return super().__getitem__(k)
+        else:  # int
+            return list(self.values())[k]
 
     def __copy__(self):
         cls = self.__class__
@@ -39,29 +53,4 @@ class struct(dict):
 
     def copy(self):
         return self.__copy__()
-
-
-class iterstruct(struct):
-    """Iterable struct."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._idx = 0
-
-    def __getitem__(self, k):
-        if type(k) == str:
-            return super().__getitem__(k)
-        else:  # int
-            return list(self.values())[k]
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self._idx == len(self):
-            self._idx = 0
-            raise StopIteration
-        else:
-            self._idx += 1
-            return list(self.values())[self._idx - 1]
 

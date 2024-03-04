@@ -27,7 +27,7 @@ If you use PyAnomaly for your research, please let us know (|email|).
 
 .. toctree::
    :caption: API
-   :maxdepth: 4
+   :maxdepth: 2
       
    pyanomaly_edited
 
@@ -39,13 +39,11 @@ If you use PyAnomaly for your research, please let us know (|email|).
    changelog
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-
-.. :ref:`search`
+..
+   Indices and tables
+   ==================
+   * :ref:`genindex`
+   * :ref:`modindex`
+   .. :ref:`search`
 
 

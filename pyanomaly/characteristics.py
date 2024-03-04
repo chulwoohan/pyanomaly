@@ -1,17 +1,14 @@
 """This module defines classes for firm characteristic generation.
-Refer to the cookbook for use cases.
 
-    * `FUNDA`
-        Class to generate firm characteristics from funda.
-    * `FUNDQ`
-        Class to generate firm characteristics from fundq.
-    * `CRSPM`
-        Class to generate firm characteristics from crspm.
-    * `CRSPD`
-        Class to generate firm characteristics from crspd.
-    * `Merge`
-        Class to generate firm characteristics from a merged dataset of funda, fundq, crspm, and crspd.
+    .. autosummary::
+        :nosignatures:
 
+        FUNDA
+        FUNDQ
+        CRSPM
+        CRSPDRaw
+        CRSPD
+        Merge
 """
 
 import numpy as np
@@ -24,9 +21,7 @@ from pyanomaly.datatools import *
 from pyanomaly.analytics import *
 from pyanomaly.fileio import read_from_file
 from pyanomaly.numba_support import *
-# from pyanomaly.multiprocess import multiprocess
 
-REPLICATE_JKP = config.REPLICATE_JKP
 
 ################################################################################
 #
@@ -34,206 +29,221 @@ REPLICATE_JKP = config.REPLICATE_JKP
 #
 ################################################################################
 
-class FUNDA(Panel):
+class FUNDA(FCPanel):
     """Class to generate firm characteristics from funda.
 
-    The firm characteristics generated in this class can be viewed using ``FUNDA.show_available_functions()``:
-
-    >>> FUNDA().show_available_functions()
+    The firm characteristics defined in this class can be viewed using :meth:`.show_available_chars`.
 
     Args:
-        alias: Characteristic column name in ``mapping.xlsx``. If None, function names (without 'c\_') are used as the
-            characteristic names.
-        data: DataFrame with index = date/id, sorted on id/date.
-        freq: Frequency of `data`. ANNUAL, QUARTERLY, MONTHLY, or DAILY. Default to ANNUAL.
+        alias (str, list, or dict): Firm characteristics to generate and their aliases. If None, all available firm
+            characteristics are generated.
+
+            * str: A column name in the mapping file (``config.mapping_file_path``). The firm characteristics defined
+              in this class and in the `alias` column of the mapping file are generated. See :ref:`sec-mapping file`.
+            * list: List of firm characteristics (method names).
+            * dict: Dict of firm characteristics and their aliases of the form {method name: alias}.
+
+            If aliases are not specified, method names are used as aliases.
+        data: DataFrame of funda data with index = datadate/gvkey, sorted on gvkey/datadate. The funda data can be
+            given at initialization or loaded later using :meth:`load_data`.
+
+    **Methods**
+
+    .. autosummary::
+        :nosignatures:
+
+        load_data
+        convert_currency
+        merge_with_fundq
+        add_crsp_me
+        update_variables
+        postprocess
+
+    Firm characteristic generation methods have a name like ``c_characteristic()``.
     """
 
-    def __init__(self, alias=None, data=None, freq=ANNUAL):
-        super().__init__(alias, data, freq, ANNUAL)
+    def __init__(self, alias=None, data=None):
+        super().__init__(alias, data, ANNUAL)
 
-    def load_data(self, sdate=None, edate=None):
+    def load_data(self, sdate=None, edate=None, fname='funda'):
         """Load funda data from file.
 
-        The loaded data is sorted on gvkey/datadate, has index = datadate/gvkey, and stored in the `data` attribute.
-        """
-
-        elapsed_time(f'Loading funda...')
-
-        data = WRDS.read_data('funda')
-        if sdate:
-            data = data[data.datadate >= sdate]
-        if edate:
-            data = data[data.datadate <= edate]
-
-        self.data = data.set_index(['datadate', 'gvkey']).sort_index(level=['gvkey', 'datadate'])
-
-        elapsed_time('funda loaded.')
-        self.inspect_data()
-
-    def convert_currency(self):
-        """Convert the currency of `data` to USD.
-
-        This method needs to be called if
-
-            i) the data contains non USD-denominated firms, e.g., CAD, and
-            ii) CRSP's market equity is used, which is always in USD.
-        """
-
-        if (self.data['curcd'] != 'USD').any():
-            self.data = WRDS.convert_fund_currency_to_usd(self.data, table='funda')
-
-    def convert_to_monthly(self, lag=4, limit=12):
-        """Populate `data` to monthly frequency.
-
-        The index of `data` changes from datadate/gvkey to date/gvkey and datadate is kept as a column.
-        The date and datadate has a gap of at least `lag` months.
+        This method loads funda data from ``config.input_dir/comp/funda`` and stores it in the ``data``
+        attribute. The ``data`` has index = datadate/gvkey and is sorted on gvkey/datadate.
 
         Args:
-            lag: Minimum months between date and datadate: `lag` = 4 assumes funda is available 4 months after datadate.
-            limit: Maximum months to forward-fill the data.
+            sdate: Start date ('yyyy-mm-dd'). If None, from the earliest.
+            edate: End date ('yyyy-mm-dd'). If None, to the latest.
+            fname: The funda file name.
         """
 
-        elapsed_time(f'Populating funda data to monthly frequency...')
+        elapsed_time(f'Loading {fname}...')
+        data = WRDS.read_data(fname, index_col=['datadate', 'gvkey'])
+        if not self.is_sorted(data):
+            data.sort_index(level=[-1, 0], inplace=True)
 
-        # Populate data
-        fa = self.data.reset_index()
-        fa['date'] = fa['datadate']
-        fa = fa.set_index(['date', 'gvkey'])
-        fa = populate(fa, MONTHLY, limit=limit)
+        if sdate:
+            data = data[data.index.get_level_values(0) >= sdate]
+        if edate:
+            data = data[data.index.get_level_values(0) <= edate]
 
-        # Shift data by 'lag' months.
-        ids = fa.index.get_level_values('gvkey')
-        fa = fa.shift(lag)
-        fa = fa[ids == np.roll(ids, lag)]
-        # fa['rcount'] = fa.groupby('gvkey').cumcount()
-        # fa = fa[fa.rcount >= lag]  # delete first 'lag' months.
-        self.data = fa
-        self.freq = MONTHLY
-        elapsed_time(f'funda data populated.')
+        self.data = data
+        elapsed_time(f'{fname} loaded.')
+        self.inspect_data()
+
+    # def cleanse_data(self, method='Quantile', **kwargs):
+    #     data = self.data.copy()
+    #
+    #     # Columns to examine.
+    #     excl_columns = ['fyear']
+    #     columns = [col for col in data.columns if is_numeric(data[col]) and (col not in excl_columns)]
+    #     keep_columns(data, columns)
+    #
+    #     # Adjust for splits.
+    #     data['prcc_f'] /= data.ajex
+    #     data['csho'] *= data.ajex
+    #
+    #     anomaly = detect_anomalies(data, None, method, **kwargs)
+    #     for i, col in enumerate(columns):
+    #         self.data.loc[anomaly[:, i], col] = np.nan
+
+    def convert_currency(self):
+        """Convert currency to USD.
+
+        Convert the currency of funda to USD. This method needs to be called if
+
+            i) the data contains non USD-denominated firms, e.g., CAD; and
+            ii) CRSP's market equity is used, which is always in USD.
+
+        See Also:
+            :meth:`.WRDS.convert_fund_currency_to_usd`
+        """
+
+        elapsed_time(f'Converting non USD items to USD...')
+        if (self.data['curcd'] != 'USD').any():
+            self.data = WRDS.convert_fund_currency_to_usd(self.data, table='funda')
+        elapsed_time(f'Currency converted.')
 
     def merge_with_fundq(self, fundq):
         """Merge funda with fundq.
 
-        If variable X is available in fundq, i.e., Xq or Xy exists, Xq(y) replaces X if:
-
-            i) X is missing, or
-            ii) Xq(y) is not missing and fundq.datadate > funda.datadate.
+        Merge funda with quarterly-updated annual data generated from fundq. If a value exists in both data,
+        funda has the priority.
 
         NOTE:
             JKP create characteristics in funda and fundq separately and merge them, whereas we merge the raw data
-            first and then generate characteristics. Since some variables in funda are not available in fundq, eg, ebitda,
-            JKP make those unavailable variables from other variables and create characteristics, even when they are
-            available in funda. We prefer to merge funda with fundq at the raw data level and create characteristics from
-            the merged data.
+            first and then generate characteristics. Since some variables in funda are not available in fundq, e.g.,
+            ebitda, JKP synthesize those unavailable variables with other variables and create characteristics, even when
+            they are available in funda. We prefer to merge funda with fundq at the raw data level and create
+            characteristics from the merged data.
 
-        Columns in both funda and fundq:
+            Columns in both funda and fundq:
 
-            datadate, cusip, cik, sic, naics, sale, revt, cogs, xsga, dp, xrd, ib, nopi, spi, pi, txp, ni, txt, xint,
-            capx, oancf, gdwlia, gdwlip, rect, act, che, ppegt, invt, at, aco, intan, ao, ppent, gdwl, lct, dlc, dltt,
-            lt, pstk, ap, lco, lo, drc, drlt, txdi, ceq, scstkc, csho, prcc_f, oibdp, oiadp, mii, xopr, xi, do, xido,
-            ibc, dpc, xidoc, fincf, fiao, txbcof, dltr, dlcch, prstkc, sstk, dv, ivao, ivst, re, txditc, txdb, seq,
-            mib, icapt, ajex, curcd, exratd, rcount
+                datadate, cusip, cik, sic, naics, sale, revt, cogs, xsga, dp, xrd, ib, nopi, spi, pi, txp, ni, txt, xint,
+                capx, oancf, gdwlia, gdwlip, rect, act, che, ppegt, invt, at, aco, intan, ao, ppent, gdwl, lct, dlc, dltt,
+                lt, pstk, ap, lco, lo, drc, drlt, txdi, ceq, scstkc, csho, prcc_f, oibdp, oiadp, mii, xopr, xi, do, xido,
+                ibc, dpc, xidoc, fincf, fiao, txbcof, dltr, dlcch, prstkc, sstk, dv, ivao, ivst, re, txditc, txdb, seq,
+                mib, icapt, ajex, curcd, exratd
 
-        Columns in funda but not in fundq:
+            Columns in funda but not in fundq:
 
-            xad, gp, ebitda, ebit, txfed, txfo, dvt, ob, gwo, fatb, fatl, dm, dcvt, cshrc, dcpstk, emp, xlr, ds, dvc,
-            itcb, pstkrv, pstkl, dltis, ppenb, ppenls
+                xad, gp, ebitda, ebit, txfed, txfo, dvt, ob, gwo, fatb, fatl, dm, dcvt, cshrc, dcpstk, emp, xlr, ds, dvc,
+                itcb, pstkrv, pstkl, dltis, ppenb, ppenls
 
         Args:
-            fundq: FUNDQ instance.
+            fundq: :class:`FUNDQ` instance.
         """
 
         elapsed_time('Merging funda with fundq...')
-
         fa = self.data
         fq = fundq.generate_funda_vars()  # quarterly updated annual data
 
-        if REPLICATE_JKP:
-            for col in fa.columns:
-                if col not in fq.columns:
+        if config.replicate_jkp:
+            for col in fa:
+                if col not in fq:
                     fq[col] = np.nan
 
         common_columns = list(fq.columns.intersection(fa.columns))  # columns in both funda and fundq
         common_columns_q = [col + '_q' for col in common_columns]
-        fq = fq[common_columns]
+        fq = fq.loc[:, common_columns]
 
         # Merge funda with fundq. fundq.X changes to fundq.X_q
-        fa = fa.merge(fq, on=['date', 'gvkey'], how='outer', suffixes=['', '_q'])
-        fa.sort_index(level=['gvkey', 'date'], inplace=True)
+        fa = fa.merge(fq, on=['date', 'gvkey'], how='outer', suffixes=['', '_q']).sort_index(level=['gvkey', 'date'])
 
         # Replace X with X_q
-        for col, qcol in zip(common_columns, common_columns_q):
-            if col == 'datadate':
-                continue
-            if REPLICATE_JKP:
-                cond = fa['datadate'].isna() | (fa['datadate'] < fa['datadate_q'])
-            else:
-                cond = fa[col].isna() | (~fa[qcol].isna() & (fa['datadate'] < fa['datadate_q']))
-            fa[col] = np.where(cond, fa[qcol], fa[col])
-
         cond = fa['datadate'].isna() | (fa['datadate'] < fa['datadate_q'])
         fa['datadate'] = np.where(cond, fa['datadate_q'], fa['datadate'])
 
-        fa.drop(columns=common_columns_q, inplace=True)
+        for col, qcol in zip(common_columns, common_columns_q):
+            if col == 'datadate':
+                continue
+            if config.replicate_jkp:
+                # JKP prioritize fundq: fundq will replace funda if datadate < datadate_q even when funda has values
+                # and fundq is missing.
+                fa[col].mask(cond, fa[qcol], inplace=True)
+            else:
+                # Check missing values column by column and use fundq only when fundq is not missing.
+                cond1 = (cond | fa[col].isna()) & ~fa[qcol].isna()
+                # cond = fa[col].isna() | (~fa[qcol].isna() & (fa['datadate'] < fa['datadate_q']))
+                fa[col] = fa[col].mask(cond1, fa[qcol])
+
+        drop_columns(fa, common_columns_q)
+        for col in fa:  # To release memory
+            fa[col] = fa[col]
 
         self.data = fa
         elapsed_time('funda and fundq merged.')
 
     def add_crsp_me(self, crspm, method='latest'):
-        """Replace funda's market equity ('me') with crspm's firm level market equity ('me_company').
+        """Add crsp market equity.
 
-        This method also adds a column 'me_fiscal' to `data`. The 'me_fiscal' is the me on datadate
-        if `method` = 'latest` and it is the as me (December me) if `method` = 'year_end'.
-        Without calling this function, me and me_fiscal are set to me of funda (prcc_f * csho).
+        In funda, market equity ('me') and fiscal market equity ('me_fiscal') are both defined as (prcc_f * csho).
+        This method replaces them with crspm's firm-level market equity ('me_company').
+        If `method` = 'latest', 'me' is the latest 'me_company' and 'me_fiscal' is the 'me_company' on datadate.
+        If `method` = 'year_end', both 'me' and 'me_fiscal' are the 'me_company' in December of datadate year.
 
         Args:
-            crspm: CRSPM instance.
+            crspm: :class:`CRSPM` instance.
             method: How to merge crsp me with funda. 'latest': latest me; 'year_end': December me.
         """
 
         elapsed_time('Adding crspm me to funda...')
-
         cm = crspm.data
-        cm = cm.loc[(cm.primary == True) & (cm.me_company > 0), ['gvkey', 'me_company']]
-        cm = cm.rename(columns={'me_company': 'me'})
+        cm = cm.loc[(cm.primary == True) & (cm.me_company > 0) & (~cm.gvkey.isna()), ['gvkey', 'me_company']]
+        cm.rename(columns={'me_company': 'me'}, inplace=True)
 
         fa = self.data
         drop_columns(fa, ['me', 'me_fiscal'])  # remove me from funda
 
         if method == 'latest':
-            md = fa.merge(cm, on=['date', 'gvkey'], how='left')
+            fa = merge(fa, cm, on=['date', 'gvkey'], how='left')
 
             # Add me_fiscal
-            md = md.reset_index()
-            tmp = md[['gvkey', 'date', 'me']].rename(columns={'date': 'datadate', 'me': 'me_fiscal'})
-            md = md.merge(tmp, on=['gvkey', 'datadate'], how='left')
-            md = md.set_index(['date', 'gvkey'])
+            tmp = fa['me'].reset_index().rename(columns={'date': 'datadate', 'me': 'me_fiscal'})
+            fa = merge(fa, tmp, on=['gvkey', 'datadate'], how='left')
         elif method == 'year_end':
-            cm = cm.reset_index()
+            cm.reset_index(inplace=True)
             cm = cm[cm.date.dt.month == 12]
             cm['year'] = cm.date.dt.year
 
-            fa = fa.reset_index()
             fa['year'] = fa.datadate.dt.year
-            md = fa.merge(cm[['year', 'gvkey', 'me']], on=['year', 'gvkey'], how='left').set_index(['date', 'gvkey'])
-            md['me_fiscal'] = md['me']
-            del md['year']
+            fa = merge(fa, cm[['year', 'gvkey', 'me']], on=['year', 'gvkey'], how='left')
+            fa['me_fiscal'] = fa['me']
+            del fa['year']
         else:
             raise ValueError(f"Methods to merge crsp me with funda: ['latest', 'year_end']. '{method}' is given.")
 
-        self.data = md
-        elapsed_time(f'crspm me added to funda. funda shape: {md.shape}')
-
+        self.data = fa
+        elapsed_time(f'crspm me added to funda. funda shape: {fa.shape}')
 
     def update_variables(self):
-        """Preprocess data before creating characteristics.
+        """Preprocess data before creating firm characteristics.
 
-        1. Replace missing values with other variables.
+        1. Synthesize missing values with other variables.
         2. Create frequently used variables.
         """
 
         elapsed_time(f'updating funda variables...')
-        self.add_row_count()  # add row count (rcount).
 
         fa = self.data
 
@@ -243,12 +253,14 @@ class FUNDA(Panel):
             fa.loc[fa[var] < 0, var] = np.nan  # should be >= 0.
 
         # tiny values -> set to 0.
-        for var in fa.columns:
-            if fa[var].dtype == float:
-                fa[var] = np.where(is_zero(fa[var]), 0, fa[var])
+        for col in fa.columns:
+            if is_float(fa[col]):
+                fa.loc[is_zero(fa[col]), col] = 0
 
-        fa['prcc_f'] = fa.prcc_f.abs()
         fa.rename(columns={'at': 'at_', 'lt': 'lt_'}, inplace=True)  # 'at', 'lt' are reserved names in python.
+
+        fa['ivao'] = fa.ivao.fillna(0)
+        fa['ivst'] = fa.ivst.fillna(0)
 
         # Income statement
         fa['sale'] = fa.sale.fillna(fa.revt)
@@ -273,10 +285,10 @@ class FUNDA(Panel):
 
         # Balance sheet - Liabilities
         fa['lct'] = fa.lct.fillna(fa.ap + fa.dlc + fa.txp + fa.lco)  # used in 'at' before this conversion
-        fa['txditc'] = fa.txditc.fillna(self.sum(fa.txdb, fa.itcb))  # used in 'at' before this conversion
+        fa['txditc'] = fa.txditc.fillna(nansum1(fa.txdb, fa.itcb))  # used in 'at' before this conversion
 
         # Balance sheet - Financing
-        fa['debt'] = self.sum(fa.dltt, fa.dlc)
+        fa['debt'] = nansum1(fa.dltt, fa.dlc)
         fa['be'] = fa.seq + fa.txditc.fillna(0) - fa.pstkrv.fillna(0)
         fa['bev'] = (fa.icapt + fa.dlc.fillna(0) - fa.che.fillna(0)).fillna(
             fa.seq + fa.debt - fa.che.fillna(0) + fa.mib.fillna(0))
@@ -287,10 +299,11 @@ class FUNDA(Panel):
 
         # Accruals
         cowc = fa.act - fa.che - (fa.lct - fa.dlc.fillna(0))
-        nncoa = fa.at_ - fa.act - fa.ivao.fillna(0) - (fa.lt_ - fa.lct - fa.dltt)
+        nncoa = fa.at_ - fa.act - fa.ivao - (fa.lt_ - fa.lct - fa.dltt)
         fa['oacc'] = (fa.ib - fa.oancf).fillna(self.diff(cowc + nncoa))
-        fa.loc[(fa.ib.isna() | fa.oancf.isna()) & (fa.rcount < 12), 'oacc'] = np.nan  # if diff(cowc + nncoa) is used, the
-                                                                                   # first row should be set to nan.
+        # EDIT: 2023.07.01. The following line has been deleted.
+        # fa.loc[(fa.ib.isna() | fa.oancf.isna()) & (fa.rcount < 12), 'oacc'] = np.nan  # if diff(cowc + nncoa) is used, the
+        # first row should be set to nan.
         fa['ocf'] = fa.oancf.fillna((fa.ib - fa.oacc).fillna(fa.ib + fa.dp))
 
         # for some characteristics in GHZ
@@ -307,8 +320,8 @@ class FUNDA(Panel):
     def postprocess(self):
         """Postprocess data.
 
-        This method deletes temporary variables (variables starting with '\_') and replaces infinite values with nan.
-        This method can be overridden to add code to trim or winsorize characteristics.
+        This method deletes temporary variable columns (columns starting with '\\_') and replaces infinite
+        values with nan.
         """
 
         elapsed_time('Postprocessing funda...')
@@ -318,12 +331,17 @@ class FUNDA(Panel):
         del_cols = [col for col in fa if col[0] == '_']
         drop_columns(fa, del_cols)
 
-        columns = fa.columns.intersection(list(self.reverse_map.keys()))
-        inspect_data(fa[columns], option=['summary', 'nans', 'stats'])
+        char_cols = list(self.get_char_list())
+        char_cols = list(fa.columns.intersection(char_cols))
+        self.inspect_data(char_cols, option=['summary', 'nans'])
 
         log('Replacing inf with nan...')
-        fa.replace([np.inf, -np.inf], np.nan, inplace=True)
+        for col in char_cols:
+            isinf = (fa[col] == np.inf) | (fa[col] == -np.inf)
+            if isinf.any():
+                fa.loc[isinf, col] = np.nan
 
+        self.inspect_data(char_cols, option=['stats'])
         elapsed_time('funda postprocessed.')
 
     #######################################
@@ -355,7 +373,7 @@ class FUNDA(Panel):
 
         fa = self.data
 
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             char = self.pct_change(fa.debt, 3)  # JKP
         else:
             char = self.pct_change(fa.debt, 5)
@@ -368,10 +386,10 @@ class FUNDA(Panel):
         """Inventory change. Thomas and Zhang (2002)"""
 
         fa = self.data
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             char = self.diff(fa.invt) / fa.at_  # JKP use at at t.
         else:
-            char = self.diff(fa.invt) / fa.avgat  # JKP use at at t.
+            char = self.diff(fa.invt) / fa.avgat
         return char
 
     def c_lti_gr1a(self):
@@ -406,7 +424,7 @@ class FUNDA(Panel):
         """Change in non-current operating assets. Richardson et al. (2005)"""
 
         fa = self.data
-        char = self.diff(fa.at_ - fa.act - fa.ivao.fillna(0)) / fa.at_
+        char = self.diff(fa.at_ - fa.act - fa.ivao) / fa.at_
         return char
 
     def c_ncol_gr1a(self):
@@ -420,15 +438,15 @@ class FUNDA(Panel):
         """Change in net non-current operating assets. Richardson et al. (2005)"""
 
         fa = self.data
-        char = self.diff(fa.at_ - fa.act - fa.ivao.fillna(0) - (fa.lt_ - fa.lct - fa.dltt)) / fa.at_
+        char = self.diff(fa.at_ - fa.act - fa.ivao - (fa.lt_ - fa.lct - fa.dltt)) / fa.at_
         return char
 
     def c_noa_gr1a(self):
         """Change in net operating assets. Hirshleifer et al. (2004)"""
 
         fa = self.data
-        noa = fa.act - fa.che + fa.at_ - fa.act - fa.ivao.fillna(0) - (
-                    fa.lct - fa.dlc.fillna(0) + (fa.lt_ - fa.lct - fa.dltt))
+        noa = fa.act - fa.che + fa.at_ - fa.act - fa.ivao - (
+                fa.lct - fa.dlc.fillna(0) + (fa.lt_ - fa.lct - fa.dltt))
         char = self.diff(noa) / self.shift(fa.at_)
         return char
 
@@ -437,7 +455,7 @@ class FUNDA(Panel):
 
         fa = self.data
         fnl = fa.debt + fa.pstkrv
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             char = self.diff(fnl) / fa.at_  # jkp uses 'at' at t while hxz uses 'at' at t-1.
         else:
             char = self.diff(fnl) / fa.avgat  # jkp uses 'at' at t while hxz uses 'at' at t-1.
@@ -447,7 +465,7 @@ class FUNDA(Panel):
         """Change in net financial assets. Richardson et al. (2005)"""
 
         fa = self.data
-        char = self.diff(fa.ivst.fillna(0) + fa.ivao.fillna(0) - (fa.debt + fa.pstkrv)) / fa.at_
+        char = self.diff(fa.ivst + fa.ivao - (fa.debt + fa.pstkrv)) / fa.at_
         return char
 
     # def c_tax_gr1a(self):
@@ -503,21 +521,21 @@ class FUNDA(Panel):
         fa = self.data
         ddltt = self.diff(fa.dltt)
         ddlc = self.diff(fa.dlc)
-        dbnetis = self.sum(self.sum(fa.dltis, -fa.dltr).fillna(ddltt), fa.dlcch.fillna(ddlc))
-        if REPLICATE_JKP:
-            netis = self.sum(fa.sstk, -fa.prstkc) + dbnetis
+        dbnetis = nansum1(nansum1(fa.dltis, -fa.dltr).fillna(ddltt), fa.dlcch.fillna(ddlc))
+        if config.replicate_jkp:
+            netis = nansum1(fa.sstk, -fa.prstkc) + dbnetis
         else:
-            netis = self.sum(fa.sstk, -fa.prstkc, -fa.dv) + dbnetis
+            netis = nansum1(fa.sstk, -fa.prstkc, -fa.dv) + dbnetis
         return netis / fa.at_
 
     def c_eqnetis_at(self):
         """Net equity finance. Bradshaw, Richardson, and Sloan (2006)"""
 
         fa = self.data
-        if REPLICATE_JKP:
-            return self.sum(fa.sstk, -fa.prstkc) / fa.at_
+        if config.replicate_jkp:
+            return nansum1(fa.sstk, -fa.prstkc) / fa.at_
         else:
-            return self.sum(fa.sstk, -fa.prstkc, -fa.dv) / fa.at_
+            return nansum1(fa.sstk, -fa.prstkc, -fa.dv) / fa.at_
 
     def c_dbnetis_at(self):
         """Net debt finance. Bradshaw, Richardson, and Sloan (2006)"""
@@ -525,14 +543,14 @@ class FUNDA(Panel):
         fa = self.data
         ddltt = self.diff(fa.dltt)
         ddlc = self.diff(fa.dlc)
-        dbnetis = self.sum(self.sum(fa.dltis, -fa.dltr).fillna(ddltt), fa.dlcch.fillna(ddlc))
+        dbnetis = nansum1(nansum1(fa.dltis, -fa.dltr).fillna(ddltt), fa.dlcch.fillna(ddlc))
         return dbnetis / fa.at_
 
     def c_oaccruals_at(self):
         """Operating Accruals (JKP). Sloan (1996)"""
 
         fa = self.data
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             char = fa.oacc / fa.at_  # JKP use at in the denominator, but Sloan uses the average.
             return char
         else:
@@ -567,7 +585,7 @@ class FUNDA(Panel):
         """Total Accruals. Richardson et al. (2005)"""
 
         fa = self.data
-        tacc = fa.oacc + self.diff(fa.ivst.fillna(0) + fa.ivao.fillna(0) - (fa.debt + fa.pstkrv))
+        tacc = fa.oacc + self.diff(fa.ivst + fa.ivao - (fa.debt + fa.pstkrv))
         char = tacc / fa.at_
         return char
 
@@ -575,7 +593,7 @@ class FUNDA(Panel):
         """Percent total accruals. Hafzalla, Lundholm, and Van Winkle (2011)"""
 
         fa = self.data
-        tacc = fa.oacc + self.diff(fa.ivst.fillna(0) + fa.ivao.fillna(0) - (fa.debt + fa.pstkrv))
+        tacc = fa.oacc + self.diff(fa.ivst + fa.ivao - (fa.debt + fa.pstkrv))
         char = tacc / fa.nix.abs()
         char[fa.nix == 0] = np.nan
         return char
@@ -584,8 +602,8 @@ class FUNDA(Panel):
         """Net operating assets. Hirshleifer et al. (2004)"""
 
         fa = self.data
-        noa = fa.act - fa.che + fa.at_ - fa.act - fa.ivao.fillna(0) - (
-                    fa.lct - fa.dlc.fillna(0) + (fa.lt_ - fa.lct - fa.dltt))
+        noa = fa.act - fa.che + fa.at_ - fa.act - fa.ivao - (
+                fa.lct - fa.dlc.fillna(0) + (fa.lt_ - fa.lct - fa.dltt))
         char = noa / self.shift(fa.at_)
         return char
 
@@ -688,7 +706,7 @@ class FUNDA(Panel):
         """Net payout yield. Boudoukh et al. (2007)"""
 
         fa = self.data
-        return (fa.dvt - self.sum(fa.sstk, -fa.prstkc)) / fa.me
+        return (fa.dvt - nansum1(fa.sstk, -fa.prstkc)) / fa.me
 
     def c_ebitda_mev(self):
         """Enterprise multiple. Loughran and Wellman (2011)"""
@@ -722,8 +740,8 @@ class FUNDA(Panel):
     def c_ocf_at_chg1(self):
         """Change in operating cash flow to assets. Bouchard et al. (2019)"""
 
-        fa = self.data
         self.prepare(['ocf_at'])
+        fa = self.data
         char = self.diff(fa.ocf_at)
         return char
 
@@ -744,9 +762,9 @@ class FUNDA(Panel):
         """Change in long-term net operating assets. Fairfield, Whisenant, and Yohn (2003)"""
 
         fa = self.data
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             lnoa = fa.ppent + fa.intan + fa.ao - fa.lo + fa.dp
-            char = self.diff(lnoa) / (fa.at_ + self.shift(fa.at_))  # kelly definition
+            char = self.diff(lnoa) / (fa.at_ + self.shift(fa.at_))
         else:
             char = (self.diff(fa.ppent + fa.intan + fa.ao - fa.lo) + fa.dp) / fa.avgat
         return char
@@ -777,7 +795,6 @@ class FUNDA(Panel):
 
         fa = self.data
         char = self.diff(fa.ivst) / fa.at_
-        # char[fa.at_ < ZERO] = np.nan
         return char
 
     def c_rd5_at(self):
@@ -791,14 +808,14 @@ class FUNDA(Panel):
     def c_age(self):
         """Firm age. Jiang, Lee, and Zhang (2005)"""
 
-        fa = self.data
-        return (fa.rcount + 1) * 12 / self.freq
+        return (self.get_row_count() + 1) * 12 / self.freq
 
     def _chg_to_exp(self, char):
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             exp = self.rolling(char, 2, 'mean', min_n=2, lag=1)  # JKP require both lagged values.
         else:
-            exp = self.rolling(char, 2, 'mean', min_n=1, lag=1)  # min_n=1: calculate if there is at least one observation.
+            exp = self.rolling(char, 2, 'mean', min_n=1,
+                               lag=1)  # min_n=1: calculate if there is at least one observation.
         exp[exp < ZERO] = np.nan
         return char / exp - 1
 
@@ -821,7 +838,7 @@ class FUNDA(Panel):
 
         fa = self.data
         char = self._chg_to_exp(fa.gp) - self._chg_to_exp(fa.sale)  # Original definition uses (sale-cogs),
-                                                                    # but jkp gives priority to gp.
+        # but jkp gives priority to gp.
         return char
 
     def c_dsale_dsga(self):
@@ -867,7 +884,7 @@ class FUNDA(Panel):
 
         fa = self.data
         # char = self.diff(fa.ceq) / fa.avgat  # original definition
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             char = self.diff(fa.be) / fa.at_  # jkp
         else:
             char = self.diff(fa.be) / fa.avgat
@@ -887,7 +904,6 @@ class FUNDA(Panel):
         char = fa.pi / fa.nix
         char[(fa.pi < 0) | (fa.nix <= 0)] = np.nan
         return char
-
 
     def c_op_atl1(self):
         """Operating profits-to-lagged assets. Ball et al. (2016)"""
@@ -1021,17 +1037,17 @@ class FUNDA(Panel):
         f_liq = self.diff(fa.act / fa.lct)
         f_gm = self.diff(fa.gp / fa.sale)
         f_aturn = self.diff(fa.sale / at_1)
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             f_lev = self.diff(fa.dltt / fa.at_)  # jkp use at
             f_eqis = fa.sstk  # jkp omit pstk
         else:
             f_lev = self.diff(fa.dltt / fa.avgat)  # jkp use at
             f_eqis = (fa.sstk - fa.pstk).fillna(0)  # jkp omit pstk
 
-        char = (f_roa > 0).astype(int) + (f_croa > 0).astype(int) + (f_droa > 0).astype(int) + (f_acc > 0).astype(int) \
-               + (f_lev < 0).astype(int) + (f_liq > 0).astype(int) + (f_eqis == 0).astype(int) + (f_gm > 0).astype(int) \
-               + (f_aturn > 0).astype(int)
-        return char
+        char = (f_roa > ZERO).astype(int) + (f_croa > ZERO).astype(int) + (f_droa > ZERO).astype(int) \
+               + (f_acc > ZERO).astype(int) + (f_lev < ZERO).astype(int) + (f_liq > ZERO).astype(int) \
+               + is_zero(f_eqis).astype(int) + (f_gm > ZERO).astype(int) + (f_aturn > ZERO).astype(int)
+        return char.astype(config.float_type)
 
     def c_ps(self):
         """Piotroski score (GHZ, Org). Piotroski (2000)"""
@@ -1048,7 +1064,7 @@ class FUNDA(Panel):
                (self.diff(fa.sale - fa.cogs) / fa.sale > 0).astype(int) + \
                (self.diff(fa.sale / fa.at_) > 0).astype(int) + \
                (fa.scstkc == 0).astype(int)
-        return char
+        return char.astype(config.float_type)
 
     def c_o_score(self):
         """Ohlson O-Score. Dichev (1998)"""
@@ -1070,7 +1086,8 @@ class FUNDA(Panel):
         o_ffo[fa.lt_ < ZERO] = np.nan
         o_neg_eq = fa.lt_ > fa.at_
         o_neg_earn = (nix < 0) & (nix_1 < 0)
-        denom = nix.abs() + nix_1.abs()
+        denom = np.abs(nix) + np.abs(nix_1)
+        # denom = nix.abs() + nix_1.abs()
         o_nich = (nix - nix_1) / denom
         o_nich[denom < ZERO] = np.nan
 
@@ -1103,7 +1120,7 @@ class FUNDA(Panel):
         ppent_1[ppent_1 <= 0] = np.nan
 
         kz_cf = (fa.ib + fa.dp) / ppent_1
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             kz_q = (fa.at_ + fa.me_fiscal - fa.be) / fa.at_  # JKP omit txdb
         else:
             kz_q = (fa.at_ + fa.me_fiscal - fa.be - fa.txdb) / fa.at_  # JKP omit txdb
@@ -1163,6 +1180,9 @@ class FUNDA(Panel):
     def _ni_ar1_ivol(self):
         """Earnings persistence and predictability"""
 
+        if self.created('ni_ar1'):
+            return
+
         fa = self.data
         n = 5  # window size
 
@@ -1170,24 +1190,20 @@ class FUNDA(Panel):
         reg['ni_at'] = fa.ib / fa.at_
         reg['ni_at_lag1'] = self.shift(reg.ni_at)
 
-        beta, _, ivol = self.rolling_beta(reg, n, n)
-        fa['ni_ar1'] = beta[:, 1]
-        fa['ni_ivol'] = ivol
+        res = self.rolling_regression(reg, n)
+        fa['ni_ar1'] = res[:, 1]
+        fa['ni_ivol'] = res[:, -1]
 
     def c_ni_ar1(self):
         """Earnings persistence. Francis et al. (2004)"""
 
-        if 'ni_ar1' not in self.data:
-            self._ni_ar1_ivol()
-
+        self._ni_ar1_ivol()
         return self.data['ni_ar1']
 
     def c_ni_ivol(self):
         """Earnings predictability. Francis et al. (2004)"""
 
-        if 'ni_ivol' not in self.data:
-            self._ni_ar1_ivol()
-
+        self._ni_ar1_ivol()
         return self.data['ni_ivol']
 
     ####################################
@@ -1245,7 +1261,7 @@ class FUNDA(Panel):
         fa = self.data
         char = ((fa.sic >= '2100') & (fa.sic <= '2199')) | ((fa.sic >= '2080') & (fa.sic <= '2085')) | \
                fa.naics.isin(['7132', '71312', '713210', '71329', '713290', '72112', '721120'])
-        return char.astype(int)
+        return char.astype(config.float_type)
 
     def c_currat(self):
         """Current ratio. Ou and Penman (1989)"""
@@ -1255,6 +1271,7 @@ class FUNDA(Panel):
         lct = fa.lct.fillna(fa.ap)
         char = act / lct
         char[is_zero(lct)] = np.nan
+        return char
 
     def c_pchcurrat(self):
         """Change in current ratio. Ou and Penman (1989)"""
@@ -1327,9 +1344,9 @@ class FUNDA(Panel):
         """Unexpected R&D increase. Eberhart, Maxwell, and Siddique (2004)"""
 
         fa = self.data
-        char = ((fa.xrd / fa.revt >= 0.05) & (fa.xrd / fa.at_ >= 0.05) &
-                (self.pct_change(fa.xrd) >= 0.05) & (self.pct_change(fa.xrd / fa.at_) >= 0.05)).astype(int)
-        return char
+        char = ((fa.xrd / fa.revt >= 0) & (fa.xrd / fa.at_ >= 0) &
+                (self.pct_change(fa.xrd) >= 0.05) & (self.pct_change(fa.xrd / fa.at_) >= 0.05))
+        return char.astype(config.float_type)
 
     def c_chpmia(self):
         """Change in profit margin. Soliman (2008)"""
@@ -1341,7 +1358,7 @@ class FUNDA(Panel):
         # ghz
         # - ghz adjust for industry.
         # fa['_chpm'] = self.diff(fa.ib / fa.sale)
-        # char = fa['_chpm'] - fa.groupby(['sic2', 'fyear'])['_chpm'].transform(np.mean)
+        # char = fa['_chpm'] - fa.groupby(['sic2', 'fyear'])['_chpm'].transform('mean')
         return char
 
     def c_chatoia(self):
@@ -1355,7 +1372,7 @@ class FUNDA(Panel):
         # ghz
         # - ghz use avg(at) and adjust for industry.
         # fa['_chato'] = self.diff(fa.sale / fa.avgat)  # ghz
-        # char = fa['_chato'] - fa.groupby(['sic2', 'fyear'])['_chato'].transform(np.mean)
+        # char = fa['_chato'] - fa.groupby(['sic2', 'fyear'])['_chato'].transform('mean')
         return char
 
     def c_bm_ia(self):
@@ -1363,27 +1380,27 @@ class FUNDA(Panel):
 
         fa = self.data
         fa['_tmp'] = fa.ceq / fa.me  # bm
-        return fa['_tmp'] - fa.groupby(['sic2', 'fyear'])['_tmp'].transform(np.mean)
+        return fa['_tmp'] - fa.groupby(['sic2', 'fyear'])['_tmp'].transform('mean')
 
     def c_cfp_ia(self):
         """Industry-adjusted cash flow-to-price. Asness, Porter, and Stevens (2000)"""
 
         self.prepare(['cfp'])
         fa = self.data
-        return fa.cfp - fa.groupby(['sic2', 'fyear']).cfp.transform(np.mean)
+        return fa.cfp - fa.groupby(['sic2', 'fyear']).cfp.transform('mean')
 
     def c_chempia(self):
         """Industry-adjusted change in employees. Asness, Porter, and Stevens (2000)"""
 
         fa = self.data
         fa['_tmp'] = self.pct_change(fa.emp).fillna(0)
-        return fa['_tmp'] - fa.groupby(['sic2', 'fyear'])['_tmp'].transform(np.mean)
+        return fa['_tmp'] - fa.groupby(['sic2', 'fyear'])['_tmp'].transform('mean')
 
     def c_mve_ia(self):
         """Industry-adjusted firm size. Asness, Porter, and Stevens (2000)"""
 
         fa = self.data
-        return fa.me - fa.groupby(['sic2', 'fyear']).me.transform(np.mean)
+        return fa.me - fa.groupby(['sic2', 'fyear']).me.transform('mean')
 
     ####################################
     # Only in GHZ and HXZ
@@ -1403,8 +1420,8 @@ class FUNDA(Panel):
 
         self.prepare(['secured'])
         fa = self.data
-        char = (fa.secured > 0).astype(int)
-        return char
+        char = fa.secured > 0
+        return char.astype(config.float_type)
 
     def c_secured(self):
         """Secured debt-to-total debt. Valta (2016)"""
@@ -1418,10 +1435,10 @@ class FUNDA(Panel):
         """Convertible debt indicator. Valta (2016)"""
 
         fa = self.data
-        fa['dc'] = fa.dcvt.fillna(fa.dcpstk - fa.pstk.fillna(0))
-        fa.loc[fa.dc < ZERO, 'dc'] = np.nan
-        char = ((fa.dc > 0) | (fa.cshrc > 0)).astype(int)
-        return char
+        dc = fa.dcvt.fillna(fa.dcpstk - fa.pstk.fillna(0))
+        dc[dc < ZERO] = np.nan
+        char = (dc > 0) | (fa.cshrc > 0)
+        return char.astype(config.float_type)
 
     def c_pchcapx_ia(self):
         """Industry-adjusted change in capital investment. Abarbanell and Bushee (1998)"""
@@ -1429,7 +1446,7 @@ class FUNDA(Panel):
         fa = self.data
         capx = fa.capx.fillna(self.diff(fa.ppent))
         fa['_pchcapx'] = self._chg_to_exp(capx)
-        char = fa['_pchcapx'] - fa.groupby(['sic2', 'fyear'])['_pchcapx'].transform(np.mean)
+        char = fa['_pchcapx'] - fa.groupby(['sic2', 'fyear'])['_pchcapx'].transform('mean')
         return char
 
     def c_tb(self):
@@ -1457,8 +1474,8 @@ class FUNDA(Panel):
         fa['_sic3'] = fa.sic.str[:3]  # first three digit
         gb = fa.groupby(['_sic3', 'fyear'])
 
-        fa['_tmp'] = (fa[char] / gb[char].transform(np.sum)) ** 2
-        char = gb['_tmp'].transform(np.sum)
+        fa['_tmp'] = (fa[char] / gb[char].transform('sum')) ** 2
+        char = gb['_tmp'].transform('sum')
 
         cnt = gb['_tmp'].transform('count')
 
@@ -1524,57 +1541,102 @@ class FUNDA(Panel):
     #
     #     return char
 
+
 ################################################################################
 #
 # FUNDQ
 #
 ################################################################################
-class FUNDQ(Panel):
+class FUNDQ(FCPanel):
     """Class to generate firm characteristics from fundq.
 
-    The firm characteristics generated in this class can be viewed using ``FUNDQ.show_available_functions()``:
-
-    >>> FUNDQ().show_available_functions()
+    The firm characteristics defined in this class can be viewed using :meth:`.show_available_chars`.
 
     Args:
-        alias: Characteristic column name in ``mapping.xlsx``. If None, function names (without 'c\_') are used as the
-            characteristic names.
-        data: DataFrame with index = date/id, sorted on id/date.
-        freq: Frequency of `data`. ANNUAL, QUARTERLY, MONTHLY, or DAILY. Default to QUARTERLY.
+        alias (str, list, or dict): Firm characteristics to generate and their aliases. If None, all available firm
+            characteristics are generated.
+
+            * str: A column name in the mapping file (``config.mapping_file_path``). The firm characteristics defined
+              in this class and in the `alias` column of the mapping file are generated. See :ref:`sec-mapping file`.
+            * list: List of firm characteristics (method names).
+            * dict: Dict of firm characteristics and their aliases of the form {method name: alias}.
+
+            If aliases are not specified, method names are used as aliases.
+        data: DataFrame of fundq data with index = datadate/gvkey, sorted on gvkey/datadate. The fundq data can be
+            given at initialization or loaded later using :meth:`load_data`.
+
+    **Methods**
+
+    .. autosummary::
+        :nosignatures:
+
+        load_data
+        remove_duplicates
+        convert_currency
+        create_qitems_from_yitems
+        update_variables
+        postprocess
+
+    Firm characteristic generation methods have a name like ``c_characteristic()``.
     """
 
-    def __init__(self, alias=None, data=None, freq=QUARTERLY):
-        super().__init__(alias, data, freq, QUARTERLY)
+    def __init__(self, alias=None, data=None):
+        super().__init__(alias, data, QUARTERLY)
 
-    def load_data(self, sdate=None, edate=None):
+    def load_data(self, sdate=None, edate=None, fname='fundq'):
         """Load fundq data from file.
 
-        The loaded data is sorted on gvkey/datadate, has index = datadate/gvkey, and stored in the `data` attribute.
+        This method loads fundq data from ``config.input_dir/comp/fundq`` and stores it in the ``data``
+        attribute. The ``data`` has index = datadate/gvkey and is sorted on gvkey/datadate.
+
+        Args:
+            sdate: Start date ('yyyy-mm-dd'). If None, from the earliest.
+            edate: End date ('yyyy-mm-dd'). If None, to the latest.
+            fname: The fundq file name.
         """
 
-        elapsed_time(f'Loading fundq...')
-        data = WRDS.read_data('fundq')
+        elapsed_time(f'Loading {fname}...')
+        data = WRDS.read_data(fname, index_col=['datadate', 'gvkey'])
+        if not self.is_sorted(data):
+            data.sort_index(level=[-1, 0], inplace=True)
+
         if sdate:
-            data = data[data.datadate >= sdate]
+            data = data[data.index.get_level_values(0) >= sdate]
         if edate:
-            data = data[data.datadate <= edate]
+            data = data[data.index.get_level_values(0) <= edate]
 
-        self.data = data.set_index(['datadate', 'gvkey']).sort_index(level=['gvkey', 'datadate'])
-
-        elapsed_time('fundq loaded.')
+        self.data = data
+        elapsed_time(f'{fname} loaded.')
         self.inspect_data()
+
+    # def cleanse_data(self, method='Quantile', **kwargs):
+    #     data = self.data.copy()
+    #
+    #     # Columns to examine.
+    #     excl_columns = ['fyr', 'fyearq', 'fqtr']
+    #     columns = [col for col in data.columns if is_numeric(data[col]) and (col not in excl_columns)]
+    #     keep_columns(data, columns)
+    #
+    #     # Adjust for splits.
+    #     data['prccq'] /= data.ajexq
+    #     data['cshoq'] *= data.ajexq
+    #
+    #     anomaly = detect_anomalies(data, None, method, **kwargs)
+    #     for i, col in enumerate(columns):
+    #         self.data.loc[anomaly[:, i], col] = np.nan
 
     def remove_duplicates(self):
         """Drop duplicates.
 
         In fundq, there are duplicate rows (rows with the same datadate and gvekey).
-        Remove duplicates in the following manner:
+        Remove duplicates in the following order:
 
             1. Remove records with missing fqtr.
-            2. Choose the latest record in the sense that it has the maximum fyearq and the minimum fqtr.
+            2. Choose records with the maximum fyearq.
+            3. Choose records with the minimum fqtr.
         """
-        elapsed_time(f'Removing duplicates in fundq...')
 
+        elapsed_time(f'Removing duplicates in fundq...')
         fq = self.data
         log(f'fundq shape before duplicate removal: {fq.shape}, duplicates: {np.sum(fq.index.duplicated())}')
 
@@ -1584,47 +1646,24 @@ class FUNDQ(Panel):
 
         elapsed_time(f'Duplicates removed.')
         log(f'fundq shape after duplicate removal: {fq.shape}, duplicates: {np.sum(fq.index.duplicated())}')
-
         self.data = fq
 
     def convert_currency(self):
-        """Convert the currency of `data` to USD.
+        """Convert currency to USD.
 
-        This method needs to be called if
+        Convert the currency of fundq to USD. This method needs to be called if
 
-            i) the data contains non USD-denominated firms, e.g., CAD, and
+            i) the data contains non USD-denominated firms, e.g., CAD; and
             ii) CRSP's market equity is used, which is always in USD.
+
+        See Also:
+            :meth:`.WRDS.convert_fund_currency_to_usd`
         """
 
+        elapsed_time(f'Converting non USD items to USD...')
         if (self.data.curcdq != 'USD').any():
             self.data = WRDS.convert_fund_currency_to_usd(self.data, table='fundq')
-
-    def convert_to_monthly(self, lag=4, limit=3):
-        """Populate `data` to monthly frequency.
-
-        The index of `data` changes from datadate/gvkey to date/gvkey and datadate is kept as a column.
-        The date and datadate has a gap of at least `lag` months.
-
-        Args:
-            lag: Minimum months between date and datadate: `lag` = 4 assumes funda is available 4 months after datadate.
-            limit: Maximum months to forward-fill the data.
-        """
-
-        elapsed_time(f'Populating fundq data to monthly frequency...')
-        # Populate data
-        fq = self.data.reset_index()
-        fq['date'] = fq['datadate']
-        fq = fq.set_index(['date', 'gvkey'])
-        fq = populate(fq, MONTHLY, limit=limit)
-
-        # Shift data by 'lag' months.
-        ids = fq.index.get_level_values('gvkey')
-        fq = fq.shift(lag)
-        fq = fq[ids == np.roll(ids, lag)]
-
-        self.data = fq
-        self.freq = MONTHLY
-        elapsed_time('fundq data populated.')
+        elapsed_time(f'Currency converted.')
 
     def _get_ytd_columns(self):
         """Get year-to-data columns."""
@@ -1634,21 +1673,21 @@ class FUNDQ(Panel):
     def create_qitems_from_yitems(self):
         """Quarterize ytd items.
 
-        Quarterize a ytd column, Xy, and used the quarterized values to fill missing Xq if Xq exists or to
-        ceate a new column Xq.
+        Quarterize ytd variables, Xy's, and use them to fill missing Xq's (if Xq exists) or to
+        create new quarterly variables (if Xq does not exist).
         """
 
-        self.add_row_count()
+        elapsed_time('Creating quarterly items from ytd items...')
+
         fq = self.data
         ycolumns = self._get_ytd_columns()
         qtr_data = self.diff(fq[ycolumns])
         qtr_data[fq.fqtr == 1] = fq.loc[fq.fqtr == 1, ycolumns].values
-        elapsed_time('ytd variables quarterized.')
 
         for col in ycolumns:
             qcol = col[:-1] + 'q'
             if qcol in fq.columns:
-                fq[qcol].fillna(qtr_data[col], inplace=True)
+                fq[qcol] = fq[qcol].fillna(qtr_data[col])
             else:  # create new q-item.
                 fq[qcol] = qtr_data[col]
 
@@ -1656,14 +1695,14 @@ class FUNDQ(Panel):
         elapsed_time('Quarterly items created from ytd items.')
 
     def update_variables(self):
-        """Preprocess data before creating characteristics.
+        """Preprocess data before creating firm characteristics.
 
-        1. Replace missing values with other variables.
+        1. Synthesize missing values with other variables.
         2. Create frequently used variables.
         """
 
         elapsed_time(f'Updating fundq variables...')
-        self.add_row_count()
+
         fq = self.data
 
         # Cleansing
@@ -1675,24 +1714,24 @@ class FUNDQ(Panel):
         fq['be'] = seq + fq.txditcq.fillna(0) - fq.pstkq.fillna(0)
 
         # tiny values -> set to 0.
-        for var in fq.columns:
-            if fq[var].dtype == float:
-                fq[var] = np.where(is_zero(fq[var]), 0, fq[var])
-
-        fq.prccq = fq.prccq.abs()
+        for col in fq.columns:
+            if is_float(fq[col]):
+                fq.loc[is_zero(fq[col]), col] = 0
+        # for col in fq.columns[is_float(fq.dtypes)]:
+        #     fq.loc[is_zero(fq[col]), col] = 0
 
         # non-negative variables with a negative value -> set to nan.
         for var in ['be']:
             fq.loc[fq[var] < 0, var] = np.nan  # should be >= 0.
 
-
+        self.data = fq
         elapsed_time('fundq variables updated.')
 
     def postprocess(self):
         """Postprocess data.
 
-        This method deletes temporary variables (variables starting with '\_') and replaces infinite values with nan.
-        This method can be overridden to add code to trim or winsorize characteristics.
+        This method deletes temporary variable columns (columns starting with '\\_') and replaces infinite
+        values with nan.
         """
 
         elapsed_time('Postprocessing fundq...')
@@ -1702,25 +1741,34 @@ class FUNDQ(Panel):
         del_cols = [col for col in fq if col[0] == '_']
         drop_columns(fq, del_cols)
 
-        columns = fq.columns.intersection(list(self.reverse_map.keys()))
-        inspect_data(fq[columns], option=['summary', 'nans', 'stats'])
+        char_cols = list(self.get_char_list())
+        char_cols = list(fq.columns.intersection(char_cols))
+        self.inspect_data(char_cols, option=['summary', 'nans'])
 
         log('Replacing inf with nan...')
-        fq.replace([np.inf, -np.inf], np.nan, inplace=True)
+        for col in char_cols:
+            isinf = (fq[col] == np.inf) | (fq[col] == -np.inf)
+            if isinf.any():
+                fq.loc[isinf, col] = np.nan
 
+        self.inspect_data(char_cols, option=['stats'])
         elapsed_time('fundq postprocessed.')
 
     def generate_funda_vars(self):
         """Generate quarterly-updated annual data from fundq.
 
-        The output can be merged with funda using ``FUNDA.merge_with_fundq()``.
+        The following variables are annualized by cumulating over the past 4 quarters.
+
+            'cogs', 'xsga', 'xint', 'dp', 'txt', 'xrd', 'spi', 'sale', 'revt',
+            'xopr', 'oibdp', 'oiadp', 'ib', 'ni', 'xido', 'nopi', 'mii', 'pi', 'xi',
+            'oancf', 'dv', 'sstk', 'dlcch', 'capx', 'dltr', 'txbcof', 'xidoc', 'dpc',
+            'fiao', 'ibc', 'prstkc', 'fincf'.
 
         Returns:
             DataFrame of quarterly-updated annual data.
         """
 
         elapsed_time('Generating funda variables from fundq...')
-
         cum_columns = [  # cumulative columns
             'cogs', 'xsga', 'xint', 'dp', 'txt', 'xrd', 'spi', 'sale', 'revt',
             'xopr', 'oibdp', 'oiadp', 'ib', 'ni', 'xido', 'nopi', 'mii', 'pi', 'xi',
@@ -1735,11 +1783,14 @@ class FUNDQ(Panel):
         column_mapping['prccq'] = 'prcc_f'
 
         fa = fq.rename(columns=column_mapping)
-        fa[cum_columns] = self.rolling(fa[cum_columns], 4, 'sum')
+        tmp = self.rolling(fa[cum_columns].to_numpy(), 4, 'sum').T
+        for i, col in enumerate(cum_columns):
+            fa.loc[:, col] = tmp[i]
 
         # For the 4th fiscal quarter, use ytd data instead of the sum of quarterized values. Otherwise, data within the
         # first four quarters will be lost.
-        ycolumns = [col for col in self._get_ytd_columns() if col[:-1] in cum_columns]  # columns for ytd data (un-quarterized)
+        ycolumns = [col for col in self._get_ytd_columns() if
+                    col[:-1] in cum_columns]  # columns for ytd data (un-quarterized)
         ycum_columns = [col[:-1] for col in ycolumns]
         fa.loc[fa.fqtr == 4, ycum_columns] = fa.loc[fa.fqtr == 4, ycolumns]
 
@@ -1762,13 +1813,19 @@ class FUNDQ(Panel):
     def c_ni_inc8q(self):
         """Number of consecutive quarters with earnings increases. Barth, Elliott, and Finn (1999)"""
 
+        # EDIT: 2023.07.13. In the previous version, dibq was set to nan in the first 4 quarters. This made
+        # some valid values in the first 12 quarters become nan. In the new version, we set all nan values of dibq to 0
+        # before calculation. After the characteristic is calculated, it is set to nan if dibq was nan.
+
         fq = self.data
-        ni_inc = (self.diff(fq.ibq, 4) > 0).astype(int)
-        ni_inc = self.remove_rows(ni_inc, 4)  # Need this as `nan > 0` returns False not nan.
-        char = ni_inc.copy()
+        dibq = self.diff(fq.ibq, 4)
+        ni_inc = (dibq > 0).astype(config.float_type)
+        char = ni_inc
         for i in range(1, 8):
-            idx = char == i  # True if earnings have increased so far.
+            idx = ni_inc == i  # True if earnings have increased so far.
             char[idx] += self.shift(ni_inc, i)[idx]
+
+        char[dibq.isna()] = np.nan
 
         return char
 
@@ -1823,10 +1880,11 @@ class FUNDQ(Panel):
         """Revenue surprise. Jegadeesh and Livnat (2006)"""
 
         fq = self.data
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             rev_diff = self.diff(fq.saleq, 4)
         else:
-            rev_diff = self.diff(fq.saleq / fq.cshprq, 4)
+            # OP doesn't appear to adjust for split, but we adjust for split following HXZ. (from ver 1.0)
+            rev_diff = self.diff(fq.saleq / (fq.cshprq * fq.ajexq), 4)
         rev_diff_mean = self.rolling(rev_diff, 8, 'mean', min_n=6, lag=1)
         rev_diff_std = self.rolling(rev_diff, 8, 'std', min_n=6, lag=1)
         char = (rev_diff - rev_diff_mean) / rev_diff_std
@@ -1843,10 +1901,11 @@ class FUNDQ(Panel):
         """Earnings surprise. Foster, Olsen, and Shevlin (1984)"""
 
         fq = self.data
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             ear_diff = self.diff(fq.ibq, 4)
         else:
-            ear_diff = self.diff(fq.epspxq, 4)
+            # OP doesn't appear to adjust for split, but we adjust for split following HXZ. (from ver 1.0)
+            ear_diff = self.diff(fq.epspxq / fq.ajexq, 4)
         ear_diff_mean = self.rolling(ear_diff, 8, 'mean', min_n=6, lag=1)
         ear_diff_std = self.rolling(ear_diff, 8, 'std', min_n=6, lag=1)
         char = (ear_diff - ear_diff_mean) / ear_diff_std
@@ -1863,7 +1922,7 @@ class FUNDQ(Panel):
         """Cash flow volatility. Huang (2009)"""
 
         fq = self.data
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             oancfq = fq.oancfq.fillna(fq.ibq + fq.dpq)
         else:
             oancfq = fq.oancfq.fillna(fq.ibq + fq.dpq - self.diff(fq.wcapq.fillna(0)))  # JKP don't subtract d(wcapq)
@@ -1902,54 +1961,111 @@ class FUNDQ(Panel):
 # CRSPM
 #
 ################################################################################
-class CRSPM(Panel):
+class CRSPM(FCPanel):
     """Class to generate firm characteristics from crspm.
 
-    The firm characteristics generated in this class can be viewed using ``CRSPM.show_available_functions()``:
-
-    >>> CRSPM().show_available_functions()
+    The firm characteristics defined in this class can be viewed using :meth:`.show_available_chars`.
 
     Args:
-        alias: Characteristic column name in ``mapping.xlsx``. If None, function names (without 'c\_') are used as the
-            characteristic names.
-        data: DataFrame with index = date/id, sorted on id/date.
-        freq: Frequency of `data`. ANNUAL, QUARTERLY, MONTHLY, or DAILY. Default to MONTHLY.
+        alias (str, list, or dict): Firm characteristics to generate and their aliases. If None, all available firm
+            characteristics are generated.
+
+            * str: A column name in the mapping file (``config.mapping_file_path``). The firm characteristics defined
+              in this class and in the `alias` column of the mapping file are generated. See :ref:`sec-mapping file`.
+            * list: List of firm characteristics (method names).
+            * dict: Dict of firm characteristics and their aliases of the form {method name: alias}.
+
+            If aliases are not specified, method names are used as aliases.
+        data: DataFrame of crspm data with index = date/permno, sorted on permno/date. The crspm data can be given at
+            initialization or loaded later using :meth:`load_data`.
+
+    **Methods**
+
+    .. autosummary::
+        :nosignatures:
+
+        load_data
+        filter_data
+        update_variables
+        merge_with_factors
+        postprocess
+
+    Firm characteristic generation methods have a name like ``c_characteristic()``.
     """
 
-    def __init__(self, alias=None, data=None, freq=MONTHLY):
-        super().__init__(alias, data, freq, MONTHLY)
+    def __init__(self, alias=None, data=None):
+        super().__init__(alias, data, MONTHLY)
 
-    def load_data(self, sdate=None, edate=None):
+    def load_data(self, sdate=None, edate=None, fname='crspm'):
         """Load crspm data from file.
 
-        The loaded data is sorted on permno/date, has index = date/permno, and stored in the `data` attribute.
+        This method loads crspm data from ``config.input_dir/crspm`` and stores it in the ``data`` attribute.
+        The ``data`` has index = date/permno and is sorted on permno/date.
 
         NOTE:
             In CRSP monthly tables, date is the last business day of the month, whereas datadate in Compustat is the
-            end-of-month date. To make the two dates consistent, crspm.date is shifted to the end of the month.
+            end-of-month date. To make the two dates consistent, crspm dates are shifted to the end of the month.
+
+        Args:
+            sdate: Start date ('yyyy-mm-dd'). If None, from the earliest.
+            edate: End date ('yyyy-mm-dd'). If None, to the latest.
+            fname: The crspm file name.
         """
 
-        elapsed_time(f'Loading crspm...')
-        data = WRDS.read_data('crspm')
-        if sdate:
-            data = data[data.date >= sdate]
-        if edate:
-            data = data[data.date <= edate]
+        elapsed_time(f'Loading {fname}...')
+        data = WRDS.read_data(fname, index_col=['date', 'permno'])
+        if not self.is_sorted(data):
+            data.sort_index(level=[-1, 0], inplace=True)
 
+        if sdate:
+            data = data[data.index.get_level_values(0) >= sdate]
+        if edate:
+            data = data[data.index.get_level_values(0) <= edate]
+
+        data.reset_index(inplace=True)
         data['date'] = to_month_end(data['date'])  # Push date to month end ignoring holidays. compustat datadate is
                                                    # always month end, while crsp date is business day month end.
-
-        data.sort_values(['permno', 'date'], inplace=True)
         data.set_index(['date', 'permno'], inplace=True)
-        self.data = data
 
-        elapsed_time(f'crspm loaded.')
+        self.data = data
+        elapsed_time(f'{fname} loaded.')
         self.inspect_data()
+
+    # def cleanse_data(self, method='Quantile', **kwargs):
+    #     data = self.data.copy()
+    #
+    #     # Columns to examine.
+    #     excl_columns = ['exchcd', 'shrcd', 'permco', 'issuno', 'hexcd', 'hsiccd', 'siccd']
+    #     columns = [col for col in data.columns if is_numeric(data[col]) and (col not in excl_columns)]
+    #     keep_columns(data, columns)
+    #
+    #     # Adjust for splits.
+    #     data.loc[data.cfacpr == 0, 'cfacpr'] = np.nan
+    #     data.loc[data.cfacshr == 0, 'cfacshr'] = np.nan
+    #
+    #     data['prc'] = data.prc.abs() / data.cfacpr
+    #     data['altprc'] = data.altprc.abs() / data.cfacpr
+    #     data['bidlo'] = data.bidlo.abs() / data.cfacpr
+    #     data['askhi'] = data.askhi.abs() / data.cfacpr
+    #     data['bid'] /= data.cfacpr
+    #     data['ask'] /= data.cfacpr
+    #     data['shrout'] *= data.cfacshr
+    #
+    #     anomaly = detect_anomalies(data, None, method, **kwargs)
+    #     for i, col in enumerate(columns):
+    #         self.data.loc[anomaly[:, i], col] = np.nan
 
     def filter_data(self):
         """Filter data.
 
-        Currently, we filter data only on `shrcd`.
+        The data is filtered using the following filters:
+
+            * shrcd in [10, 11, 12]
+
+        Note:
+            We do not filter the data using exchange code (exchcd in [1 (NYSE), 2 (ASE), 3 (NASDAQ)]) because exchcd
+            can change when a stock is delisted: If the data is filtered using exchcd, the data of the delist month can
+            be lost.
         """
 
         elapsed_time('Filtering crspm...')
@@ -1963,19 +2079,22 @@ class CRSPM(Panel):
         # self.filter(('exchcd', 'in', [1, 2, 3]))
 
         log(f'crspm shape after filtering: {self.data.shape}')
-        elapsed_time('crspm data filtered.')
+        elapsed_time('crspm filtered.')
 
     def update_variables(self):
-        """Preprocess data before creating characteristics.
+        """Preprocess data before creating firm characteristics.
 
-        1. Replace missing values with other variables.
-        2. Create frequently used variables.
+        * Convert negative prices (quotes) to positive.
+        * Convert shares outstanding (shrout) unit from thousands to millions (divide by 1000).
+        * Convert trading volume (vol) unit from 100 shares to shares (multiply by 100).
+        * Adjust trading volume following Gao and Ritter (2010).
+        * Create frequently used variables.
         """
 
         elapsed_time('Updating crspm variables...')
 
-        self.add_row_count()
-        cm = self.data.reset_index()
+        self.data.reset_index(inplace=True)
+        cm = self.data
 
         cm.prc = cm.prc.abs()
         cm.shrout /= 1000  # to millions
@@ -1990,14 +2109,17 @@ class CRSPM(Panel):
         # Market equity
         cm['me'] = cm.prc * cm.shrout
         # cm['me_nyse'] = cm.loc[cm.exchcd == 1, 'me']  # NYSE: exchcd = 1
-        cm['me_company'] = cm.groupby(['date', 'permco'])['me'].transform(sum)  # firm-level market equity
+        cm['me_company'] = cm.groupby(['date', 'permco'])['me'].transform('sum')  # firm-level market equity
         cm.loc[cm.me.isna(), 'me_company'] = np.nan
 
         # Risk-free rate and excess return
         rf = WRDS.get_risk_free_rate(month_end=True)
-        cm = cm.merge(rf, on='date', how='left')
+        cm = merge(cm, rf, on='date', how='left')
         cm.set_index(['date', 'permno'], inplace=True)
-        cm['exret'] = winsorize(cm.ret - cm.rf, (1e-3, 1e-3))  # winsorize at 0.1%, 99.9%
+
+        cm['exret'] = cm.ret - cm.rf
+        if config.replicate_jkp:
+            cm['exret'] = winsorize(cm['exret'], (1e-3, 1e-3))  # winsorize at 0.1%, 99.9%
 
         self.data = cm
         elapsed_time('crspm variables updated.')
@@ -2005,15 +2127,19 @@ class CRSPM(Panel):
     def merge_with_factors(self, factors=None):
         """Merge crspm with factors.
 
-        The `factors` should contain Fama-French 3 factors with column names as defined in config.factor_names.
+        The `factors` should contain Fama-French 3 factors with column names as defined in ``config.factor_names``.
 
         Args:
-            factors: DataFrame of factors with index = date. If None, it will be read from config.monthly_factors_fname.
+            factors: DataFrame of factors with index = date or list of factors. If None or list, factor data will be
+                read from ``config.monthly_factors_fname`` and only the factors in `factors` will be merged.
         """
 
         elapsed_time('Merging factors with crspm...')
         if factors is None:
             factors = read_from_file(config.factors_monthly_fname)
+        elif isinstance(factors, list):
+            factors = read_from_file(config.factors_monthly_fname)[factors]
+
 
         # Rename factor names as the keys of config.factor_names.
         factors = factors.rename(columns={v: k for k, v in config.factor_names.items()})
@@ -2021,14 +2147,14 @@ class CRSPM(Panel):
             del factors['rf']
 
         factors.index = to_month_end(factors.index)
-        self.merge(factors, on=['date'], how='left')
+        self.merge(factors, on='date', how='left')
         elapsed_time('Factors merged with crspm.')
 
     def postprocess(self):
         """Postprocess data.
 
-        This method deletes temporary variables (variables starting with '\_') and replaces infinite values with nan.
-        This method can be overridden to add code to trim or winsorize characteristics.
+        This method deletes temporary variable columns (columns starting with '\\_') and replaces infinite
+        values with nan.
         """
 
         elapsed_time('Postprocessing crspm...')
@@ -2038,12 +2164,17 @@ class CRSPM(Panel):
         del_cols = [col for col in cm if col[0] == '_']
         drop_columns(cm, del_cols)
 
-        columns = cm.columns.intersection(list(self.reverse_map.keys()))
-        inspect_data(cm[columns], option=['summary', 'nans', 'stats'])
+        char_cols = list(self.get_char_list())
+        char_cols = list(cm.columns.intersection(char_cols))
+        self.inspect_data(char_cols, option=['summary', 'nans'])
 
         log('Replacing inf with nan...')
-        cm.replace([np.inf, -np.inf], np.nan, inplace=True)
+        for col in char_cols:
+            isinf = (cm[col] == np.inf) | (cm[col] == -np.inf)
+            if isinf.any():
+                cm.loc[isinf, col] = np.nan
 
+        self.inspect_data(char_cols, option=['stats'])
         elapsed_time('crspm postprocessed.')
 
     #######################################
@@ -2058,9 +2189,10 @@ class CRSPM(Panel):
         """Dividend yield (JKP). Litzenberger and Ramaswamy (1979)"""
 
         cm = self.data
-        div_tot = (cm.ret - cm.retx) * self.shift(cm.prc) * cm.cfacshr / self.shift(cm.cfacshr)
-        char = self.rolling(div_tot * cm.shrout, 12, 'sum') / cm.me
-        char[cm.me == 0] = np.nan
+        div = (cm.ret - cm.retx) * cm.cfacpr * self.shift(cm.prc / cm.cfacpr) * cm.shrout
+        div12m = self.rolling(div, 12, 'sum')  # Total dividend over the past 1 year.
+        # Set char = nan if div_tot = 0 (JKP do not impose this). (from ver 1.0)
+        char = np.where(is_zero(div12m) | is_zero(cm.me), np.nan, div12m / cm.me)
         return char
 
     def c_chcsho_12m(self):
@@ -2083,7 +2215,7 @@ class CRSPM(Panel):
         # This is equal to (-1) * JKP's eqnpo_12m.
         cm = self.data
         char = np.log(cm.me / self.shift(cm.me, 12)) - np.log(self.cumret(cm.ret, 12) + 1)
-        if REPLICATE_JKP:
+        if config.replicate_jkp:
             return -char
         else:
             return char
@@ -2141,9 +2273,9 @@ class CRSPM(Panel):
         cm['ret6'] = self.cumret(cm.ret, 6)
         indmom = weighted_mean(cm, ['ret6'], 'me', ['date', 'sic2'])
         indmom.columns = ['indmom']
-        cm = cm.reset_index().merge(indmom, on=['date', 'sic2'], how='left')
+        cm = merge(cm, indmom, on=['date', 'sic2'], how='left')
 
-        return cm.set_index(['date', 'permno'])['indmom']
+        return cm['indmom']
 
     def _seasonality(self, ret, start, end, an=True):
         dur = end - start + 1
@@ -2222,15 +2354,8 @@ class CRSPM(Panel):
     def c_beta_60m(self):
         """Market beta (Org, JKP). Fama and MacBeth (1973)"""
 
-        cm = self.data
-        # return rolling_simple_beta(cm, 'exret', 'mktrf', 60, 36)
-        # cm = cm[['exret', 'mktrf']].copy()
-        # cm['exret'] = winsorize(cm['exret'], (0.001, 0.001))
-        if REPLICATE_JKP:
-            cm.loc[cm.ret == 0, 'exret'] = np.nan  # JKP omit zero returns.
-
-        beta, r2, idio = self.rolling_beta(cm[['exret', 'mktrf']], 60, 36)
-        return beta[:, 1]
+        res = self.rolling_regression(self.data.loc[:, ['exret', 'mktrf']], 60, 36)
+        return res[:, 1]
 
     def c_price(self):
         """Share price. Miller and Scholes (1982)"""
@@ -2238,74 +2363,56 @@ class CRSPM(Panel):
         return self.data['prc']
 
     @staticmethod
-    # @multiprocess
-    def _resff3_mom(cm, window=36, minobs=24):
-        ngroups = cm.shape[0]
-        gsize = cm.groupby(['permno']).size().values
-        data = cm.values  # 'exret', 'mktrf', 'hml', 'smb_ff'
-        isnan = np.isnan(data).any(axis=1)
+    @njit(cache=True)
+    def _residual_momentum(data, window, minobs):
+        nobs = data.shape[0]
+        retval = np.full((nobs, 2), np.nan, dtype=data.dtype)
 
-        @njit(error_model='numpy')
-        def fcn(data, gsize, ngroups):
-            beta = np.full((ngroups, 4), np.nan)
-            resff3_6_1 = np.full((ngroups, 1), np.nan)
-            resff3_12_1 = np.full((ngroups, 1), np.nan)
+        if nobs < minobs:
+            return retval
 
-            idx0 = 0
-            for g in range(gsize.shape[0]):
-                obs = gsize[g]
-                if obs < minobs:
-                    idx0 += obs
-                    continue
+        not_nan = ~isnan1(data)
 
-                subdata = data[idx0:idx0 + obs]
-                isnan_ = isnan[idx0:idx0 + obs]
+        Y = data[:, 0]
+        X = add_constant(data[:, 1:])
 
-                for i in range(minobs - 1, obs):
-                    if i < window:
-                        subvals = subdata[0:i + 1]
-                        subvals = subvals[~isnan_[0:i + 1]]
-                    else:
-                        subvals = subdata[i - window + 1:i + 1]
-                        subvals = subvals[~isnan_[i - window + 1:i + 1]]
+        for i in range(minobs - 1, nobs):
+            s, e = i - min(i, window - 1), i + 1
 
-                    if subvals.shape[0] < minobs:
-                        continue
+            not_na = not_nan[s:e]
+            y = Y[s:e][not_na]
+            x = X[s:e][not_na]
 
-                    endo = subvals[:, 0].copy()
-                    exog = add_constant(subvals[:, 1:])
+            if y.shape[0] < minobs:
+                continue
 
-                    beta[idx0 + i, :] = (np.linalg.solve(exog.T @ exog, exog.T @ endo)).reshape(4)
-                    res = endo - (beta[idx0 + i, :] * exog).sum(1)
-                    resff3_6_1[idx0 + i] = res[-6:-1].mean() / std(res[-6:-1])
-                    resff3_12_1[idx0 + i] = res[-12:-1].mean() / std(res[-12:-1])
+            try:
+                _, _, res = regression(y, x)
+            except:
+                continue
 
-                idx0 += obs
-            return resff3_6_1, resff3_12_1
+            retval[i, 0] = res[-6:-1].mean() / nanstd(res[-6:-1])
+            retval[i, 1] = res[-12:-1].mean() / nanstd(res[-12:-1])
 
-        return fcn(data, gsize, ngroups)
+        return retval
 
     def c_resff3_6_1(self):
         """6 month residual momentum. Blitz, Huij, and Martens (2011)"""
 
-        if 'resff3_6_1' not in self.data:
-            columns = ['exret', 'mktrf', 'hml', 'smb_ff']
-            # self.data[['resff3_6_1', 'resff3_12_1']] = self.resff3_mom(self.data[columns], 36, 24)
-            retval = self._resff3_mom(self.data[columns], 36, 24)
-            self.data['resff3_6_1'] = retval[0]
-            self.data['resff3_12_1'] = retval[1]
+        data = self.data.loc[:, ['exret', 'mktrf', 'hml', 'smb_ff']]
+        res = self.apply_to_ids(data, self._residual_momentum, 2, 36, 24)
+        self.data['resff3_6_1'] = res[:, 0]
+        self.data['resff3_12_1'] = res[:, 1]
 
         return self.data['resff3_6_1']
 
-    def c_resff3_12_1(self, mp=True):
+    def c_resff3_12_1(self):
         """12 month residual momentum. Blitz, Huij, and Martens (2011)"""
 
-        if 'resff3_12_1' not in self.data:
-            columns = ['exret', 'mktrf', 'hml', 'smb_ff']
-            # self.data[['resff3_6_1', 'resff3_12_1']] = self.resff3_mom(self.data[columns], 36, 24)
-            retval = self._resff3_mom(self.data[columns], 36, 24)
-            self.data['resff3_6_1'] = retval[0]
-            self.data['resff3_12_1'] = retval[1]
+        data = self.data.loc[:, ['exret', 'mktrf', 'hml', 'smb_ff']]
+        res = self.apply_to_ids(data, self._residual_momentum, 2, 36, 24)
+        self.data['resff3_6_1'] = res[:, 0]
+        self.data['resff3_12_1'] = res[:, 1]
 
         return self.data['resff3_12_1']
 
@@ -2322,11 +2429,18 @@ class CRSPM(Panel):
     def c_divi(self):
         """Dividend initiation. Michaely, Thaler, and Womack (1995)"""
 
+        # We follow CZ: use 6 months rather than 12 months of OP. (from ver 1.0)
         cm = self.data
         div = cm.cash_div.fillna(0)
-        cum_div = self.shift(div).groupby('permno').cumsum()  # sum of previous dividends
-        char = (cum_div == 0) & (div > 0) & (cm.rcount >= 24)
-        return char.astype(int)
+        divinit = (div > 0) & (self.rolling(div, 24, 'sum', lag=1) == 0)
+        char = self.rolling(divinit, 6, 'sum') > 0
+        return char.astype(config.float_type)
+
+        # This is GHZ version
+        # div = cm.cash_div.fillna(0)
+        # cum_div = self.shift(div).groupby('permno').cumsum()  # sum of previous dividends
+        # char = (cum_div == 0) & (div > 0) & (cm.get_row_count() >= 24)
+        # return char.astype(config.float_type)
 
     def c_divo(self):
         """Dividend omission. Michaely, Thaler, and Womack (1995)"""
@@ -2340,13 +2454,18 @@ class CRSPM(Panel):
         div15 = self.shift(div, 15)
         div18 = self.shift(div, 18)
         div24 = self.shift(div, 24)  # div 24 months before
-        char1 = (div == 0) & (div3 > 0) & (div6 > 0) & (div9 > 0) & (div12 > 0) & (div15 > 0) & (div18 > 0) & (
-                    cm.rcount > 18)  # omission of quarterly dividend
-        char2 = (div == 0) & (div9 == 0) & (div6 > 0) & (div12 > 0) & (div18 > 0) & (
-                    cm.rcount > 18)  # omission of semi-annual dividend. assume semiannual if div9 = 0
-        char3 = (div == 0) & (div18 == 0) & (div12 > 0) & (div24 > 0) & (
-                    cm.rcount > 24)  # omission of annual dividend. assume annual if div18 = 0
-        return (char1 | char2 | char3).astype(int)
+
+        # Omission of quarterly dividend
+        char1 = (div == 0) & (div3 > 0) & (div6 > 0) & (div9 > 0) & (div12 > 0) & (div15 > 0) & (div18 > 0)
+        # Omission of semi-annual dividend
+        char2 = (div == 0) & (div3 == 0) & (div6 > 0) & (div9 == 0) & (div12 > 0) & (div15 == 0) & (div18 > 0)
+        # Omission of annual dividend.
+        char3 = (div == 0) & (div3 == 0) & (div6 == 0) & (div9 == 0) & (div12 > 0) & (div15 == 0) & (div18 == 0) & (
+                    div24 > 0)
+
+        divomit = (char1 | char2 | char3)
+        char = self.rolling(divomit, 2, 'sum') > 0  # (from ver 1.0)
+        return char.astype(config.float_type)
 
     def c_dolvol(self):
         """Dollar trading volume (Org, GHZ). Brennan, Chordia, and Subrahmanyam (1998)"""
@@ -2369,7 +2488,7 @@ class CRSPM(Panel):
         """Initial public offerings. Loughran and Ritter (1995)"""
 
         cm = self.data
-        return (cm.rcount < 12).astype(int)
+        return (self.get_row_count() < 12).astype(config.float_type)
 
 
 ################################################################################
@@ -2377,103 +2496,102 @@ class CRSPM(Panel):
 # CRSPD
 #
 ################################################################################
-class CRSPD(Panel):
-    """Class to generate firm characteristics from crspd.
+class CRSPDRaw(FCPanel):
+    """Class that handles crspd data.
 
-    CRSPD generates firm characteristics monthly and store them in the `chars` attribute instead of the `data`
-    attribute, which is a daily data.
-
-    The firm characteristics generated in this class can be viewed using ``CRSPD.show_available_functions()``:
-
-    >>> CRSPD().show_available_functions()
+    This class contains daily crspd data and is used to generate monthly firm characteristics in :class:`CRSPD`.
 
     Args:
-        alias: Characteristic column name in ``mapping.xlsx``. If None, function names (without 'c\_') are used as the
-            characteristic names.
-        data: DataFrame with index = date/id, sorted on id/date.
-        freq: Frequency of `data`. ANNUAL, QUARTERLY, MONTHLY, or DAILY. Default to DAILY.
+        alias (str, list, or dict): Firm characteristics to generate and their aliases. If None, all available firm
+            characteristics are generated.
 
-    Attributes:
-        chars: DataFrame to store firm characteristics. Index = date/permno.
+            * str: A column name in the mapping file (``config.mapping_file_path``). The firm characteristics defined
+              in this class and in the `alias` column of the mapping file are generated. See :ref:`sec-mapping file`.
+            * list: List of firm characteristics (method names).
+            * dict: Dict of firm characteristics and their aliases of the form {method name: alias}.
+
+            If aliases are not specified, method names are used as aliases.
+        data: DataFrame of crspd data with index = date/permno, sorted on permno/date. The crspd data can be given at
+            initialization or loaded later using :meth:`load_data`.
+
+    **Methods**
+
+    .. autosummary::
+        :nosignatures:
+
+        load_data
+        filter_data
+        update_variables
+        merge_with_factors
+        get_idym_group
+        get_idym_group_size
+        apply_to_idyms
     """
 
-    def __init__(self, alias=None, data=None, freq=DAILY):
-        super().__init__(alias, data, freq, DAILY)
-        self.chars = None  # characteristics are generated monthly and stored here, not in self.data.
+    def __init__(self, alias=None, data=None):
+        super().__init__(alias, data, DAILY)
 
-    def create_chars(self, char_list=None):
-        """Generate firm characteristics.
+        self._gb_idym_size = None
 
-        This method overrides ``Panel.create_chars()`` to store characteristics in `chars` instead of `data`.
-        """
-        char_list = char_list or self.get_available_chars()
-
-        for char in char_list:
-            # try:
-            fcn = self.char_map[char]
-            self.chars[fcn] = eval(f'self.c_{fcn}()')  # self.data -> self.chars
-            elapsed_time(f"[{char}] created.")
-            # except Exception as e:
-            #     log(f'Error occured creating {char}: {e}')
-
-    def prepare(self, char_fcns):
-        """Prepare "ingredient" characteristics that are required to generate a characteristic.
-
-        This method overrides ``Panel.prepare()`` to store characteristics in `chars` instead of `data`.
-        """
-
-        for fcn in char_fcns:
-            if fcn not in self.chars:
-                self.create_chars([self.reverse_map[fcn]])
-
-    def load_data(self, sdate=None, edate=None):
+    def load_data(self, sdate=None, edate=None, fname='crspd'):
         """Load crspd data from file.
 
-        The loaded data is sorted on permno/date, has index = date/permno, and stored in the `data` attribute.
+        This method loads crspd data from ``config.input_dir/crspd`` and stores it in the ``data`` attribute.
+        The ``data`` has index = date/permno and is sorted on permno/date.
+
+        Args:
+            sdate: Start date ('yyyy-mm-dd'). If None, from the earliest.
+            edate: End date ('yyyy-mm-dd'). If None, to the latest.
+            fname: The crspd file name.
         """
 
-        elapsed_time(f'Loading crspd...')
-        data = WRDS.read_data('crspd')
-        if sdate:
-            data = data[data.date >= sdate]
-        if edate:
-            data = data[data.date <= edate]
+        elapsed_time(f'Loading {fname}...')
+        data = WRDS.read_data(fname, index_col=['date', 'permno'])
+        if not self.is_sorted(data):
+            data.sort_index(level=[-1, 0], inplace=True)
 
-        data.sort_values(['permno', 'date'], inplace=True)
-        data.set_index(['date', 'permno'], inplace=True)
-        for col in data:
-            if data[col].dtype == 'float32':
-                data[col] = data[col].astype('float')
+        if sdate:
+            data = data[data.index.get_level_values(0) >= sdate]
+        if edate:
+            data = data[data.index.get_level_values(0) <= edate]
 
         self.data = data
-
-        elapsed_time(f'crspd loaded.')
+        elapsed_time(f'{fname} loaded.')
         self.inspect_data()
 
-    def save(self, fname=None, fdir=None, other_columns=None):
-        """Save this object.
-
-        This method overrides ``Panel.save()`` to save `chars` instead of `data`.
-        """
-
-        data = self.data
-        self.data = self.chars
-        super().save(fname, fdir)
-        self.data = data
-
-    def load(self, fname=None, fdir=None):
-        """Load data and parameters.
-
-        This method overrides ``Panel.load()`` to load `chars` instead of `data`.
-        """
-
-        super().load(fname, fdir)
-        self.chars = self.data
+    # def cleanse_data(self, method='Quantile', **kwargs):
+    #     data = self.data.copy()
+    #
+    #     # Columns to examine.
+    #     excl_columns = ['exchcd', 'shrcd', 'permco']
+    #     columns = [col for col in data.columns if is_numeric(data[col]) and (col not in excl_columns)]
+    #     keep_columns(data, columns)
+    #
+    #     # Adjust for splits.
+    #     data.replace({'cfacpr': 0, 'cfacshr': 0}, np.nan, inplace=True)
+    #     # data.loc[data.cfacpr == 0, 'cfacpr'] = np.nan
+    #     # data.loc[data.cfacshr == 0, 'cfacshr'] = np.nan
+    #
+    #     data['prc'] = data.prc.abs() / data.cfacpr
+    #     data['bidlo'] = data.bidlo.abs() / data.cfacpr
+    #     data['askhi'] = data.askhi.abs() / data.cfacpr
+    #     data['shrout'] *= data.cfacshr
+    #
+    #     anomaly = detect_anomalies(data, None, method, **kwargs)
+    #     for i, col in enumerate(columns):
+    #         self.data.loc[anomaly[:, i], col] = np.nan
 
     def filter_data(self):
         """Filter data.
 
-        Currently, we filter data only on `shrcd`.
+        The data is filtered using the following filters:
+
+            * shrcd in [10, 11, 12]
+
+        Note:
+            We do not filter the data using exchange code (exchcd in [1 (NYSE), 2 (ASE), 3 (NASDAQ)]) because exchcd
+            can change when a stock is delisted: If the data is filtered using exchcd, the data of the delist month can
+            be lost.
         """
 
         elapsed_time('Filtering crspd...')
@@ -2487,366 +2605,686 @@ class CRSPD(Panel):
         # self.filter(('exchcd', 'in', [1, 2, 3]))
 
         log(f'crspd shape after filtering: {self.data.shape}')
-        elapsed_time('crspd data filtered.')
+        elapsed_time('crspd filtered.')
 
     def update_variables(self):
-        """Preprocess data before creating characteristics.
+        """Preprocess data before creating firm characteristics.
 
-        1. Replace missing values with other variables.
-        2. Create frequently used variables.
+        * Convert negative prices (quotes) to positive.
+        * Set askhi and bidlo to nan if it is negative, the price is negative, or the volume is 0.
+        * Conver cfacpr of 0 to nan.
+        * Convert shares outstanding (shrout) unit from thousands to millions (divide by 1000).
+        * Adjust trading volume following Gao and Ritter (2010).
+        * Create frequently used variables.
         """
 
         elapsed_time('Updating crspd variables...')
-        self.add_row_count()
-        cd = self.data.reset_index().copy()
-        del self.data
+        self.data.reset_index(inplace=True)
+        cd = self.data
 
         cd.loc[(cd.askhi <= 0) | (cd.prc <= 0) | (cd.vol == 0), 'askhi'] = np.nan
         cd.loc[(cd.bidlo <= 0) | (cd.prc <= 0) | (cd.vol == 0), 'bidlo'] = np.nan
+        cd.loc[:, 'prc'] = cd.prc.abs().to_numpy()
 
-        cd['prc'] = cd.prc.abs()
-
-        cd['prc_adj'] = cd.prc / cd.cfacpr
-        if REPLICATE_JKP:
-            cd.loc[cd.cfacpr == 0, 'cfacshr'] = np.nan  # JKP use cfacshr instead of cfacpr
-            cd['prc_adj'] = cd.prc / cd.cfacshr
-            cd['bidlo_adj'] = cd.bidlo / cd.cfacshr
-            cd['askhi_adj'] = cd.askhi / cd.cfacshr
+        if config.replicate_jkp:
+            cd.replace({'cfacshr': 0}, np.nan, inplace=True)  # JKP use cfacshr instead of cfacpr
+            adj_factor = cd.cfacshr
         else:
-            cd.loc[cd.cfacpr == 0, 'cfacpr'] = np.nan
-            cd['prc_adj'] = cd.prc / cd.cfacpr
-            cd['bidlo_adj'] = cd.bidlo / cd.cfacpr
-            cd['askhi_adj'] = cd.askhi / cd.cfacpr
-        cd.shrout /= 1000  # to millions
+            cd.replace({'cfacpr': 0}, np.nan, inplace=True)
+            adj_factor = cd.cfacpr
+
+        cd['prc_adj'] = cd.prc / adj_factor
+        cd['bidlo_adj'] = cd.bidlo / adj_factor
+        cd['askhi_adj'] = cd.askhi / adj_factor
+
+        cd.loc[:, 'shrout'] /= 1000  # to millions
 
         # Adjust trading volume following Gao and Ritter (2010)
         date = cd['date']
-        cd.loc[(cd.exchcd == 3) & (date <= '2001-01-31'), 'vol'] /= 2
-        cd.loc[(cd.exchcd == 3) & (date > '2001-01-31') & (date <= '2001-12-31'), 'vol'] /= 1.8
-        cd.loc[(cd.exchcd == 3) & (date > '2001-12-31') & (date <= '2003-12-31'), 'vol'] /= 1.6
+        vol = cd.vol.to_numpy()
+        cd.loc[:, 'vol'] = np.where((cd.exchcd == 3) & (date <= '2001-01-31'), vol / 2, vol)
+        cd.loc[:, 'vol'] = np.where((cd.exchcd == 3) & (date > '2001-01-31') & (date <= '2001-12-31'), vol / 1.8, vol)
+        cd.loc[:, 'vol'] = np.where((cd.exchcd == 3) & (date > '2001-12-31') & (date <= '2003-12-31'), vol / 1.6, vol)
+        # cd.loc[(cd.exchcd == 3) & (date <= '2001-01-31'), 'vol'] /= 2
+        # cd.loc[(cd.exchcd == 3) & (date > '2001-01-31') & (date <= '2001-12-31'), 'vol'] /= 1.8
+        # cd.loc[(cd.exchcd == 3) & (date > '2001-12-31') & (date <= '2003-12-31'), 'vol'] /= 1.6
 
         cd['me'] = cd.prc * cd.shrout
-        cd['me_company'] = cd.groupby(['date', 'permco'])['me'].transform(sum)  # firm-level market equity
+        cd['me_company'] = cd.groupby(['date', 'permco'])['me'].transform('sum')  # firm-level market equity
         cd['dvol'] = cd.prc * cd.vol
 
-        cd['mon'] = ((date.dt.year - 1900) * 12 + date.dt.month).astype('int16')
+        cd['mon'] = (date.dt.year - 1900) * 12 + date.dt.month
         cd['ym'] = to_month_end(date)
 
         # Risk-free rate and excess return
-        # rf = WRDS.get_risk_free_rate().astype('float32') / 21
         rf = WRDS.get_risk_free_rate(month_end=True) / 21
-        cd = cd.merge(rf, left_on='ym', right_on='date', how='left')
+        cd = merge(cd, rf, on='ym', right_on='date', how='left')
         cd.set_index(['date', 'permno'], inplace=True)
 
-        if REPLICATE_JKP:
-            cd['exret'] = cd.ret - cd.rf  # JKP winsorise excess return only in crspm. We do so also in crspd.
-        else:
-            cd['exret'] = winsorize(cd.ret - cd.rf, (1e-3, 1e-3))  # winsorize at 0.1%, 99.9% (slower)
-        cd['turnover_d'] = cd.vol / (cd.shrout * 1e6)
-        # cd['turnover_d'] = (cd.vol / (cd.shrout * 1e6)).astype('float32')
+        cd['exret'] = cd.ret - cd.rf
+        if config.replicate_jkp:
+            # JKP winsorise excess return only in crspm. We do so also in crspd for consistency.
+            cd['exret'] = winsorize(cd['exret'], (1e-3, 1e-3))  # winsorize at 0.1%, 99.9% (slower)
+        cd['turnover_d'] = (cd.vol / (cd.shrout * 1e6)).astype(cd.vol.dtype)
 
         # If number of zero returns >= 10 in a month, all returns of the month are set to nan.
-        cd['zero_ret'] = cd['ret'] == 0
-        cd['zero_ret_cnt'] = cd.groupby(['ym', 'permno']).zero_ret.transform('sum')
-        cd.loc[cd.zero_ret_cnt >= 10, 'exret'] = np.nan
-        cd.drop(columns=['zero_ret', 'zero_ret_cnt'], inplace=True)
+        cd['_tmp'] = cd['ret'] == 0
+        zero_ret_cnt = self.get_idym_group()._tmp.transform('sum')
+        cd.loc[zero_ret_cnt >= 10, 'exret'] = np.nan
 
-        # Initialize chars.
-        self.chars = pd.DataFrame(index=cd.groupby(['permno', 'ym']).last().index).swaplevel()
-        self.chars.index.names = ('date', 'permno')
-        self.chars['rcount'] = self.chars.groupby('permno').cumcount()
-
-        self.data = cd
         elapsed_time('crspd variables updated.')
 
     def merge_with_factors(self, factors=None):
         """Merge crspd with factors.
 
         The `factors` should contain Fama-French 3 factors and Hou-Xue-Zhang 4 factors with column names as defined
-        in config.factor_names.
+        in ``config.factor_names``.
 
         Args:
-            factors: DataFrame of factors with index = date. If None, it will be read from config.daily_factors_fname.
+            factors: DataFrame of factors with index = date or list of factors. If None or list, factor data will be
+                read from ``config.daily_factors_fname`` and only the factors in `factors` will be merged.
         """
 
         elapsed_time('Merging factors with crspd...')
         if factors is None:
             factors = read_from_file(config.factors_daily_fname)
-
-        # for col in factors:
-        #     if factors[col].dtype == 'float':
-        #         factors[col] = factors[col].astype('float32')
+        elif isinstance(factors, list):
+            factors = read_from_file(config.factors_daily_fname)[factors]
 
         # Rename factor names as the keys of config.factor_names.
-        factors = factors.rename(columns={v: k for k, v in config.factor_names.items()})
-        if 'rf' in factors:  # drop rf as it is already in crspm.
+        factors.rename(columns={v: k for k, v in config.factor_names.items()}, inplace=True)
+        if 'rf' in factors:  # drop rf if it is already in crspm.
             del factors['rf']
 
-        self.merge(factors, on=['date'], how='left')
+        self.merge(factors, on='date', how='left')
         elapsed_time('Factors merged with crspd.')
 
-    def postprocess(self):
-        """Postprocess data.
+    def get_idym_group(self):
+        """Get id-month group.
 
-        This method deletes temporary variables (variables starting with '\_') and replaces infinite values with nan.
-        This method can be overridden to add code to trim or winsorize characteristics.
-        """
-
-        elapsed_time('Postprocessing crspd...')
-        cd = self.chars
-
-        # drop temporary columns that start with '_'
-        del_cols = [col for col in cd if col[0] == '_']
-        drop_columns(cd, del_cols)
-
-        columns = cd.columns.intersection(list(self.reverse_map.keys()))
-        inspect_data(cd[columns], option=['summary', 'nans', 'stats'])
-
-        log('Replacing inf with nan...')
-        cd.replace([np.inf, -np.inf], np.nan, inplace=True)
-
-        elapsed_time('crspd postprocessed.')
-
-    @staticmethod
-    def rolling_apply_m(cd, data_columns, fcn, n_retval):
-        """Apply `fcn` to `cd[data_columns]` in every month for each stock.
-
-        This function runs a loop over permno-month and can be used when the calculation
-        inside `fcn` requires only the data within the month.
-
-        Args:
-            cd: `crspd.data`.
-            data_columns: Columns of `cd` that are used as input to `fcn`.
-            fcn: function to apply. The first argument (`data`) should be `cd[data_columns]` of a permno-month and
-                the second argument (`isnan`) should be a nan indicator of `data`:
-                `isnan[i]` = True if any column of data[i, :] has nan. `fcn` should return a tuple of size `n_retval`.
-            n_retval: Number of returns from fcn.
+        Group ``data`` by permno and year-month and return the GroupBy object.
 
         Returns:
-            Concatenated ndarray of the returns from `fcn`. Size = permno/month x n_retval.
+            Pandas GroupBy object.
         """
 
-        gsize = cd.groupby(['permno', 'mon']).size().values
-        data = cd[data_columns].values
-        isnan = np.isnan(data).any(axis=1)
+        return self.data.groupby(['permno', 'ym'])
 
-        @njit
-        def rolling_apply_m_(data, gsize):
-            ngroups = gsize.shape[0]
-            retval = np.full((ngroups, n_retval), np.nan)
+    def get_idym_group_size(self):
+        """Get id-month group sizes.
 
-            idx0 = 0
-            for i in range(ngroups):
-                data_ = data[idx0:idx0 + gsize[i]]
-                isnan_ = isnan[idx0:idx0 + gsize[i]]
-                idx0 += gsize[i]
+        Returns:
+            Ndarray of id-month group sizes.
+        """
 
-                retval[i, :] = fcn(data_, isnan_)
+        if (self._gb_idym_size is None) or (np.sum(self._gb_idym_size) != self.data.shape[0]):
+            _gb_idym = self.get_idym_group()
+            self._gb_idym_size = _gb_idym.size().to_numpy()
 
-            return retval
+        return self._gb_idym_size
 
-        return rolling_apply_m_(data, gsize)
+    def apply_to_idyms(self, data, function, n_ret, *args, data2=None):
+        """Apply a function to each id-month group.
 
-    #######################################
-    # Characteristics
-    #######################################
-    def c_retvol(self):
-        """Return volatility. Ang et al. (2006)"""
+        This method groups `data` by id-month and applies `function` to each group.
+        This method can be used when the `function` is a reduce function and requires only the data within the month.
 
-        cd = self.data
-        return cd.groupby(['permno', 'ym']).ret.std().swaplevel()
+        Args:
+            data: DataFrame, Series, ndarray, or (list of) columns. It should have the same length and order as the
+                  ``data`` attribute.
+            function: Jitted reduce function to apply to groups. Its arguments should be (`gbdata`, `*args`) or
+                (`gbdata`, `gbdata2`, `*args`), where `gbdata` (`gbdata2`) is a group of `data` (`data2`).
+            n_ret: Number of returns of `function`. If None, it is assumed to be the same as the column size of `data`.
+            *args: Additional arguments of `function`.
+            data2: DataFrame, Series, ndarray, str, or int. Optional argument when `function` requires two sets of
+                input data.
 
-    def c_rmax1_21d(self):
-        """Maximum daily return. Bali, Cakici, and Whitelaw (2011)"""
+        Returns:
+            Concatenated value of the outputs of `function`. Size = (number of id-month groups) x `n_retval`.
 
-        cd = self.data
-        return cd.groupby(['permno', 'ym']).ret.max().swaplevel()
+        See Also:
+            :func:`~.datatools.apply_to_groups_reduce_jit`
+        """
 
-    def c_rmax5_21d(self):
-        """Highest 5 days of return. Bali, Brown, and Tang (2017)"""
+        value = self._to_value(data)
+        value2 = self._to_value(data2) if data2 is not None else None
+        gsize = self.get_idym_group_size()
 
-        if 'rmax5_21d' in self.chars:
-            return self.chars['rmax5_21d']
-        cd = self.data
-        vars = cd[['ret', 'ym']].reset_index()
-        vars['retrank'] = vars.groupby(['permno', 'ym']).ret.rank(ascending=False)
-        vars['high'] = np.where(vars.retrank <= 5, vars.ret, np.nan)
-        return vars.groupby(['permno', 'ym']).high.mean().swaplevel()
+        return apply_to_groups_reduce_jit(value, gsize, function, n_ret, *args, data2=value2)
 
-    def c_rskew_21d(self):
-        """Return skewness. Bali, Engle, and Murray (2016)"""
 
-        cd = self.data
+################################################################################
+# Local functions used in CRSPD
+# - These functions are defined outside the CRSPD class so that they can be
+#   cached. If defined inside as a staticmethod, they cannot be called in other
+#   cached staticmethods.
+################################################################################
 
-        @njit
-        def fcn(data, isnan):
-            data = data[~isnan]
-            if data.shape[0] >= 3:
-                return skew(data)
+# Functions used in CRSPD._apply_to_ids
+
+@njit(error_model='numpy', cache=True)
+def crspd_corr_1260d(data):
+    unique_mons = np.unique(data[:, 0])
+    data = data[~isnan1(data[:, 1:])]
+    mons = data[:, 0]
+    data = data[:, 1:]
+
+    corr = np.full((unique_mons.shape[0], 1), np.nan)
+    for j in range(unique_mons.shape[0]):
+        mon = unique_mons[j]
+        data_m = data[(mon - 60 < mons) & (mons <= mon)]
+        if data_m.shape[0] >= 750:
+            corr[j] = np.corrcoef(data_m.T)[0, 1]
+
+    return corr
+
+@njit(error_model='numpy', cache=True)
+def crspd_roll_126d(data):
+    mons = data[:, 0]
+    data = data[:, 1:]
+    unique_mons = np.unique(mons)
+
+    res = np.full((unique_mons.shape[0], 6), np.nan, dtype=data.dtype)
+    ami = res[:, 0]
+    zero = res[:, 1]
+    dolvol = res[:, 2]
+    dolvol_var = res[:, 3]
+    turnover = res[:, 4]
+    turnover_var = res[:, 5]
+
+    for j in range(unique_mons.shape[0]):
+        mon = unique_mons[j]
+        data_m = data[(mon - 6 < mons) & (mons <= mon)]
+        isnan = isnan1(data_m[:, :1])
+        ret = data_m[~isnan, 0]
+        dvol = data_m[~isnan, 1]
+        if (dvol.shape[0] >= 60) & (dvol != 0).any():  # HXZ require minimum 50 obs, while JKP require 60.
+            ami[j] = 1e6 * (np.abs(ret[dvol != 0]) / dvol[dvol != 0]).mean()
+            dolvol[j] = dvol.mean()
+            dolvol_var[j] = nanstd(dvol) / dolvol[j]
+
+        vol = data_m[:, 2]
+        turnover_d = data_m[:, 3]
+        turnover_d = turnover_d[~np.isnan(turnover_d)]
+        if turnover_d.shape[0] >= 60:
+            turnover_sum = turnover_d.sum()
+            if turnover_sum == 0:  # EDIT: 2023.07.13. Omit 0 turnover to prevent inf.
+                zero[j] = (vol == 0).sum() * 126 / turnover_d.shape[0]
             else:
-                return np.nan
+                zero[j] = ((vol == 0).sum() + 1 / turnover_sum / 11000) * 126 / turnover_d.shape[0]
+            turnover[j] = turnover_sum / turnover_d.shape[0]
+            turnover_var[j] = nanstd(turnover_d) / turnover[j]
 
-        return self.rolling_apply_m(cd, ['ret'], fcn, 1)
+    return res
 
-    def _icapm_21d(self):
-        """ivol, skew, coskew from CAPM"""
-        if 'ivol_capm_21d' in self.chars:
-            return
+@njit(error_model='numpy', cache=True)
+def crspd_roll_252d(data):
+    mons = data[:, 0]
+    unique_mons = np.unique(mons)
 
-        reg_vars = ['exret', 'mktrf']  # y, X
-        ocolumns = ['ivol_capm_21d', 'iskew_capm_21d', 'coskew_capm_21d']
+    res = np.full((unique_mons.shape[0], 6), np.nan, dtype=data.dtype)
+    rvol = res[:, 0]
+    mktvol = res[:, 1]
+    ivol = res[:, 2]
+    prc_high = res[:, 3]
+    zero = res[:, 4]
+    betadown = res[:, 5]
 
-        @njit(error_model='numpy')
-        def fcn(data, isnan):
-            data = data[~isnan]
-            if data.shape[0] < 15:
-                return np.nan, np.nan, np.nan
+    for j in range(unique_mons.shape[0]):
+        mon = unique_mons[j]
+        data_m = data[(mon - 12 < mons) & (mons <= mon), 1:]
 
-            endo = data[:, 0]
-            exog = data[:, 1]
+        # rvol, mktvol, ivol
+        retdata = data_m[:, :2]  # exret, mktrf
+        retdata = retdata[~isnan1(retdata)]
+        if retdata.shape[0] >= 120:
+            endo = retdata[:, 0]
+            exog = retdata[:, 1]
+
+            rvol[j] = nanstd(endo)
+            mktvol[j] = nanstd(exog)
 
             cov = np.cov(endo, exog)
             beta = cov[0][1] / cov[1][1]
             c = endo.mean() - beta * exog.mean()
             pred = c + beta * exog
-            res = endo - pred
-            ivol = std(res)
-            iskew = skew(res)
+            ivol[j] = nanstd(endo - pred)
 
-            exog_dm = exog - exog.mean()
-            coskew = (res * exog_dm ** 2).mean() / ((res ** 2).mean() ** 0.5 * (exog_dm ** 2).mean())
+        # 52-week high
+        prc_adj = data_m[:, 2]
+        if np.sum(~np.isnan(prc_adj)) >= 120:
+            prc_high[j] = prc_adj[-1] / np.nanmax(prc_adj)
 
-            return ivol, iskew, coskew
+        # zero-trades
+        vol = data_m[:, 3]
+        turnover_d = data_m[:, 4]
+        turnover_d = turnover_d[~np.isnan(turnover_d)]
+        if turnover_d.shape[0] >= 120:
+            turnover_sum = turnover_d.sum()
+            if turnover_sum == 0:  # EDIT: 2023.07.13. Omit 0 turnover to prevent inf.
+                zero[j] = (vol == 0).sum() * 252 / turnover_d.shape[0]
+            else:
+                zero[j] = ((vol == 0).sum() + 1 / turnover_sum / 11000) * 252 / turnover_d.shape[0]
 
-        self.chars[ocolumns] = self.rolling_apply_m(self.data, reg_vars, fcn, 3)
+        # betadown
+        downdata = retdata[retdata[:, 1] < 0]  # mktrf < 0
+        if downdata.shape[0] >= 60:
+            cov = np.cov(downdata.T)
+            betadown[j] = cov[0][1] / cov[1][1]
+
+    return res
+
+# Functions used in CRSPD._apply_to_idyms
+
+@njit(cache=True)
+def crspd_rmax5_21d(x):
+    if x.shape[0] <= 5:
+        return np.nan
+    else:
+        return -np.mean(np.partition(-x, 5)[:5])
+
+
+@njit(cache=True)
+def crspd_rskew_21d(data):
+    data = data[~isnan1(data)]
+    if data.shape[0] >= 3:
+        return nanskew(data)
+    else:
+        return np.nan
+
+
+@njit(cache=True)
+def crspd_icapm_21d(data):
+    data = data[~isnan1(data)]
+    if data.shape[0] < 15:
+        return np.nan, np.nan, np.nan
+
+    y = data[:, 0]
+    x = data[:, 1]
+
+    beta, r2, res = bivariate_regression(y, x)
+
+    ivol = nanstd(res)
+    iskew = nanskew(res)
+    x_dm = x - x.mean()
+    coskew = (res * x_dm ** 2).mean() / ((res ** 2).mean() ** 0.5 * (x_dm ** 2).mean())
+
+    return ivol, iskew, coskew
+
+
+@njit(cache=True)
+def crspd_multifactor_ivol_skew(data):
+    """Calculate idiosyncratic volatility and skewness from a multi-factor model.
+
+    The factor regression is run every month for each stock using the sample within the month.
+
+    Args:
+        reg_vars: List of regressand (excess return) and regressors (factors). Regressand should be the first
+            element of `reg_vars`.
+
+    Returns:
+        Ivol and skew. N x 2 ndarray, where N is the number of permon-month pairs.
+
+    Examples:
+        Assuming that `cd` is an instance of ``CRSPDRaw``, ivol and skew from Fama-French three-factor model can be
+        obtained as follows.
+
+        >>> reg_vars = ['exret', 'mktrf', 'hml', 'smb_ff']  # y, X
+        ... cd.multifactor_ivol_skew(reg_vars)
+    """
+
+    data = data[~isnan1(data)]
+    if data.shape[0] < 15:
+        return np.nan, np.nan
+
+    y = data[:, 0].copy()
+    X = add_constant(data[:, 1:])
+    _, _, res = regression(y, X)
+
+    # if config.replicate_jkp:
+    #     return nanstd(res) * np.sqrt((data.shape[0] - 1) / (data.shape[0] - data.shape[1] + 1)), nanskew(res)
+    # else:
+    return nanstd(res), nanskew(res)
+
+
+@njit(cache=True)
+def crspd_beta_dimson(data):
+    data = data[:-1]  # remove the last row that contains a future market return (mktrf_ld1)
+    data = data[~isnan1(data)]
+    if data.shape[0] < 15:
+        return np.nan
+
+    endo = data[:, 0].copy()
+    exog = add_constant(data[:, 1:])
+
+    beta, _, _ = regression(endo, exog)
+    dimson = beta[1:].sum()
+
+    return dimson
+
+
+class CRSPD(FCPanel):
+    """Class to generate firm characteristics from crspd.
+
+    This class has a ``CRSPDRaw`` object as a member attribute and use it to generate monthly firm characteristics.
+    ``CRSPDRaw.data`` contains daily crspd data and ``CRSPD.data`` contains monthly firm characteristics.
+    The firm characteristics defined in this class can be viewed using :meth:`.show_available_chars`.
+
+    Args:
+        alias (str, list, or dict): Firm characteristics to generate and their aliases. If None, all available firm
+            characteristics are generated.
+
+            * str: A column name in the mapping file (``config.mapping_file_path``). The firm characteristics defined
+              in this class and in the `alias` column of the mapping file are generated. See :ref:`sec-mapping file`.
+            * list: List of firm characteristics (method names).
+            * dict: Dict of firm characteristics and their aliases of the form {method name: alias}.
+
+            If aliases are not specified, method names are used as aliases.
+        data: DataFrame of crspd data with index = date/permno, sorted on permno/date. The crspd data can be given at
+            initialization or loaded later using :py:meth:`load_data`.
+
+    **Attributes**
+
+    Attributes:
+        cd: :class:`CRSPDRaw` object that stores daily crspd data.
+
+    **Methods**
+
+    .. autosummary::
+        :nosignatures:
+
+        load_data
+        filter_data
+        update_variables
+        merge_with_factors
+        postprocess
+        get_idym_group
+        get_idym_group_size
+
+    Firm characteristic generation methods have a name like ``c_characteristic()``.
+    """
+
+    def __init__(self, alias=None, data=None):
+        super().__init__(alias, None, MONTHLY)  # Characteristics are generated monthly.
+        self.cd = CRSPDRaw(alias, data)
+
+    def load_data(self, sdate=None, edate=None, fname='crspd'):
+        """Load crspd data from file.
+
+        This is a wrapping method of :meth:`CRSPDRaw.load_data`.
+        """
+
+        self.cd.load_data(sdate, edate, fname)
+
+    def filter_data(self):
+        """Filter data.
+
+        This is a wrapping method of :meth:`CRSPDRaw.filter_data`.
+        """
+
+        self.cd.filter_data()
+
+    def update_variables(self):
+        """Preprocess data before creating firm characteristics.
+
+        This method calls :meth:`CRSPDRaw.update_variables` to update variables and initializes the ``data`` attribute.
+        """
+
+        self.cd.update_variables()
+
+        # Initialize firm characteristics data.
+        self.data = pd.DataFrame(index=self.get_idym_group()['ym'].last().index, dtype=config.float_type).swaplevel()
+        self.data.index.names = ('date', 'permno')
+
+    def merge_with_factors(self, factors=None):
+        """Merge crspd with factors.
+
+        This is a wrapping method of :py:meth:`CRSPDRaw.merge_with_factors`.
+        """
+
+        self.cd.merge_with_factors(factors)
+
+    def postprocess(self):
+        """Postprocess data.
+
+        This method deletes temporary variable columns (columns starting with '\\_') and replaces infinite
+        values with nan.
+        """
+
+        elapsed_time('Postprocessing crspd...')
+        cd = self.data
+
+        # drop temporary columns that start with '_'
+        del_cols = [col for col in cd if col[0] == '_']
+        drop_columns(cd, del_cols)
+
+        char_cols = list(self.get_char_list())
+        char_cols = list(cd.columns.intersection(char_cols))
+        self.inspect_data(char_cols, option=['summary', 'nans'])
+
+        log('Replacing inf with nan...')
+        for col in char_cols:
+            isinf = (cd[col] == np.inf) | (cd[col] == -np.inf)
+            if isinf.any():
+                cd.loc[isinf:, col] = np.nan
+
+        self.inspect_data(char_cols, option=['stats'])
+        elapsed_time('crspd postprocessed.')
+
+    def get_idym_group(self):
+        """Get id-month group.
+
+        This is a wrapping method of :meth:`CRSPDRaw.get_idym_group`.
+        """
+
+        return self.cd.get_idym_group()
+
+    def get_idym_group_size(self):
+        """Get id-month group sizes.
+
+        This is a wrapping method of :meth:`CRSPDRaw.get_idym_group_size`.
+        """
+
+        return self.cd.get_idym_group_size()
+
+    #######################################
+    # Characteristics
+    #######################################
+
+    def _apply_to_ids(self, data, function, n_ret, *args):
+
+        @njit(parallel=True, cache=True)
+        def inner(x, gsize, gsize2, n_ret, *args):
+
+            idx = np.full(1 + gsize.shape[0], 0)
+            idx[1:] = np.cumsum(gsize)
+            idx2 = np.full(1 + gsize2.shape[0], 0)
+            idx2[1:] = np.cumsum(gsize2)
+
+            retval = np.full((idx2[-1], n_ret), np.nan, dtype=x.dtype)
+            if function == 'corr_1260d':
+                fcn = crspd_corr_1260d
+            elif function == 'roll_126d':
+                fcn = crspd_roll_126d
+            elif function == 'roll_252d':
+                fcn = crspd_roll_252d
+            else:
+                raise ValueError(f'Unsupported function: {function} ')
+
+            for i in prange(gsize.shape[0]):
+                retval[idx2[i]:idx2[i + 1]] = fcn(x[idx[i]:idx[i + 1]], *args)
+
+            return retval
+
+        value = self.cd._to_value(data)
+        gsize = self.cd.get_id_group_size()
+        gsize2 = self.get_id_group_size()
+
+        retval = inner(value, gsize, gsize2, n_ret, *args)
+        del value
+        return retval
+
+
+    def _apply_to_idyms(self, data, function, n_ret, *args):
+
+        @njit(parallel=True, cache=True)
+        def inner(x, gsize, n_ret, *args):
+
+            retval = np.full((gsize.shape[0], n_ret), np.nan, dtype=x.dtype)
+
+            idx = np.full(1 + gsize.shape[0], 0)
+            idx[1:] = np.cumsum(gsize)
+
+            if function == 'rmax_21d':
+                fcn = crspd_rmax5_21d
+            elif function == 'rskew_21d':
+                fcn = crspd_rskew_21d
+            elif function == 'icapm_21d':
+                fcn = crspd_icapm_21d
+            elif function == 'multifactor_ivol_skew':
+                fcn = crspd_multifactor_ivol_skew
+            elif function == 'beta_dimson':
+                fcn = crspd_beta_dimson
+            else:
+                raise ValueError(f'Unsupported function: {function} ')
+
+            for i in prange(gsize.shape[0]):
+                retval[i] = fcn(x[idx[i]:idx[i + 1]], *args)
+
+            return retval
+
+        value = self.cd._to_value(data)
+        gsize = self.get_idym_group_size()
+
+        res = inner(value, gsize, n_ret, *args)
+        del value
+
+        return res if n_ret > 1 else res.ravel()
+
+    def c_retvol(self):
+        """Return volatility. Ang et al. (2006)"""
+
+        return self.get_idym_group().ret.std().to_numpy()
+
+    def c_rmax1_21d(self):
+        """Maximum daily return. Bali, Cakici, and Whitelaw (2011)"""
+
+        return self.get_idym_group().ret.max().to_numpy()
+
+    def c_rmax5_21d(self):
+        """Highest 5 days of return. Bali, Brown, and Tang (2017)"""
+
+        # EDIT: 2023.07.13. In the previous logic using pd.rank, if there are 2 positive returns and many 0s,
+        # the average of the two positive returns was returned. In the new logic, the average of five returns
+        # incl. 0s is returned. Also, if N(non-nan returns) <=5, the result is nan.
+
+        return self._apply_to_idyms('ret', 'rmax_21d', 1)
+
+    def c_rskew_21d(self):
+        """Return skewness. Bali, Engle, and Murray (2016)"""
+
+        return self._apply_to_idyms('ret', 'rskew_21d', 1)
+
+    def _icapm_21d(self):
+        """ivol, skew, coskew from CAPM"""
+
+        if self.created('ivol_capm_21d'):
+            return
+
+        reg_vars = ['exret', 'mktrf']  # y, X
+        ocolumns = ['ivol_capm_21d', 'iskew_capm_21d', 'coskew_capm_21d']
+
+        self.data[ocolumns] = self._apply_to_idyms(reg_vars, 'icapm_21d', 3)
 
     def c_ivol_capm_21d(self):
         """Idiosyncratic volatility (CAPM). Ang et al. (2006)"""
 
         self._icapm_21d()
-        return self.chars['ivol_capm_21d']
+        return self.data['ivol_capm_21d']
 
     def c_iskew_capm_21d(self):
         """Idiosyncratic skewness (CAPM). Bali, Engle, and Murray (2016)"""
 
         self._icapm_21d()
-        return self.chars['iskew_capm_21d']
+        return self.data['iskew_capm_21d']
 
     def c_coskew_21d(self):
         """Coskewness. Harvey and Siddique (2000)"""
 
         self._icapm_21d()
-        return self.chars['coskew_capm_21d']
-
-    @staticmethod
-    def _multifactor_ivol_skew(cd, reg_vars):
-        """ivol and skew from a multi-factor model."""
-
-        @njit
-        def fcn(data, isnan):
-            data = data[~isnan]
-            if data.shape[0] < 15:
-                return np.nan, np.nan
-
-            endo = data[:, 0].copy()
-            exog = add_constant(data[:, 1:])
-
-            beta = (np.linalg.solve(exog.T @ exog, exog.T @ endo)).reshape(data.shape[1])
-            pred = (beta * exog).sum(1)
-            res = endo - pred
-
-            if REPLICATE_JKP:
-                return std(res) * np.sqrt((data.shape[0] - 1)/(data.shape[0] - data.shape[1] + 1)), skew(res)
-            else:
-                return std(res), skew(res)
-
-        return CRSPD.rolling_apply_m(cd, reg_vars, fcn, 2)
+        return self.data['coskew_capm_21d']
 
     def _iff3_21d(self):
-        if 'ivol_ff3_21d' in self.chars:
+        if self.created('ivol_ff3_21d'):
             return
+
         reg_vars = ['exret', 'mktrf', 'hml', 'smb_ff']  # y, X
         ocolumns = ['ivol_ff3_21d', 'iskew_ff3_21d']
-        self.chars[ocolumns] = self._multifactor_ivol_skew(self.data, reg_vars)
+        self.data[ocolumns] = self._apply_to_idyms(reg_vars, 'multifactor_ivol_skew', 2)
 
     def c_ivol_ff3_21d(self):
         """Idiosyncratic volatility (FF3). Ang et al. (2006)"""
 
         self._iff3_21d()
-        return self.chars['ivol_ff3_21d']
+        return self.data['ivol_ff3_21d']
 
     def c_iskew_ff3_21d(self):
         """Idiosyncratic skewness (FF3). Bali, Engle, and Murray (2016)"""
 
         self._iff3_21d()
-        return self.chars['iskew_ff3_21d']
+        return self.data['iskew_ff3_21d']
 
     def _ihxz4_21d(self):
-        if 'ivol_hxz4_21d' in self.chars:
+        if self.created('ivol_hxz4_21d'):
             return
+
         reg_vars = ['exret', 'mktrf', 'smb_hxz', 'inv', 'roe']  # y, X
         ocolumns = ['ivol_hxz4_21d', 'iskew_hxz4_21d']
-        self.chars[ocolumns] = self._multifactor_ivol_skew(self.data, reg_vars)
+        self.data[ocolumns] = self._apply_to_idyms(reg_vars, 'multifactor_ivol_skew', 2)
 
     def c_ivol_hxz4_21d(self):
         """Idiosyncratic volatility (HXZ). Ang et al. (2006)"""
 
         self._ihxz4_21d()
-        return self.chars['ivol_hxz4_21d']
+        return self.data['ivol_hxz4_21d']
 
     def c_iskew_hxz4_21d(self):
         """Idiosyncratic skewness (HXZ). Bali, Engle, and Murray (2016)"""
 
         self._ihxz4_21d()
-        return self.chars['iskew_hxz4_21d']
+        return self.data['iskew_hxz4_21d']
 
     def c_beta_dimson_21d(self):
         """Dimson Beta. Dimson (1979)"""
 
-        cd = self.data
-        cd['mktrf_lg1'] = self.shift(cd.mktrf)
-        cd['mktrf_ld1'] = cd.mktrf.shift(-1)
-        reg_vars = ['exret', 'mktrf', 'mktrf_lg1', 'mktrf_ld1']
+        reg_data = self.cd[['exret', 'mktrf']]
+        reg_data['mktrf_lg1'] = self.cd.shift(reg_data['mktrf'])
+        reg_data['mktrf_ld1'] = self.cd.shift(reg_data['mktrf'], -1)
 
-        @njit
-        def fcn(data, isnan):
-            data = data[:-1]  # remove the last row that contains a future market return (mktrf_ld1)
-            data = data[~isnan[:-1]]
-            if data.shape[0] < 15:
-                return np.nan
-
-            endo = data[:, 0].copy()
-            exog = add_constant(data[:, 1:])
-
-            beta = (np.linalg.solve(exog.T @ exog, exog.T @ endo)).reshape(4)
-            dimson = beta[1:].sum()
-
-            return dimson
-
-        char = self.rolling_apply_m(cd, reg_vars, fcn, 1)
-        cd.drop(columns=['mktrf_lg1', 'mktrf_ld1'], inplace=True)
-        return char
+        return self._apply_to_idyms(reg_data, 'beta_dimson', 1)
 
     def c_zero_trades_21d(self):
         """Zero-trading days (1 month). Liu (2006)"""
 
-        cd = self.data
-        cd['_tmp'] = cd.vol == 0
-        gb = cd.groupby(['permno', 'ym'])
-        cnt = gb.ym.count()
-        char = (gb._tmp.sum() + 1 / gb.turnover_d.sum() / 480000) * 21 / cnt
-        char[cnt == 0] = np.nan
-        return char.swaplevel()
+        self.cd['_tmp'] = self.cd['vol'] == 0
+        gb = self.get_idym_group()
+
+        # EDIT: 2023.07.13. Before, cnt was the number of days in the month. Now, it is the days of valid turnover_d.
+        cnt = gb.turnover_d.count()
+        zero_days = gb._tmp.sum()
+        turnover = gb.turnover_d.sum()
+
+        # EDIT: 2023.07.13. Omit 0 turnover to prevent inf.
+        zero_days = (zero_days + np.where(turnover == 0, 0, 1 / turnover / 480000)) * 21 / cnt
+        zero_days[cnt == 0] = np.nan
+
+        return zero_days.to_numpy()
 
     @staticmethod
-    @njit(error_model='numpy')
+    @njit(error_model='numpy', cache=True)
     def _adjust_bidaskhl(prc, bidlo, askhi, rcount):
         """Adjust bidlo, askhi."""
-        bidlo = bidlo.copy()
-        askhi = askhi.copy()
 
-        bidlo0 = np.nan
-        askhi0 = np.nan
         for i in range(prc.shape[0]):
             if rcount[i] == 0:
                 bidlo0 = np.nan
@@ -2874,13 +3312,14 @@ class CRSPD(Panel):
     def c_bidaskhl_21d(self):
         """High-low bid-ask spread. Corwin and Schultz (2012)"""
 
-        cd = self.data
+        cd = self.cd.data
 
-        bidlo, askhi = self._adjust_bidaskhl(cd.prc_adj.values, cd.bidlo_adj.values, cd.askhi_adj.values, cd.rcount.values)
+        bidlo, askhi = self._adjust_bidaskhl(cd.prc_adj.to_numpy(), cd.bidlo_adj.to_numpy(), cd.askhi_adj.to_numpy(),
+                                             self.cd.get_row_count())
 
-        prc_l1 = self.shift(cd.prc).values
-        lo_l1 = self.remove_rows(np.roll(bidlo, 1))
-        hi_l1 = self.remove_rows(np.roll(askhi, 1))
+        prc_l1 = self.cd.shift(cd.prc.values)
+        lo_l1 = self.cd.shift(bidlo, 1)
+        hi_l1 = self.cd.shift(askhi, 1)
 
         cond = (prc_l1 < bidlo) & (prc_l1 > 0)
         lo_t = np.where(cond, prc_l1, bidlo)
@@ -2897,288 +3336,174 @@ class CRSPD(Panel):
                         np.log(hi_t / lo_t) ** 2 + np.log(hi_l1 / lo_l1) ** 2, np.nan)
         gamma = np.where(lo_2d > 0, np.log(hi_2d / lo_2d) ** 2, np.nan)
         alpha = (2 ** 0.5 - 1) * np.sqrt(beta) / const - np.sqrt(gamma / const)
-        cd['spread'] = np.maximum(2 * (np.exp(alpha) - 1) / (1 + np.exp(alpha)), 0)
-        char = cd.groupby(['permno', 'ym']).spread.mean().swaplevel()
-        del cd['spread']
+
+        cd['_tmp'] = np.maximum(2 * (np.exp(alpha) - 1) / (1 + np.exp(alpha)), 0)  # spread
+        char = self.get_idym_group()['_tmp'].mean().to_numpy()
 
         return char
 
     def _roll_126d(self):
         """Create chars that use 6-month data."""
 
-        if 'ami_126d' in self.chars:  # the chars have already been generated.
+        if self.created('ami_126d'):
             return
 
         icolumns = ['mon', 'ret', 'dvol', 'vol', 'turnover_d']
         ocolumns = ['ami_126d', 'zero_trades_126d', 'dolvol_126d', 'dolvol_var_126d', 'turnover_126d',
                     'turnover_var_126d']
 
-        @njit(error_model='numpy')
-        def fcn(data):
-            mons = data[:, 0]
-            unique_mons = np.unique(mons)
-
-            ami = np.full((unique_mons.shape[0], 1), np.nan)
-            zero = np.full((unique_mons.shape[0], 1), np.nan)
-            dolvol = np.full((unique_mons.shape[0], 1), np.nan)
-            dolvol_var = np.full((unique_mons.shape[0], 1), np.nan)
-            turnover = np.full((unique_mons.shape[0], 1), np.nan)
-            turnover_var = np.full((unique_mons.shape[0], 1), np.nan)
-
-            for j, mon in enumerate(unique_mons):
-                data_m = data[(mon - 6 < mons) & (mons <= mon), 1:]
-                # isnan = isnan1(data_m[:, :1]) | (data_m[:, 1] == 0)
-                isnan = isnan1(data_m[:, :1])
-                ret = data_m[~isnan, 0]
-                dvol = data_m[~isnan, 1]
-                if (dvol.shape[0] >= 60) & (dvol != 0).any():  # HXZ require minimum 50 obs, while JKP require 60.
-                    ami[j] = 1e6 * (np.abs(ret[dvol != 0]) / dvol[dvol != 0]).mean()
-                    dolvol[j] = dvol.mean()
-                    dolvol_var[j] = std(dvol) / dolvol[j]
-
-                vol = data_m[:, 2]
-                turnover_d = data_m[:, 3]
-                turnover_d = turnover_d[~np.isnan(turnover_d)]
-                # turnover_d = turnover_d[~(np.isnan(turnover_d) | (turnover_d == 0))]
-                if turnover_d.shape[0] >= 60:
-                    zero[j] = ((vol == 0).sum() + 1 / turnover_d.sum() / 11000) * 126 / turnover_d.shape[0]
-                    turnover[j] = turnover_d.mean()
-                    turnover_var[j] = std(turnover_d) / turnover[j]
-
-            return ami, zero, dolvol, dolvol_var, turnover, turnover_var
-
-        # self.chars[ocolumns] = rolling_apply_np(self.data[icolumns], 'permno', fcn)
-        retval = rolling_apply_np(self.data[icolumns], 'permno', fcn)
-        for c1, c2 in zip(ocolumns, retval):
-            self.chars[c1] = c2
+        self.data[ocolumns] = self._apply_to_ids(icolumns, 'roll_126d', 6)
 
     def c_ami_126d(self):
         """Illiquidity. Amihud (2002)"""
 
         self._roll_126d()
-        return self.chars['ami_126d']
+        return self.data['ami_126d']
 
     def c_zero_trades_126d(self):
         """Zero-trading days (6 months). Liu (2006)"""
 
         self._roll_126d()
-        return self.chars['zero_trades_126d']
+        return self.data['zero_trades_126d']
 
     def c_turnover_126d(self):
         """Share turnover (JKP). Datar, Naik, and Radcliffe (1998)"""
 
         self._roll_126d()
-        return self.chars['turnover_126d']
+        return self.data['turnover_126d']
 
     def c_turnover_var_126d(self):
         """Volatility of share turnover (JKP). Chordia, Subrahmanyam, and Anshuman (2001)"""
 
         self._roll_126d()
-        return self.chars['turnover_var_126d']
+        return self.data['turnover_var_126d']
 
     def c_std_turn(self):
         """Volatility of share turnover (GHZ). Chordia, Subrahmanyam, and Anshuman (2001)"""
 
-        cd = self.data
+        cd = self.cd.data
         cd['_tmp'] = cd.vol / cd.shrout
-        return cd.groupby(['permno', 'ym'])._tmp.std().swaplevel()
+        return self.get_idym_group()._tmp.std().to_numpy()
 
     def c_dolvol_126d(self):
         """Dollar trading volume (JKP). Brennan, Chordia, and Subrahmanyam (1998)"""
 
         self._roll_126d()
-        return self.chars['dolvol_126d']
+        return self.data['dolvol_126d']
 
     def c_dolvol_var_126d(self):
         """Volatility of dollar trading volume (JKP). Chordia, Subrahmanyam, and Anshuman (2001)"""
 
         self._roll_126d()
-        return self.chars['dolvol_var_126d']
+        return self.data['dolvol_var_126d']
 
     def c_std_dolvol(self):
         """Volatility of dollar trading volume (GHZ). Chordia, Subrahmanyam, and Anshuman (2001)"""
 
-        cd = self.data
+        cd = self.cd.data
         cd['_tmp'] = np.log(cd.dvol)
-        return cd.groupby(['permno', 'ym'])._tmp.std().swaplevel()
+        return self.get_idym_group()._tmp.std().to_numpy()
 
     def _roll_252d(self):
         """Create chars that use 12-month data."""
 
-        if 'rvol_252d' in self.chars:  # the chars have already been generated.
+        if self.created('rvol_252d'):
             return
 
         icolumns = ['mon', 'exret', 'mktrf', 'prc_adj', 'vol', 'turnover_d']
-        ocolumns = ['rvol_252d', 'mktvol_252d', 'ivol_capm_252d', 'prc_highprc_252d', 'zero_trades_252d', 'betadown_252d']
+        ocolumns = ['rvol_252d', 'mktvol_252d', 'ivol_capm_252d', 'prc_highprc_252d', 'zero_trades_252d',
+                    'betadown_252d']
 
-        @njit(error_model='numpy')
-        def fcn(data):
-            mons = data[:, 0]
-            unique_mons = np.unique(mons)
-
-            rvol = np.full((unique_mons.shape[0], 1), np.nan)
-            mktvol = np.full((unique_mons.shape[0], 1), np.nan)
-            ivol = np.full((unique_mons.shape[0], 1), np.nan)
-            prc_high = np.full((unique_mons.shape[0], 1), np.nan)
-            zero = np.full((unique_mons.shape[0], 1), np.nan)
-            betadown = np.full((unique_mons.shape[0], 1), np.nan)
-
-            for j, mon in enumerate(unique_mons):
-                data_m = data[(mon - 12 < mons) & (mons <= mon), 1:]
-
-                # rvol, mktvol, ivol
-                retdata = data_m[:, :2]  # exret, mktrf
-                retdata = retdata[~isnan1(retdata)]
-                if retdata.shape[0] >= 120:
-                    endo = retdata[:, 0]
-                    exog = retdata[:, 1]
-
-                    rvol[j] = std(endo)
-                    mktvol[j] = std(exog)
-
-                    cov = np.cov(endo, exog)
-                    beta = cov[0][1] / cov[1][1]
-                    c = endo.mean() - beta * exog.mean()
-                    pred = c + beta * exog
-                    ivol[j] = std(endo - pred)
-
-                # 52-week high
-                prc_adj = data_m[:, 2]
-                if np.sum(~np.isnan(prc_adj)) >= 120:
-                    prc_high[j] = prc_adj[-1] / np.nanmax(prc_adj)
-                # prc_adj =  prc_adj[~np.isnan(prc_adj)]
-                # if prc_adj.shape[0] >= 120:
-                #     prc_high[j] = prc_adj[-1] / prc_adj.max()
-
-                # zero-trades
-                vol = data_m[:, 3]
-                turnover_d = data_m[:, 4]
-                turnover_d = turnover_d[~np.isnan(turnover_d)]
-                if turnover_d.shape[0] >= 120:
-                    zero[j] = ((vol == 0).sum() + 1 / turnover_d.sum() / 11000) * 252 / turnover_d.shape[0]
-
-                # betadown
-                downdata = retdata[retdata[:, 1] < 0]  # mktrf < 0
-                if downdata.shape[0] >= 60:
-                    cov = np.cov(downdata.T)
-                    betadown[j] = cov[0][1] / cov[1][1]
-
-            return rvol, mktvol, ivol, prc_high, zero, betadown
-
-        # self.chars[ocolumns] = rolling_apply_np(self.data[icolumns], 'permno', fcn)
-        retval = rolling_apply_np(self.data[icolumns], 'permno', fcn)
-        for c1, c2 in zip(ocolumns, retval):
-            self.chars[c1] = c2
+        self.data[ocolumns] = self._apply_to_ids(icolumns, 'roll_252d', 6)
 
     def c_rmax5_rvol_21d(self):
         """Highest 5 days of return to volatility. Assness et al. (2020)"""
 
-        self._roll_252d()  # to create rvol_252d
         self.prepare(['rmax5_21d'])
-        return self.chars.rmax5_21d / self.chars.rvol_252d
+        self._roll_252d()  # to create rvol_252d
+        return self.data.rmax5_21d / self.data.rvol_252d
 
     def c_ivol_capm_252d(self):
         """Idiosyncratic volatility (Org, JKP). Ali, Hwang, and Trombley (2003)"""
 
         self._roll_252d()
-        return self.chars['ivol_capm_252d']
+        return self.data['ivol_capm_252d']
 
     def c_betadown_252d(self):
         """Downside beta. Ang, Chen, and Xing (2006)"""
 
         self._roll_252d()
-        return self.chars['betadown_252d']
+        return self.data['betadown_252d']
 
     def c_prc_highprc_252d(self):
         """52-week high. George and Hwang (2004)"""
 
         self._roll_252d()
-        return self.chars['prc_highprc_252d']
+        return self.data['prc_highprc_252d']
 
     def c_zero_trades_252d(self):
         """Zero-trading days (12 months). Liu (2006)"""
 
         self._roll_252d()
-        return self.chars['zero_trades_252d']
-
-    def _corr_1260d(self):
-        """Market correlation. Assness et al. (2020)"""
-
-        if 'corr_1260d' in self.chars:
-            return
-
-        cd = self.data
-        data = cd[['mon']].copy()
-        data['exret_3l'] = cd.exret + cd.exret.shift(1) + cd.exret.shift(2)
-        data['mktrf_3l'] = cd.mktrf + cd.mktrf.shift(1) + cd.mktrf.shift(2)
-        data.loc[cd.rcount < 2, ['exret_3l', 'mktrf_3l']] = np.nan
-
-        @njit(error_model='numpy')
-        def fcn(data):
-            mons = data[:, 0]
-            unique_mons = np.unique(mons)
-
-            corr = np.full((unique_mons.shape[0], 1), np.nan)
-            for j, mon in enumerate(unique_mons):
-                data_m = data[(mon - 60 < mons) & (mons <= mon), 1:]
-                data_m = data_m[~isnan1(data_m)]  # remove nan
-                if data_m.shape[0] >= 750:
-                    corr[j] = np.corrcoef(data_m.T)[0, 1]
-
-            return corr
-
-        self.chars['corr_1260d'] = rolling_apply_np(data, 'permno', fcn)
+        return self.data['zero_trades_252d']
 
     def c_corr_1260d(self):
         """Market correlation. Assness et al. (2020)"""
+        cd = self.cd.data
+        data = cd.loc[:, ['mon']].copy()
+        data['exret_3l'] = self.cd.rolling(cd.exret, 3, 'mean')
+        data['mktrf_3l'] = self.cd.rolling(cd.mktrf, 3, 'mean')
 
-        self._corr_1260d()
-        return self.chars['corr_1260d']
+        return self._apply_to_ids(data, 'corr_1260d', 1)
 
     def c_betabab_1260d(self):
         """Frazzini-Pedersen beta. Frazzini and Pedersen (2014)"""
 
+        self.prepare(['corr_1260d'])
+
         self._roll_252d()  # for rvol_252d and mktvol_252d
-        self._corr_1260d()
-        return self.chars.corr_1260d * self.chars.rvol_252d / self.chars.mktvol_252d
+        return self.data.corr_1260d * self.data.rvol_252d / self.data.mktvol_252d
 
     def _reg_weekly_vars(self):
         """Create chars that use weekly returns.
           beta (GHZ), betasq (GHZ), idiovol (GHZ), pricedelay, pricedelay_slope
         """
 
-        if 'pricedelay' in self.chars:
+        if self.created('pricedelay'):
             return
 
-        cd = self.data
-        vars = cd[['ret', 'ym']].reset_index()
+        vars = self.cd[['ret', 'ym']].reset_index()
         vars['yw'] = vars.date.dt.isocalendar().year * 100 + vars.date.dt.isocalendar().week
 
         vars['wkret'] = np.log(vars.ret + 1)
         gb = vars.groupby(['permno', 'yw'])
         reg = pd.DataFrame(np.exp(gb.wkret.sum()) - 1)
-        reg['ym'] = gb.ym.nth(-1)
+        reg['ym'] = gb.ym.nth(-1).to_numpy()
+        del gb
+        del vars
 
-        gb = reg.groupby(['yw'])
-        reg['ewret'] = gb.wkret.transform(np.mean)
-
+        reg['ewret'] = reg.groupby(['yw']).wkret.transform('mean')
         reg['ewret_l1'] = reg['ewret'].shift(1)
         reg['ewret_l2'] = reg['ewret'].shift(2)
         reg['ewret_l3'] = reg['ewret'].shift(3)
         reg['ewret_l4'] = reg['ewret'].shift(4)
 
-        reg['rcount'] = reg.groupby('permno').cumcount()
-        reg.loc[reg.rcount < 4, ['ewret_l1', 'ewret_l2', 'ewret_l3', 'ewret_l4']] = np.nan
+        gb = reg.groupby('permno')
+        reg.loc[gb.cumcount() < 4, ['ewret_l1', 'ewret_l2', 'ewret_l3', 'ewret_l4']] = np.nan
 
-        reg = reg.swaplevel()
-
-        beta, r2, idio = self.rolling_beta(reg[['wkret', 'ewret']], 156, 52)
-        reg['beta'] = beta[:, 1]
+        gsize = gb.size().to_numpy()
+        data = reg[['wkret', 'ewret', 'ewret_l1', 'ewret_l2', 'ewret_l3', 'ewret_l4']].to_numpy()
+        res = apply_to_groups_jit(data[:, :2], gsize, rolling_regression, 4, 156, 52, True)
+        reg['beta'] = res[:, 1]
         reg['betasq'] = reg['beta'] ** 2
-        reg['idiovol'] = idio
+        reg['idiovol'] = res[:, -1]
+        r2 = res[:, -2]
 
-        beta2, r2_multi, _ = self.rolling_beta(reg[['wkret', 'ewret', 'ewret_l1', 'ewret_l2', 'ewret_l3', 'ewret_l4']],
-                                          156, 52)
+        res = apply_to_groups_jit(data, gsize, rolling_regression, 8, 156, 52, True)
+        del data
+        beta2 = res[:, :-2]
+        r2_multi = res[:, -2]
+
         reg['pricedelay'] = 1 - r2 / r2_multi
         reg['pricedelay_slope'] = (beta2[:, 2:] * np.array([1, 2, 3, 4])).sum(1) / beta2[:, 1:].sum(1)
 
@@ -3186,76 +3511,128 @@ class CRSPD(Panel):
         reg_ym.set_index(['ym', 'permno'], inplace=True)
         reg_ym.index.names = ('date', 'permno')
 
-        self.chars = self.chars.join(reg_ym[['beta', 'betasq', 'idiovol', 'pricedelay', 'pricedelay_slope']],
-                                     how='left')
+        ocolumns = ['beta', 'betasq', 'idiovol', 'pricedelay', 'pricedelay_slope']
+        self.data[ocolumns] = reg_ym.loc[:, ocolumns]
 
     def c_beta(self):
         """Market beta  (GHZ). Fama and MacBeth (1973)"""
 
         self._reg_weekly_vars()
-        return self.chars['beta']
+        return self.data['beta']
 
     def c_betasq(self):
         """Beta squared (GHZ). Fama and MacBeth (1973)"""
 
         self._reg_weekly_vars()
-        return self.chars['betasq']
+        return self.data['betasq']
 
     def c_idiovol(self):
         """Idiosyncratic volatility (GHZ). Ali, Hwang, and Trombley (2003)"""
 
         # GHZ use weekly returns.
         self._reg_weekly_vars()
-        return self.chars['idiovol']
+        return self.data['idiovol']
 
     def c_pricedelay(self):
         """Price delay based on R-squared. Hou and Moskowitz (2005)"""
 
         self._reg_weekly_vars()
-        return self.chars['pricedelay']
+        return self.data['pricedelay']
 
     def c_pricedelay_slope(self):
         """Price delay based on slopes. Hou and Moskowitz (2005)"""
 
         self._reg_weekly_vars()
-        return self.chars['pricedelay_slope']
+        return self.data['pricedelay_slope']
 
     def c_baspread(self):
         """Bid-ask spread. Amihud and Mendelson (1986)"""
 
-        cd = self.data
+        cd = self.cd.data
         cd['_tmp'] = (cd.askhi - cd.bidlo) / (0.5 * (cd.askhi + cd.bidlo))
-        return cd.groupby(['permno', 'ym'])._tmp.mean().swaplevel()
+        return self.get_idym_group()._tmp.mean().to_numpy()
+
+    # def c_trend_factor(self):
+    #     """Trend factor. Han, Zhou, and Zhu (2016)"""
+    #
+    #     prc_adj = self.cd['prc_adj'].to_numpy()
+    #
+    #     avg_prc = np.full([self.cd.data.shape[0], 12], np.nan)
+    #     avg_prc[:, 0] = prc_adj  # prc at t
+    #     avg_prc[:, 1] = self.cd.rolling(prc_adj, 3, 'mean')  # 3-day mean
+    #     avg_prc[:, 2] = self.cd.rolling(prc_adj, 5, 'mean')  # 5-day mean
+    #     avg_prc[:, 3] = self.cd.rolling(prc_adj, 10, 'mean')  # 10-day mean
+    #     avg_prc[:, 4] = self.cd.rolling(prc_adj, 20, 'mean')  # 20-day mean
+    #     avg_prc[:, 5] = self.cd.rolling(prc_adj, 50, 'mean')  # 50-day mean
+    #     avg_prc[:, 6] = self.cd.rolling(prc_adj, 100, 'mean')  # 100-day mean
+    #     avg_prc[:, 7] = self.cd.rolling(prc_adj, 200, 'mean')  # 200-day mean
+    #     avg_prc[:, 8] = self.cd.rolling(prc_adj, 400, 'mean')  # 400-day mean
+    #     avg_prc[:, 9] = self.cd.rolling(prc_adj, 600, 'mean')  # 600-day mean
+    #     avg_prc[:, 10] = self.cd.rolling(prc_adj, 800, 'mean')  # 800-day mean
+    #     avg_prc[:, 11] = self.cd.rolling(prc_adj, 1000, 'mean')  # 1000-day mean
+    #
+    #     avg_prc /= avg_prc[:, [0]]  # normalized average prices including constant.
+    #
+    #     ret = self.cd[['ym', 'ret']].reset_index(level=0, drop=True).set_index('ym', append=True)
+    #     avg_prc = pd.DataFrame(avg_prc, index=ret.index)
+    #
+    #     ret = np.log(ret + 1)
+    #     ret = np.exp(ret.groupby(level=[0, 1]).sum()) - 1
+    #     avg_prc = avg_prc.groupby(level=[0, 1]).nth(-1)  # last() for old behavior
+    #     sample = pd.concat([ret, avg_prc.groupby(level=0).shift(1)], axis=1)
+    #
+    #     beta = {}
+    #     for ym, sample_ in sample.groupby('ym'):
+    #         sample_.dropna(inplace=True)
+    #         y = sample_.iloc[:, 0]
+    #         X = sample_.iloc[:, 1:]
+    #         if X.shape[0] < X.shape[1]:  # singular
+    #             beta[ym] = np.full(X.shape[1], np.nan)
+    #         else:
+    #             beta[ym] = (np.linalg.solve(X.T @ X, X.T @ y)).reshape(X.shape[1])
+    #
+    #     del sample
+    #
+    #     beta = pd.DataFrame.from_dict(beta, orient='index')
+    #     est_beta = beta.rolling(12).mean()  # 12-month mean of beta estimates.
+    #
+    #     char = []
+    #     for ym, avg_prc_ in avg_prc.groupby('ym'):
+    #         char.append(avg_prc_.dot(est_beta.loc[ym]))  # Return prediction
+    #
+    #     return pd.concat(char).sort_index().to_numpy()  # ym/permno sorted on permno/ym
 
     def c_trend_factor(self):
         """Trend factor. Han, Zhou, and Zhu (2016)"""
 
-        cd = self.data[['ym', 'ret', 'prc_adj']].copy()
+        ret = self.cd[['ym', 'ret']].reset_index(level=0, drop=True).set_index('ym', append=True)
+        ret = np.log(ret + 1)
+        ret['idx'] = np.arange(ret.shape[0])
+        gb = ret.groupby(level=[0, 1])
+        ret = np.exp(gb['ret'].sum()) - 1
+        idx = gb['idx'].last().to_numpy()
+        del gb
 
-        avg_prc = np.full([len(cd), 12], np.nan)
+        prc_adj = self.cd['prc_adj'].to_numpy()
 
-        avg_prc[:, 0] = cd['prc_adj']  # prc at t
-        avg_prc[:, 1] = self.rolling(cd['prc_adj'], 3, 'mean')  # 3-day mean
-        avg_prc[:, 2] = self.rolling(cd['prc_adj'], 5, 'mean')  # 5-day mean
-        avg_prc[:, 3] = self.rolling(cd['prc_adj'], 10, 'mean')  # 10-day mean
-        avg_prc[:, 4] = self.rolling(cd['prc_adj'], 20, 'mean')  # 20-day mean
-        avg_prc[:, 5] = self.rolling(cd['prc_adj'], 50, 'mean')  # 50-day mean
-        avg_prc[:, 6] = self.rolling(cd['prc_adj'], 100, 'mean')  # 100-day mean
-        avg_prc[:, 7] = self.rolling(cd['prc_adj'], 200, 'mean')  # 200-day mean
-        avg_prc[:, 8] = self.rolling(cd['prc_adj'], 400, 'mean')  # 400-day mean
-        avg_prc[:, 9] = self.rolling(cd['prc_adj'], 600, 'mean')  # 600-day mean
-        avg_prc[:, 10] = self.rolling(cd['prc_adj'], 800, 'mean')  # 800-day mean
-        avg_prc[:, 11] = self.rolling(cd['prc_adj'], 1000, 'mean')  # 1000-day mean
+        avg_prc = np.full([ret.shape[0], 12], np.nan)
+        avg_prc[:, 0] = prc_adj[idx]  # prc at t
+        avg_prc[:, 1] = self.cd.rolling(prc_adj, 3, 'mean')[idx]  # 3-day mean
+        avg_prc[:, 2] = self.cd.rolling(prc_adj, 5, 'mean')[idx]  # 5-day mean
+        avg_prc[:, 3] = self.cd.rolling(prc_adj, 10, 'mean')[idx]  # 10-day mean
+        avg_prc[:, 4] = self.cd.rolling(prc_adj, 20, 'mean')[idx]  # 20-day mean
+        avg_prc[:, 5] = self.cd.rolling(prc_adj, 50, 'mean')[idx]  # 50-day mean
+        avg_prc[:, 6] = self.cd.rolling(prc_adj, 100, 'mean')[idx]  # 100-day mean
+        avg_prc[:, 7] = self.cd.rolling(prc_adj, 200, 'mean')[idx]  # 200-day mean
+        avg_prc[:, 8] = self.cd.rolling(prc_adj, 400, 'mean')[idx]  # 400-day mean
+        avg_prc[:, 9] = self.cd.rolling(prc_adj, 600, 'mean')[idx]  # 600-day mean
+        avg_prc[:, 10] = self.cd.rolling(prc_adj, 800, 'mean')[idx]  # 800-day mean
+        avg_prc[:, 11] = self.cd.rolling(prc_adj, 1000, 'mean')[idx]  # 1000-day mean
 
-        avg_prc = avg_prc / avg_prc[:, [0]]  # normalized average prices including constant.
-        avg_prc = pd.DataFrame(avg_prc, index=pd.MultiIndex.from_frame(cd.reset_index()[['permno', 'ym']]))
-        avg_prc = avg_prc.groupby(['permno', 'ym']).last()
-        avg_prc_l1 = avg_prc.groupby('permno').shift(1)
+        avg_prc /= avg_prc[:, [0]]  # normalized average prices including constant.
 
-        cd['ret'] = np.log(1 + cd['ret'])
-        ret = np.exp(cd.groupby(['permno', 'ym'])['ret'].sum()) - 1
-
-        sample = pd.concat([ret, avg_prc_l1], axis=1)
+        avg_prc = pd.DataFrame(avg_prc, index=ret.index)
+        sample = pd.concat([ret, avg_prc.groupby(level=0).shift(1)], axis=1)
 
         beta = {}
         for ym, sample_ in sample.groupby('ym'):
@@ -3267,6 +3644,8 @@ class CRSPD(Panel):
             else:
                 beta[ym] = (np.linalg.solve(X.T @ X, X.T @ y)).reshape(X.shape[1])
 
+        del sample
+
         beta = pd.DataFrame.from_dict(beta, orient='index')
         est_beta = beta.rolling(12).mean()  # 12-month mean of beta estimates.
 
@@ -3274,7 +3653,7 @@ class CRSPD(Panel):
         for ym, avg_prc_ in avg_prc.groupby('ym'):
             char.append(avg_prc_.dot(est_beta.loc[ym]))  # Return prediction
 
-        return pd.concat(char).sort_index().swaplevel()  # ym/permno sorted on permno/ym
+        return pd.concat(char).sort_index().to_numpy()  # ym/permno sorted on permno/ym
 
 
 ################################################################################
@@ -3282,28 +3661,38 @@ class CRSPD(Panel):
 # MERGE
 #
 ################################################################################
-class Merge(Panel):
-    """Class to generate firm characteristics from a merged dataset of funda, fundq, crspm, and crspd.
 
-    The firm characteristics generated in this class can be viewed using ``Merge.show_available_functions()``:
+class Merge(FCPanel):
+    """Class to generate firm characteristics from a combined dataset of crspm, crspd, funda, and fundq.
 
-    >>> Merge().show_available_functions()
+    The firm characteristics defined in this class can be viewed using :meth:`.show_available_chars`.
 
+    **Methods**
+
+    .. autosummary::
+        :nosignatures:
+
+        preprocess
+        postprocess
+
+    Firm characteristic generation methods have a name like ``c_characteristic()``.
     """
 
-    def __init__(self):
-        super().__init__()
-        self.data = None
+    def __init__(self, alias=None):
+        super().__init__(alias)
 
     def preprocess(self, crspm=None, crspd=None, funda=None, fundq=None, delete_data=True):
-        """Merge crspm, crspd, funda, and fundq by left-joining crspd, funda, and fundq to crspm. The resulting data has
-        index = date/permno.
+        """Merge crspm, crspd, funda, and fundq.
+
+        The crspd, funda, and fundq are left-joined to crspm, and the resulting data has index = date/permno.
+        The frequency of the final data is the same as the frequency of crspm data. This method also checks
+        if "ingredient" firm characteristics have been generated and generates them if necessary.
 
         Args:
-            crspm: CRSPM instance.
-            crspd: CRSPD instance.
-            funda: FUNDA instance.
-            fundq: FUNDQ instance.
+            crspm: :class:`CRSPM` instance.
+            crspd: :class:`CRSPD` instance.
+            funda: :class:`FUNDA` instance.
+            fundq: :class:`FUNDQ` instance.
             delete_data: True to delete the data of crspm, crspd, funda, and fundq after merge to save memory.
         """
 
@@ -3312,74 +3701,75 @@ class Merge(Panel):
         ###############################
         # Prepare characteristics required to generate characteristics here..
         ###############################
-        if crspm is not None:
-            # For mispricing.
-            crspm.prepare(['ret_12_1', 'chcsho_12m', 'eqnpo_12m'])
-
-        if funda is not None:
-            # For age.
+        if 'age' in self.char_map:
             funda.prepare(['age'])
 
-            # For mispricing.
-            funda.prepare(['o_score', 'gp_at', 'oaccruals_at', 'noa_at', 'at_gr1', 'ppeinv_gr1a'])
-
-            # For qmj.
-            funda.prepare(['gp_at', 'ni_be', 'ocf_at', 'oaccruals_at', 'o_score', 'z_score'])
-            fa = funda.data
-            fa['ni_at'] = fa.ib / fa.at_
-            fa['gp_sale'] = fa.gp / fa.sale
-            fa['debt_at'] = fa.debt / fa.at_
-            fa['gpoa_ch5'] = funda.diff(fa.gp_at, 5)
-            fa['roe_ch5'] = funda.diff(fa.ni_be, 5)
-            fa['roa_ch5'] = funda.diff(fa.ni_at, 5)
-            fa['cfoa_ch5'] = funda.diff(fa.ocf_at, 5)
-            fa['gmar_ch5'] = funda.diff(fa.gp_sale, 5)
-            fa['roe_std'] = funda.rolling(fa.ni_be, 5, 'std')
-
-        if fundq is not None:
-            # For mispricing.
+        if 'mispricing_perf' in self.char_map:
+            funda.prepare(['o_score', 'gp_at'])
             fundq.prepare(['niq_at'])
+            crspm.prepare(['ret_12_1'])
 
-            # For qmj.
-            fq = fundq.data
-            fq['roeq_std'] = fundq.rolling(fq.ibq / fq.be, 20, 'std', min_n=12)
+        if 'mispricing_mgmt' in self.char_map:
+            funda.prepare(['oaccruals_at', 'noa_at', 'at_gr1', 'ppeinv_gr1a'])
+            crspm.prepare(['chcsho_12m', 'eqnpo_12m'])
+
+        if 'qmj' in self.char_map:
+            funda.prepare(['gp_at', 'ni_be', 'ocf_at', 'oaccruals_at', 'o_score', 'z_score'])
+            funda['ni_at'] = funda['ib'] / funda['at_']
+            funda['gp_sale'] = funda['gp'] / funda['sale']
+            funda['debt_at'] = funda['debt'] / funda['at_']
+            funda['gpoa_ch5'] = funda.diff(funda['gp_at'], 5)
+            funda['roe_ch5'] = funda.diff(funda['ni_be'], 5)
+            funda['roa_ch5'] = funda.diff(funda['ni_at'], 5)
+            funda['cfoa_ch5'] = funda.diff(funda['ocf_at'], 5)
+            funda['gmar_ch5'] = funda.diff(funda['gp_sale'], 5)
+            funda['roe_std'] = funda.rolling(funda['ni_be'], 5, 'std')
+
+            fundq['roeq_std'] = fundq.rolling(fundq['ibq'] / fundq['be'], 20, 'std', min_n=12)
+
+            crspd.prepare(['betabab_1260d'])
 
         ###############################
         # Merge data
         ###############################
-        # We require at least one of crspm or crspd.
-        if crspm is not None and crspd is not None:  # Both exist.
+        char_map = self.char_map
+        # At least one of crspm or crspd should be provided.
+        if (crspm is not None) and (crspd is not None):  # Both exist.
             self.copy_from(crspm)
+            char_map.update(crspm.char_map)
             if delete_data:
                 del crspm.data
 
-            self.merge(crspd.chars, how='left')
+            self.merge(crspd.data, how='left')
+            char_map.update(crspd.char_map)
             if delete_data:
                 del crspd.data
-                del crspd.chars
         elif crspm is not None and crspd is None:  # Only crspm.
             self.copy_from(crspm)
+            char_map.update(crspm.char_map)
             if delete_data:
                 del crspm.data
         elif crspm is None and crspd is not None:  # Only crspd.
             self.copy_from(crspd)
+            char_map.update(crspd.char_map)
             if delete_data:
                 del crspd.data
-                del crspd.chars
         else:
             raise ValueError('At least one of CRSPM or CRSPD should be provided.')
+        self.char_map = char_map
 
         if funda is not None:
             self.merge(funda.data, on=['date', 'gvkey'], how='left')
+            self.data.rename(columns={'age': 'comp_age'}, inplace=True)
+            char_map.update(funda.char_map)
             if delete_data:
                 del funda.data
 
         if fundq is not None:
             self.merge(fundq.data, on=['date', 'gvkey'], how='left')
+            char_map.update(fundq.char_map)
             if delete_data:
                 del fundq.data
-
-        self.data.sort_index(level=['permno', 'date'], inplace=True)
 
         # Add future return
         self.data['futret'] = self.futret(self.data.exret)
@@ -3388,24 +3778,28 @@ class Merge(Panel):
     def postprocess(self):
         """Postprocess data.
 
-        This method deletes temporary variables (variables starting with '\_') and replaces infinite values with nan.
-        This method can be overridden to add code to trim or winsorize characteristics.
+        This method deletes temporary variable columns (columns starting with '\\_') and replaces infinite
+        values with nan.
         """
 
-        elapsed_time('Postprocessing merged...')
+        elapsed_time('Postprocessing Merge...')
         md = self.data
 
         # drop temporary columns that start with '_'
         del_cols = [col for col in md if col[0] == '_']
         drop_columns(md, del_cols)
 
-        columns = md.columns.intersection(self.get_available_chars())
-        inspect_data(md[columns], option=['summary', 'nans', 'stats'])
+        char_cols = list(self.get_char_list())
+        self.inspect_data(char_cols, option=['summary', 'nans'])
 
         log('Replacing inf with nan...')
-        md.replace([np.inf, -np.inf], np.nan, inplace=True)
+        for col in char_cols:
+            isinf = (md[col] == np.inf) | (md[col] == -np.inf)
+            if isinf.any():
+                md.loc[isinf, col] = np.nan
 
-        elapsed_time('merged postprocessed.')
+        self.inspect_data(char_cols, option=['stats'])
+        elapsed_time('Merge postprocessed.')
 
     #######################################
     # Characteristics
@@ -3415,92 +3809,95 @@ class Merge(Panel):
 
         # Update age as the maximum of age from funda and age from crspm.
         md = self.data
-        age = (md.rcount + 1) * 12 / self.freq  # age from crspm
-        return np.maximum(age, md['age'])  # max between crspm age and funda age.
+        md['age'] = (self.get_row_count() + 1) * 12 / self.freq  # age from crspm
+
+        if 'comp_age' in md:
+            @njit(cache=True)
+            def fcn(data):
+                gap = np.nanmax(data[:, 1] - data[:, 0])  # max(comp_age - crsp_age)
+                if gap > 0:
+                    return data[:, 0] + gap  # crsp_age + max(comp_age - crsp_age)
+                else:
+                    return data[:, 0]  # crsp_age
+
+            md['age'] = self.apply_to_ids(['age', 'comp_age'], fcn, 1)
+            # md['age'] = group_and_apply(md.loc[:, ['age', 'comp_age']], 'permno', fcn, values=True)
+            del md['comp_age']
+            # The code below can yield younger ages than previous ages when comp_age is missing: if funda data exists
+            # from 2000.01 to 2020.12 and crsp data from 2001.01 to 2022.12, the age from 2021.01 will be younger.
+            # md['age'] = np.nanmax(md.loc[:, ['age', 'comp_age']], axis=1)
+
+        return md['age']
 
     def c_mispricing_perf(self):
         """Mispricing factor: Performance. Stambaugh and Yuan (2016)"""
 
-        md = self.data
-        tmp = md.groupby(level=0)[['o_score', 'ret_12_1', 'gp_at', 'niq_at']].rank(pct=True)
-        tmp.o_score = 1 - tmp.o_score
-        return tmp.mean(axis=1)
+        tmp = self.apply_to_dates(['o_score', 'ret_12_1', 'gp_at', 'niq_at'], rank, 4, True, True)
+
+        tmp[:, 0] = 1 - tmp[:, 0]  # tmp.o_score = 1 - tmp.o_score
+        return np.nanmean(tmp, axis=1)
 
     def c_mispricing_mgmt(self):
         """Mispricing factor: Management. Stambaugh and Yuan (2016)"""
 
-        md = self.data
-        tmp = md.groupby(level=0)[['chcsho_12m', 'eqnpo_12m', 'oaccruals_at', 'noa_at', 'at_gr1', 'ppeinv_gr1a']].rank(
-            ascending=False, pct=True)
-        if REPLICATE_JKP:
-            tmp.eqnpo_12m = 1 - tmp.eqnpo_12m
-        char = np.where(tmp.count(axis=1) < 3, np.nan, tmp.mean(axis=1))
+        tmp = self.apply_to_dates(['chcsho_12m', 'eqnpo_12m', 'oaccruals_at', 'noa_at', 'at_gr1', 'ppeinv_gr1a'], rank,
+                                  6, False, True)
+
+        if config.replicate_jkp:
+            tmp[:, 1] = 1 - tmp[:, 1]  # tmp.eqnpo_12m = 1 - tmp.eqnpo_12m
+
+        char = np.where(np.sum(~np.isnan(tmp), axis=1) < 3, np.nan, np.nanmean(tmp, axis=1))
         return char
 
     @staticmethod
-    def _zrank(chars):
+    @njit(cache=True)
+    def _zrank(x):
         """Normalized rank.
         """
 
-        def zrank_(x):
-            rx = x.rank()
-            y = (rx - rx.mean()) / rx.std()
-            if x.ndim == 1:
-                return y
+        rx = rank(x)
+        if x.ndim == 1:
+            return (rx - np.nanmean(rx)) / nanstd(rx)
 
-            ry = y.mean(axis=1).rank()
-            return (ry - ry.mean()) / ry.std()
+        isna = np.isnan(rx)
+        ry = np.zeros(rx.shape[0])
+        for j in range(x.shape[1]):
+            rx_j = (rx[:, j] - np.nanmean(rx[:, j])) / nanstd(rx[:, j])
+            ry += np.where(np.isnan(rx_j), 0, rx_j)
 
-        return groupby_apply(chars.groupby(level=0), zrank_)
-
+        ry /= x.shape[1] - np.sum(isna, axis=1)
+        ry = rank(ry)
+        return (ry - np.nanmean(ry)) / nanstd(ry)
 
     def c_qmj_growth(self):
         """Quality minus Junk: Growth. Assness, Frazzini, and Pedersen (2018)"""
 
-        if 'qmj_growth' in self.data:
-            return self.data['qmj_growth']
-
-        md = self.data
-
-        grow = md[['gpoa_ch5', 'roe_ch5', 'roa_ch5', 'cfoa_ch5', 'gmar_ch5']]
-        return self._zrank(grow)
+        grow = ['gpoa_ch5', 'roe_ch5', 'roa_ch5', 'cfoa_ch5', 'gmar_ch5']
+        return self.apply_to_dates(grow, self._zrank, 1)
 
     def c_qmj_prof(self):
         """Quality minus Junk: Profitability. Assness, Frazzini, and Pedersen (2018)"""
 
-        if 'qmj_prof' in self.data:
-            return self.data['qmj_prof']
-
-        md = self.data
-
-        prof = md[['gp_at', 'ni_be', 'ni_at', 'ocf_at', 'gp_sale']].copy()
-        prof['oaccruals_at'] = -md.oaccruals_at
-        return self._zrank(prof)
+        prof = self[['gp_at', 'ni_be', 'ni_at', 'ocf_at', 'gp_sale', 'oaccruals_at']]
+        prof['oaccruals_at'] *= -1
+        return self.apply_to_dates(prof, self._zrank, 1)
 
     def c_qmj_safety(self):
         """Quality minus Junk: Safety. Assness, Frazzini, and Pedersen (2018)"""
 
-        if 'qmj_safety' in self.data:
-            return self.data['qmj_safety']
-
-        md = self.data
-
-        safe = -md[['betabab_1260d', 'debt_at', 'o_score']].copy()
-        safe['z_score'] = md.z_score
-        safe['evol'] = -md['roeq_std'].fillna(md['roe_std'] / 2)
-
-        return self._zrank(safe)
+        safe = -self[['betabab_1260d', 'debt_at', 'o_score']]
+        safe['z_score'] = self['z_score']
+        safe['evol'] = -self['roeq_std'].fillna(self['roe_std'] / 2)
+        return self.apply_to_dates(safe, self._zrank, 1)
 
     def c_qmj(self):
         """Quality minus Junk: Composite. Assness, Frazzini, and Pedersen (2018)"""
 
-        md = self.data
-
         self.prepare(['qmj_growth', 'qmj_prof', 'qmj_safety'])
-        qmj = (md['qmj_prof'] + md['qmj_growth'] + md['qmj_safety']) / 3
-        return self._zrank(qmj)
+
+        qmj = (self['qmj_prof'] + self['qmj_growth'] + self['qmj_safety']) / 3
+        return self.apply_to_dates(qmj, self._zrank, 1)
 
 
 if __name__ == '__main__':
     os.chdir('../')
-

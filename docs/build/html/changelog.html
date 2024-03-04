@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Changelog &mdash; PyAnomaly 0.931 documentation</title>
+  <title>Changelog &mdash; PyAnomaly 1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -12,10 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PyAnomaly
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyAnomaly
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -48,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#references">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#useful-links">Useful Links</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#contributors">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
@@ -69,6 +75,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#v0-923-2022-01-16">v0.923 - 2022.01.16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-930-2022-01-17">v0.930 - 2022.01.17</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-931-2022-01-23">v0.931 - 2022.01.23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-932-2022-01-25">v0.932 - 2022.01.25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-2024-02-28-major-update">v1.0 - 2024.02.28 (Major Update)</a></li>
 </ul>
 </li>
 </ul>
@@ -86,8 +94,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Changelog</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Changelog</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/changelog.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -98,25 +106,165 @@
            <div itemprop="articleBody">
              
   <section id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline"></a></h1>
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
 <section id="v0-9-2022-01-15">
-<h2>v0.9 - 2022.01.15<a class="headerlink" href="#v0-9-2022-01-15" title="Permalink to this headline"></a></h2>
+<h2>v0.9 - 2022.01.15<a class="headerlink" href="#v0-9-2022-01-15" title="Permalink to this heading"></a></h2>
 <p>Initial version.</p>
 </section>
 <section id="v0-923-2022-01-16">
-<h2>v0.923 - 2022.01.16<a class="headerlink" href="#v0-923-2022-01-16" title="Permalink to this headline"></a></h2>
+<h2>v0.923 - 2022.01.16<a class="headerlink" href="#v0-923-2022-01-16" title="Permalink to this heading"></a></h2>
 <p>Multiprocessing in <code class="docutils literal notranslate"><span class="pre">datatools.populate()</span></code> has been updated to increase the speed.</p>
 </section>
 <section id="v0-930-2022-01-17">
-<h2>v0.930 - 2022.01.17<a class="headerlink" href="#v0-930-2022-01-17" title="Permalink to this headline"></a></h2>
+<h2>v0.930 - 2022.01.17<a class="headerlink" href="#v0-930-2022-01-17" title="Permalink to this heading"></a></h2>
 <p>The trend factor of Han, Zhou, and Zhu (2016) has been added. We thank Guofu Zhou for this suggestion.</p>
 </section>
 <section id="v0-931-2022-01-23">
-<h2>v0.931 - 2022.01.23<a class="headerlink" href="#v0-931-2022-01-23" title="Permalink to this headline"></a></h2>
+<h2>v0.931 - 2022.01.23<a class="headerlink" href="#v0-931-2022-01-23" title="Permalink to this heading"></a></h2>
 <p>A bug of not returning the result in <code class="docutils literal notranslate"><span class="pre">FUNDA.c_ebitda_mev()</span></code> has been fixed.</p>
 <p>A new characteristic method for Enterprise multiple (Loughran and Wellman, 2011), <code class="docutils literal notranslate"><span class="pre">c_enterprise_multiple()</span></code>,
 has been added to <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, as the previous one (<code class="docutils literal notranslate"><span class="pre">c_ebitda_mev()</span></code>) that implements JKP’s SAS code uses a different
 definition from the original definition. This new method uses the original definition.</p>
+</section>
+<section id="v0-932-2022-01-25">
+<h2>v0.932 - 2022.01.25<a class="headerlink" href="#v0-932-2022-01-25" title="Permalink to this heading"></a></h2>
+<p>Bug fix for missing classes</p>
+<blockquote>
+<div><p>When data has not enough distinct values, some classes can be missing when data is sorted into classes (quantiles).
+The <code class="docutils literal notranslate"><span class="pre">append_long_short()</span></code> and <code class="docutils literal notranslate"><span class="pre">time_series_average()</span></code> in analytics.py have been revised to handle data with
+missing classes.</p>
+</div></blockquote>
+</section>
+<section id="v1-0-2024-02-28-major-update">
+<h2>v1.0 - 2024.02.28 (Major Update)<a class="headerlink" href="#v1-0-2024-02-28-major-update" title="Permalink to this heading"></a></h2>
+<p>There are several important updates in this version and some functions are not backward compatible.
+See the examples in <a class="reference internal" href="cookbook.html#cookbook"><span class="std std-ref">Cookbook</span></a> for changes.</p>
+<p><strong>Major updates</strong></p>
+<ul>
+<li><p>Performance upgrade</p>
+<blockquote>
+<div><p>The library is now significantly faster and more memory efficient.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.FCPanel</span></code></p>
+<blockquote>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">Panel</span></code> class has been divided into two classes: <code class="docutils literal notranslate"><span class="pre">Panel</span></code> class that serves as the base class for panel
+data analysis and <code class="docutils literal notranslate"><span class="pre">FCPanel</span></code> class that inherits <code class="docutils literal notranslate"><span class="pre">Panel</span></code> and serves as the base class for firm characteristics
+generation. <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code> now inherit <code class="docutils literal notranslate"><span class="pre">FCPanel</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Panel</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.CRSPDRaw</span></code></p>
+<blockquote>
+<div><p>Previously, <code class="docutils literal notranslate"><span class="pre">CRSPD.data</span></code> contained daily crspd data and <code class="docutils literal notranslate"><span class="pre">CRSPD.chars</span></code> contained monthly firm characteristics.
+In the new version, a new class <code class="docutils literal notranslate"><span class="pre">CRSPDRaw</span></code> handles daily crspd data and is a member of <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>.
+<code class="docutils literal notranslate"><span class="pre">CRSPDRaw.data</span></code> contains daily crspd data and <code class="docutils literal notranslate"><span class="pre">CRSPD.data</span></code> contains monthly firm characteristics.</p>
+</div></blockquote>
+</li>
+<li><p>Factor models</p>
+<blockquote>
+<div><p>Two new factor models, Fama-French 5-factor and Stambough and Yuan 4-factor models, have been added.</p>
+</div></blockquote>
+</li>
+<li><p>CRSP-Compustat link</p>
+<blockquote>
+<div><p>If a use don’t have WRDS subscription for ccmxpf_linktable, PyAnomlay will create a link table internally and use it
+to map permno and gvkey. Compared to using ccmxpf_linktable, about 13% of gvkey’s are different when using the
+internal link table (‘crsp_comp_linktable’).</p>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Minor updates</strong></p>
+<ul>
+<li><p>Default log directory has been added as <code class="docutils literal notranslate"><span class="pre">config.log_dir</span></code>.</p></li>
+<li><p>Float datatype can be configured to float32 using <code class="docutils literal notranslate"><span class="pre">set_config(float_type='float32')</span></code>.</p></li>
+<li><p>New file format, parquet, has been added. To change the file format to parquet,
+do <code class="docutils literal notranslate"><span class="pre">set_config(file_format='parquet')</span></code>. The default file format is pickle.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log.set_log_path()</span></code> has been revised so that it can create a log file automatically from a file name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.classify()</span></code> has been revised so that if the characteristic is a binary variable, the class is either
+0 or (number of quantiles - 1). In the previous version, the class was not deterministic.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jkp.py</span></code> has been renamed as <code class="docutils literal notranslate"><span class="pre">factors.py</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">analytics.rolling_beta()</span></code> has been renamed as <code class="docutils literal notranslate"><span class="pre">numba_support.rolling_regression()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.Panel.rolling_beta()</span></code> has been renamed as <code class="docutils literal notranslate"><span class="pre">panel.Panel.rolling_regression()</span></code>.</p></li>
+<li><p>Input arguments have been changed in the following functions.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.classify()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.trim()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.filter()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.winsorize()</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>A new argument <cite>fname</cite> has been added to <code class="docutils literal notranslate"><span class="pre">load_data()</span></code> of <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, and <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>.
+If funda, fundq, crspm, and crspd data are modified (e.g., cleansed) and saved with different file names,
+those names can be given to read data from those modified data files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapping.xlsx</span></code>: New columns, original sample start date (sample_start) and original sample end date (sample_end),
+have been added.</p></li>
+</ul>
+<p><strong>New functions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">analytics.grs_test()</span></code>: GRS (Gibbons, Ross, and Shanken, 1989) test.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.set_config()</span></code>: Set library configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.get_config()</span></code>: Get library configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups()</span></code>: Group data and apply a function to each group.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code>: Group data and apply a function to each group (jitted version).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code>: Group data and apply a reduce function to each group (jitted version).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.roll_sum()</span></code>: Rolling sum.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.roll_mean()</span></code>: Rolling mean.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.roll_std()</span></code>: Rolling standard deviation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.roll_var()</span></code>: Rolling variance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.rank()</span></code>: Rank.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.bivariate_regression()</span></code>: Bivariate regression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.regression()</span></code>: Multivariate regression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numba_support.rolling_regression()</span></code>: Rolling regression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.Panel.apply_to_ids()</span></code>: Apply a function to each id group.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.Panel.apply_to_dates()</span></code>: Apply a function to each date group.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wrdsdata.WRDS.create_crsp_comp_linktable()</span></code>: Create a CRSP-Compustat link table using cusip.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wrdsdata.WRDS.add_gvkey_to_crsp_cusip()</span></code>: Add gvkey to m(d)sf and identify primary stocks using internal link table.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Deprecated functions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.FUNDA.convert_to_monthly()</span></code>: Use <code class="docutils literal notranslate"><span class="pre">Panel.populate()</span></code> instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.FUNDQ.convert_to_monthly()</span></code>: Use <code class="docutils literal notranslate"><span class="pre">Panel.populate()</span></code> instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.filter_n()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.groupby_apply()</span></code>: Use <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups()</span></code>, <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.groupby_apply_np()</span></code>: Use <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups()</span></code>, <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.rolling_apply()</span></code>: Use <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups()</span></code>, <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.rolling_apply_np()</span></code>: Use <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups()</span></code>, <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Bug fix</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristic.FUNDA.c_currat()</span></code>: A bug of not returning the result has been fixed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.FUNDQ.c_ni_inc8q()</span></code>: In the previous version, dibq (difference of ibq) was set to nan in the
+first 4 quarters. This made some valid ni_inc8q in the first 12 quarters become nan. In the new version,
+we set all nan values of dibq to 0 before calculating ni_inc8q and ni_inc8q is set to nan if dibq is nan.
+The revised logic does not lose valid ni_inc8q in the first 12 quarters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristic.CRSPD.zero_trades_21d()</span></code>: Fixed dividing by 0 when the total turnover is 0.
+When counting the number of days in a month, only the days when turnover is not nan are counted. Before, all days
+were counted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristic.CRSPD.c_zero_trades_126d()</span></code>: Fixed dividing by 0 when the total turnover is 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristic.CRSPD.c_zero_trades_252d()</span></code>: Fixed dividing by 0 when the total turnover is 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristic.CRSPD.c_rmax5_21d()</span></code>: A bug when there are only a few distinct return values in a month has been
+fixed.
+Suppose the return is positive in two days and 0 in the other days. Previously, rmax5_21d was the mean of the
+two positive returns. In the new version, it is the mean of the two positive returns and three 0 returns.
+Also, if days of valid returns (not nan) are fewer than or equal to 5, the result is nan.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristic.Merge.age()</span></code>: In the previous version, age was the max of (funda history, crspm history).
+This logic can make the age decrease when funda history is missing: if funda data exists from 2000.01 to 2020.12
+and crsp data from 2001.01 to 2022.12, the age will decrease in 2021.01. The logic has been revised so that the
+age doesn’t decrease when funda data is missing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.Panel.rolling()</span></code>: When <cite>lag</cite> &gt; 0, shifted rows were not properly removed. This bug has been fixed.</p></li>
+</ul>
+</div></blockquote>
 </section>
 </section>
 
@@ -130,7 +278,7 @@ definition from the original definition. This new method uses the original defin
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
+    <p>&#169; Copyright 2024, Chulwoo Han and Jongho Kang.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

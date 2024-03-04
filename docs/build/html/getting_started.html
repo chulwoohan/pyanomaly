@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; PyAnomaly 0.931 documentation</title>
+  <title>Installation &mdash; PyAnomaly 1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -12,10 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PyAnomaly
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyAnomaly
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#references">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#useful-links">Useful Links</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#contributors">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
@@ -56,7 +62,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#generating-characteristics">Generating Characteristics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#process-flow">Process Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">Mapping File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sec-mapping-file">Mapping File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#output-files">Output Files</a></li>
 </ul>
 </li>
@@ -86,8 +92,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Installation</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -98,7 +104,7 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <p>You can install PyAnomaly either  using <code class="docutils literal notranslate"><span class="pre">pip</span></code> or from the source.
 If you intend to use PyAnomaly ‘’as-is’’, we recommend <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
 If you need to refer to the source code frequently, e.g., to add new firm characteristics or functions,
@@ -122,6 +128,8 @@ you may want to copy the source to your project directory.</p>
 <li><p>numba</p></li>
 <li><p>openpyxl</p></li>
 <li><p>matplotlib</p></li>
+<li><p>scikit-learn</p></li>
+<li><p>pyarrow</p></li>
 </ul>
 </div></blockquote>
 <p>You can install these packages one by one or run <code class="docutils literal notranslate"><span class="pre">setup.bat</span></code> to install them at once.</p>
@@ -133,12 +141,13 @@ you may want to copy the source to your project directory.</p>
 <span class="go">[1, 2, 3, 5]</span>
 </pre></div>
 </div>
-<p>We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes, please contact us.</p>
+<p>We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes,
+please contact us.</p>
 </section>
 <section id="generating-characteristics">
-<h1>Generating Characteristics<a class="headerlink" href="#generating-characteristics" title="Permalink to this headline"></a></h1>
+<h1>Generating Characteristics<a class="headerlink" href="#generating-characteristics" title="Permalink to this heading"></a></h1>
 <section id="process-flow">
-<h2>Process Flow<a class="headerlink" href="#process-flow" title="Permalink to this headline"></a></h2>
+<h2>Process Flow<a class="headerlink" href="#process-flow" title="Permalink to this heading"></a></h2>
 <p>A high-level process to generate firm characteristics is as follows.</p>
 <ol class="arabic simple">
 <li><p>Download data from WRDS and save them to files.</p></li>
@@ -157,8 +166,8 @@ many times to validate the result. You can generate other firm characteristics o
 Then, you can load them from files instead of generating them every time you generate the new characteristic.</p></li>
 </ul>
 </section>
-<section id="id1">
-<h2>Mapping File<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<section id="sec-mapping-file">
+<span id="id1"></span><h2>Mapping File<a class="headerlink" href="#sec-mapping-file" title="Permalink to this heading"></a></h2>
 <p>The <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> defines the mapping between firm characteristics and functions, and functions and characteristic names
 used in other papers. The file can be used to select the characteristics you want to generate and give them aliases.
 A part of the file is shown below.</p>
@@ -168,22 +177,22 @@ in the description. For example, ‘Idiosyncratic volatility (GHZ)’ is GHZ’s
 and ‘Idiosyncratic volatility (Org, JKP)’ is JKP’s implementation. ‘Org’ indicates this version is closer to the
 original definition.</p>
 </dd>
-<dt>function</dt><dd><p>This column shows the associated functions. If function is ‘idiovol’, the firm characteristic is implemented in
-the function <code class="docutils literal notranslate"><span class="pre">c_idiovol()</span></code>: the actual function name always starts with <code class="docutils literal notranslate"><span class="pre">c_</span></code>.
+<dt>function</dt><dd><p>This column shows the associated functions (methods). If function is ‘idiovol’, the firm characteristic is implemented
+in the function (method) <code class="docutils literal notranslate"><span class="pre">c_idiovol()</span></code>: the actual function name always starts with <code class="docutils literal notranslate"><span class="pre">c_</span></code>.
 If function is missing, it means the corresponding firm characteristic is not yet available.</p>
 </dd>
 <dt>ghz, jkp, hxz, cz</dt><dd><p>These columns respectively show the aliases of the firm characteristics used in GHZ, JKP, HXZ, and CZ.
-If you set <code class="docutils literal notranslate"><span class="pre">alias='ghz'</span></code> when initializing <code class="docutils literal notranslate"><span class="pre">Panel</span></code> or its derived class, only the characteristics defined
+If you set <code class="docutils literal notranslate"><span class="pre">alias='ghz'</span></code> when initializing <code class="docutils literal notranslate"><span class="pre">FCPanel</span></code> or its derived class, only the characteristics defined
 in ‘ghz’ column will be generated. Similarly, setting <code class="docutils literal notranslate"><span class="pre">alias</span></code> to ‘jkp’, ‘hxz’, or ‘cz’ will generate firm
 characteristics defined in these columns.
-If you set <code class="docutils literal notranslate"><span class="pre">alias=None</span></code>, all available characteristics will be generated.</p>
+If you set <code class="docutils literal notranslate"><span class="pre">alias=None</span></code>, all available firm characteristics will be generated.</p>
 </dd>
-<dt>my chars</dt><dd><p>You can add a new column in the file to define what characteristics to generate and their aliases.
+<dt>my chars</dt><dd><p>You can add a new column in the file to define which characteristics to generate and their aliases.
 For example, if you add a column ‘my chars’ as shown in the table and set <code class="docutils literal notranslate"><span class="pre">alias='my</span> <span class="pre">chars'</span></code>, only
 ‘Idiosyncratic volatility (Org, JKP)’ and ‘Illiquidity’ will be generated.</p>
 </dd>
 </dl>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
 <col style="width: 22%" />
 <col style="width: 20%" />
@@ -302,20 +311,21 @@ For example, if you add a column ‘my chars’ as shown in the table and set <c
 </table>
 </section>
 <section id="output-files">
-<h2>Output Files<a class="headerlink" href="#output-files" title="Permalink to this headline"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">Panel</span></code> and its derived classes (<code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>) have an attribute
-<code class="docutils literal notranslate"><span class="pre">data</span></code>, which is a DataFrame that contains the raw data and the firm characteristics. An exception is <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>,
-which saves the firm characterisitcs in another attribute, <code class="docutils literal notranslate"><span class="pre">chars</span></code>. This is because the raw data have a daily frequency,
-whereas the firm characteristics have a monthly frequency.
-The column names of the firm characteristics are their function names (without <code class="docutils literal notranslate"><span class="pre">c_</span></code>). When <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">chars</span></code>
-is saved to a file by calling <code class="docutils literal notranslate"><span class="pre">Panel.save()</span></code>, the column names will be replaced with the aliases.
-When a saved file is loaded back to a class by calling <code class="docutils literal notranslate"><span class="pre">Panel.load()</span></code>, the column names will be replaced with
+<h2>Output Files<a class="headerlink" href="#output-files" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">FCPanel</span></code> and its derived classes (<code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>, <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>) have an attribute
+<code class="docutils literal notranslate"><span class="pre">data</span></code>, which is a DataFrame that contains the raw data and the firm characteristics. An exception is <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>.
+<code class="docutils literal notranslate"><span class="pre">CRSPD.data</span></code> only contains firm characteristics and the raw crspd data is stored in <code class="docutils literal notranslate"><span class="pre">CRSPD.cd.data</span></code>.
+<code class="docutils literal notranslate"><span class="pre">CRSPD.cd</span></code> is an object of <code class="docutils literal notranslate"><span class="pre">CRSPDRaw</span></code>, a class derived from <code class="docutils literal notranslate"><span class="pre">FCPanel</span></code>. We separate firm characteristics from the raw data
+in crspd because the raw data have a daily frequency, whereas the firm characteristics have a monthly frequency.
+The column names of the firm characteristics are their function names (without <code class="docutils literal notranslate"><span class="pre">c_</span></code>). When <code class="docutils literal notranslate"><span class="pre">data</span></code>
+is saved to a file by calling <code class="docutils literal notranslate"><span class="pre">FCPanel.save()</span></code>, the column names will be replaced by their aliases.
+When a saved file is loaded back to a class by calling <code class="docutils literal notranslate"><span class="pre">FCPanel.load()</span></code>, the column names will be replaced by
 the function names. In summary, the column names of the firm characteristics are the function names in
-<code class="docutils literal notranslate"><span class="pre">data</span></code> and <code class="docutils literal notranslate"><span class="pre">chars</span></code> attributes, whereas the column names are the aliases in saved files.</p>
+the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute, whereas the column names are the aliases in saved files.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute has a MultiIndex of ‘date’ and ‘permno’ in <code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>, <code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>, and <code class="docutils literal notranslate"><span class="pre">Merge</span></code>, whereas
 it has a MultiIndex of ‘datadate’ and ‘gvkey` in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>. Once the data in <code class="docutils literal notranslate"><span class="pre">FUNDA</span></code> and <code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>
-are populated monthly, the index changes to <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">gvkey</span></code> and ‘datadate’ remains as a column.
-Note that the dates in ‘date’ are shifted to month-end.</p>
+are populated monthly, the index changes to ‘date’ and ‘gvkey’, and ‘datadate’ remains as a column.
+Note that the dates in ‘date’ are shifted to month-end to be compatible with ‘datadate’.</p>
 <p>The easiest way to get started is going through examples.
 The next section presents several examples to help you get familiarized with PyAnomaly.</p>
 </section>
@@ -332,7 +342,7 @@ The next section presents several examples to help you get familiarized with PyA
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
+    <p>&#169; Copyright 2024, Chulwoo Han and Jongho Kang.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

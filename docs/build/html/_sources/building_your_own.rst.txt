@@ -67,3 +67,14 @@ There are a few coding rules we follow and we suggest you follow them when devel
     PyAnomaly uses UpperCamelCase for class names and lowercase_separated_by_underscores for other names (functions,
     methods, and attributes).
 
+Performance Tips
+----------------
+
+Jitted functions (a function with ``@njit`` decorator) can be slow at the first call due to compile time.
+While most jitted functions are cached to minimize overhead, ``datatools.apply_to_groups_jit()`` and
+``datatools.apply_to_groups_reduce_jit()`` cannot be cached as they receive a function as an argument.
+Therefore, functions that utilize these functions, e.g., ``datatools.classify()``, ``datatools.trim()``,
+``datatools.filter()``, and ``datatools.winsorize()``, can be slow at the first call. If these functions are used
+only once, disabling jit (``set_config(disable_jit=True)``) may increase the speed.
+
+

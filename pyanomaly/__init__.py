@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 
-"""
-Python library for asset pricing research.
-
+"""PyAnomaly is a Python library for asset pricing research.
 """
 
 __title__ = 'pyanomaly'
-__version__ = '0.9'
+__version__ = '1.0'
 __author__ = 'Chulwoo Han and Jongho Kang'
-__copyright__ = '2021 @ Chulwoo Han and Jongho Kang'
+__copyright__ = '2024 @ Chulwoo Han and Jongho Kang'
 
-from pyanomaly.globals import *
-from pyanomaly.fileio import *

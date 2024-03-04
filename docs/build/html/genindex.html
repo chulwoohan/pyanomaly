@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; PyAnomaly 0.931 documentation</title>
+  <title>Index &mdash; PyAnomaly 1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -11,10 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -25,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PyAnomaly
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyAnomaly
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -46,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#references">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#useful-links">Useful Links</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#contributors">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
@@ -78,8 +84,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Index</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -119,19 +125,31 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.add">add() (pyanomaly.portfolio.Portfolios method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.add_constant">add_constant() (in module pyanomaly.numba_support)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA.add_crsp_me">add_crsp_me() (pyanomaly.characteristics.FUNDA method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.add_gvkey_to_crsp">add_gvkey_to_crsp() (pyanomaly.wrdsdata.WRDS static method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.add_gvkey_to_crsp_cusip">add_gvkey_to_crsp_cusip() (pyanomaly.wrdsdata.WRDS static method)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.datatools.add_months">add_months() (in module pyanomaly.datatools)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.add_position">add_position() (pyanomaly.portfolio.Portfolio method)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.add_row_count">add_row_count() (pyanomaly.panel.Panel method)</a>
-</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyanomaly_edited.html#pyanomaly.analytics.append_long_short">append_long_short() (in module pyanomaly.analytics)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.apply_to_dates">apply_to_dates() (pyanomaly.panel.Panel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.apply_to_groups">apply_to_groups() (in module pyanomaly.datatools)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.apply_to_groups_jit">apply_to_groups_jit() (in module pyanomaly.datatools)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.apply_to_groups_reduce_jit">apply_to_groups_reduce_jit() (in module pyanomaly.datatools)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.apply_to_ids">apply_to_ids() (pyanomaly.panel.Panel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.apply_to_idyms">apply_to_idyms() (pyanomaly.characteristics.CRSPDRaw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -139,7 +157,15 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.base_freq">base_freq (pyanomaly.panel.Panel attribute)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.base_freq">base_freq (pyanomaly.panel.FCPanel attribute)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.base_freq">(pyanomaly.panel.Panel attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.bivariate_regression">bivariate_regression() (in module pyanomaly.numba_support)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -581,13 +607,13 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.c_zero_trades_252d">c_zero_trades_252d() (pyanomaly.characteristics.CRSPD method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.char_map">char_map (pyanomaly.panel.Panel attribute)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.cd">cd (pyanomaly.characteristics.CRSPD attribute)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.chars">chars (pyanomaly.characteristics.CRSPD attribute)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.char_map">char_map (pyanomaly.panel.FCPanel attribute)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.datatools.classify">classify() (in module pyanomaly.datatools)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.classify_array">classify_array() (in module pyanomaly.datatools)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.clean_memory">clean_memory() (pyanomaly.panel.Panel method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.datatools.compare_data">compare_data() (in module pyanomaly.datatools)</a>
 </li>
@@ -599,12 +625,6 @@
       </ul></li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.convert_fund_currency_to_usd">convert_fund_currency_to_usd() (pyanomaly.wrdsdata.WRDS static method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA.convert_to_monthly">convert_to_monthly() (pyanomaly.characteristics.FUNDA method)</a>
-
-      <ul>
-        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDQ.convert_to_monthly">(pyanomaly.characteristics.FUNDQ method)</a>
-</li>
-      </ul></li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.copy">copy() (pyanomaly.panel.Panel method)</a>
 
       <ul>
@@ -615,19 +635,21 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.costfcn">costfcn (pyanomaly.portfolio.Portfolio attribute)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.create_chars">create_chars() (pyanomaly.characteristics.CRSPD method)</a>
-
-      <ul>
-        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.create_chars">(pyanomaly.panel.Panel method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.create_chars">create_chars() (pyanomaly.panel.FCPanel method)</a>
 </li>
-      </ul></li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.create_crsp_comp_linktable">create_crsp_comp_linktable() (pyanomaly.wrdsdata.WRDS static method)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.create_pgpass_file">create_pgpass_file() (pyanomaly.wrdsdata.WRDS method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDQ.create_qitems_from_yitems">create_qitems_from_yitems() (pyanomaly.characteristics.FUNDQ method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.created">created() (pyanomaly.panel.FCPanel method)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.analytics.crosssectional_regression">crosssectional_regression() (in module pyanomaly.analytics)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD">CRSPD (class in pyanomaly.characteristics)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw">CRSPDRaw (class in pyanomaly.characteristics)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM">CRSPM (class in pyanomaly.characteristics)</a>
 </li>
@@ -643,13 +665,19 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.data">data (pyanomaly.panel.Panel attribute)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.data">data (pyanomaly.panel.FCPanel attribute)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.data">(pyanomaly.panel.Panel attribute)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.date_col">date_col() (pyanomaly.panel.Panel method)</a>
+      </ul></li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.date_idx">date_idx() (pyanomaly.panel.Panel method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.date_values">date_values() (pyanomaly.panel.Panel method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.db">db (pyanomaly.wrdsdata.WRDS attribute)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.debug">debug() (in module pyanomaly.log)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.diff">diff() (pyanomaly.panel.Panel method)</a>
 </li>
@@ -657,10 +685,10 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_funda">download_funda() (pyanomaly.wrdsdata.WRDS method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_fundq">download_fundq() (pyanomaly.wrdsdata.WRDS method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_fundq">download_fundq() (pyanomaly.wrdsdata.WRDS method)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_g_secd">download_g_secd() (pyanomaly.wrdsdata.WRDS method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.download_seall">download_seall() (pyanomaly.wrdsdata.WRDS method)</a>
@@ -675,6 +703,8 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.drawdown">drawdown() (pyanomaly.portfolio.Portfolio method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.drawline">drawline() (in module pyanomaly.log)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.util.drop_columns">drop_columns() (in module pyanomaly.util)</a>
 </li>
   </ul></td>
@@ -683,22 +713,77 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.elapsed_time">elapsed_time() (in module pyanomaly.log)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.err">err() (in module pyanomaly.log)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.eval">eval() (pyanomaly.portfolio.Portfolio method)</a>
 
       <ul>
         <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.eval">(pyanomaly.portfolio.Portfolios method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.eval_series">eval_series() (pyanomaly.portfolio.Portfolio method)</a>
 </li>
+      <li>
+    examples.example1
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example1">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.example2
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example2">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    examples.example3
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example3">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.example4
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example4">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.example5
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example5">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.example6
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example6">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.example7
+
+      <ul>
+        <li><a href="cookbook.html#module-examples.example7">module</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel">FCPanel (class in pyanomaly.panel)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.datatools.filter">filter() (in module pyanomaly.datatools)</a>
 
       <ul>
@@ -708,17 +793,21 @@
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.filter_data">filter_data() (pyanomaly.characteristics.CRSPD method)</a>
 
       <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.filter_data">(pyanomaly.characteristics.CRSPDRaw method)</a>
+</li>
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM.filter_data">(pyanomaly.characteristics.CRSPM method)</a>
 </li>
       </ul></li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.filter_n">filter_n() (in module pyanomaly.datatools)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.fposition">fposition (pyanomaly.portfolio.Portfolio attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.fposition">fposition (pyanomaly.portfolio.Portfolio attribute)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.freq">freq (pyanomaly.panel.FCPanel attribute)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.freq">(pyanomaly.panel.Panel attribute)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.freq">freq (pyanomaly.panel.Panel attribute)</a>
-</li>
+      </ul></li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.from_portfolo_return">from_portfolo_return() (pyanomaly.portfolio.Portfolio static method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA">FUNDA (class in pyanomaly.characteristics)</a>
@@ -727,29 +816,55 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.futret">futret() (pyanomaly.panel.Panel method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.future_return">future_return() (in module pyanomaly.analytics)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.jkp.generate_firm_characterisitcs">generate_firm_characterisitcs() (in module pyanomaly.jkp)</a>
-</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDQ.generate_funda_vars">generate_funda_vars() (pyanomaly.characteristics.FUNDQ method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_available_chars">get_available_chars() (pyanomaly.panel.Panel method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.get_available_chars">get_available_chars() (pyanomaly.panel.FCPanel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.get_char_list">get_char_list() (pyanomaly.panel.FCPanel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.config.get_config">get_config() (in module pyanomaly.config)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost.get_cost">get_cost() (pyanomaly.tcost.TransactionCost method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_date_group">get_date_group() (pyanomaly.panel.Panel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_date_group_index">get_date_group_index() (pyanomaly.panel.Panel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_date_group_size">get_date_group_size() (pyanomaly.panel.Panel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_id_group">get_id_group() (pyanomaly.panel.Panel method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost.get_cost_">get_cost_() (pyanomaly.tcost.TransactionCost static method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_id_group_index">get_id_group_index() (pyanomaly.panel.Panel method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_id_group_size">get_id_group_size() (pyanomaly.panel.Panel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.get_idym_group">get_idym_group() (pyanomaly.characteristics.CRSPD method)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.get_idym_group">(pyanomaly.characteristics.CRSPDRaw method)</a>
+</li>
+      </ul></li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.get_idym_group_size">get_idym_group_size() (pyanomaly.characteristics.CRSPD method)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.get_idym_group_size">(pyanomaly.characteristics.CRSPDRaw method)</a>
+</li>
+      </ul></li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.get_risk_free_rate">get_risk_free_rate() (pyanomaly.wrdsdata.WRDS static method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.groupby_apply">groupby_apply() (in module pyanomaly.datatools)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.get_row_count">get_row_count() (pyanomaly.panel.Panel method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.groupby_apply_np">groupby_apply_np() (in module pyanomaly.datatools)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.grs_test">grs_test() (in module pyanomaly.analytics)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -757,7 +872,7 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.id_col">id_col() (pyanomaly.panel.Panel method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.id_idx">id_idx() (pyanomaly.panel.Panel method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.id_values">id_values() (pyanomaly.panel.Panel method)</a>
 </li>
@@ -767,11 +882,23 @@
         <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.inspect_data">(pyanomaly.panel.Panel method)</a>
 </li>
       </ul></li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.util.is_bool_array">is_bool_array() (in module pyanomaly.util)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.util.is_float">is_float() (in module pyanomaly.util)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.util.is_int">is_int() (in module pyanomaly.util)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.util.is_iterable">is_iterable() (in module pyanomaly.util)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.util.is_numeric">is_numeric() (in module pyanomaly.util)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.is_sorted">is_sorted() (pyanomaly.panel.Panel method)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.util.is_zero">is_zero() (in module pyanomaly.util)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.isnan1">isnan1() (in module pyanomaly.numba_support)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -787,7 +914,7 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.load">load() (pyanomaly.characteristics.CRSPD method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.load">load() (pyanomaly.panel.FCPanel method)</a>
 
       <ul>
         <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.load">(pyanomaly.panel.Panel method)</a>
@@ -796,6 +923,8 @@
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.load_data">load_data() (pyanomaly.characteristics.CRSPD method)</a>
 
       <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.load_data">(pyanomaly.characteristics.CRSPDRaw method)</a>
+</li>
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM.load_data">(pyanomaly.characteristics.CRSPM method)</a>
 </li>
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA.load_data">(pyanomaly.characteristics.FUNDA method)</a>
@@ -804,22 +933,26 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.log">log() (in module pyanomaly.log)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.jkp.make_char_portfolios">make_char_portfolios() (in module pyanomaly.jkp)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.factors.make_all_factor_portfolios">make_all_factor_portfolios() (in module pyanomaly.factors)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.jkp.make_factor_portfolio">make_factor_portfolio() (in module pyanomaly.jkp)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.factors.make_char_portfolios">make_char_portfolios() (in module pyanomaly.factors)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.jkp.make_factor_portfolios">make_factor_portfolios() (in module pyanomaly.jkp)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.factors.make_factor_portfolio">make_factor_portfolio() (in module pyanomaly.factors)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.factors.make_factor_portfolios">make_factor_portfolios() (in module pyanomaly.factors)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.ff.make_ff_factors">make_ff_factors() (in module pyanomaly.ff)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.ff.make_ff_factors_wrds">make_ff_factors_wrds() (in module pyanomaly.ff)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.make_future_return">make_future_return() (in module pyanomaly.analytics)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.analytics.make_long_short_portfolio">make_long_short_portfolio() (in module pyanomaly.analytics)</a>
 </li>
@@ -839,15 +972,19 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.Merge">Merge (class in pyanomaly.characteristics)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.merge">merge() (pyanomaly.panel.Panel method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.merge">merge() (in module pyanomaly.datatools)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.merge">(pyanomaly.panel.Panel method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      </ul></li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.merge_sf_with_seall">merge_sf_with_seall() (pyanomaly.wrdsdata.WRDS static method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.merge_with_factors">merge_with_factors() (pyanomaly.characteristics.CRSPD method)</a>
 
       <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.merge_with_factors">(pyanomaly.characteristics.CRSPDRaw method)</a>
+</li>
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM.merge_with_factors">(pyanomaly.characteristics.CRSPM method)</a>
 </li>
       </ul></li>
@@ -857,19 +994,41 @@
     module
 
       <ul>
+        <li><a href="cookbook.html#module-examples.example1">examples.example1</a>
+</li>
+        <li><a href="cookbook.html#module-examples.example2">examples.example2</a>
+</li>
+        <li><a href="cookbook.html#module-examples.example3">examples.example3</a>
+</li>
+        <li><a href="cookbook.html#module-examples.example4">examples.example4</a>
+</li>
+        <li><a href="cookbook.html#module-examples.example5">examples.example5</a>
+</li>
+        <li><a href="cookbook.html#module-examples.example6">examples.example6</a>
+</li>
+        <li><a href="cookbook.html#module-examples.example7">examples.example7</a>
+</li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly">pyanomaly</a>
 </li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.analytics">pyanomaly.analytics</a>
 </li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.characteristics">pyanomaly.characteristics</a>
 </li>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.config">pyanomaly.config</a>
+</li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.datatools">pyanomaly.datatools</a>
+</li>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.factors">pyanomaly.factors</a>
 </li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.ff">pyanomaly.ff</a>
 </li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.fileio">pyanomaly.fileio</a>
 </li>
-        <li><a href="pyanomaly_edited.html#module-pyanomaly.jkp">pyanomaly.jkp</a>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.globals">pyanomaly.globals</a>
+</li>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.log">pyanomaly.log</a>
+</li>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.numba_support">pyanomaly.numba_support</a>
 </li>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.panel">pyanomaly.panel</a>
 </li>
@@ -889,6 +1048,20 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.name">name (pyanomaly.portfolio.Portfolio attribute)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.nanmean">nanmean() (in module pyanomaly.numba_support)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.nanskew">nanskew() (in module pyanomaly.numba_support)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.nanstd">nanstd() (in module pyanomaly.numba_support)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.nansum">nansum() (in module pyanomaly.numba_support)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.util.nansum1">nansum1() (in module pyanomaly.util)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.nanvar">nanvar() (in module pyanomaly.numba_support)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -940,13 +1113,9 @@
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.Merge.postprocess">(pyanomaly.characteristics.Merge method)</a>
 </li>
       </ul></li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.prepare">prepare() (pyanomaly.characteristics.CRSPD method)</a>
-
-      <ul>
-        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.prepare">(pyanomaly.panel.Panel method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.prepare">prepare() (pyanomaly.panel.FCPanel method)</a>
 </li>
-      </ul></li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.jkp.prepare_data_for_factors">prepare_data_for_factors() (in module pyanomaly.jkp)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.factors.prepare_data_for_factors">prepare_data_for_factors() (in module pyanomaly.factors)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.Merge.preprocess">preprocess() (pyanomaly.characteristics.Merge method)</a>
 </li>
@@ -959,8 +1128,6 @@
         <li><a href="pyanomaly_edited.html#module-pyanomaly">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     pyanomaly.analytics
 
@@ -975,11 +1142,27 @@
         <li><a href="pyanomaly_edited.html#module-pyanomaly.characteristics">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    pyanomaly.config
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.config">module</a>
+</li>
+      </ul></li>
       <li>
     pyanomaly.datatools
 
       <ul>
         <li><a href="pyanomaly_edited.html#module-pyanomaly.datatools">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyanomaly.factors
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.factors">module</a>
 </li>
       </ul></li>
       <li>
@@ -997,10 +1180,24 @@
 </li>
       </ul></li>
       <li>
-    pyanomaly.jkp
+    pyanomaly.globals
 
       <ul>
-        <li><a href="pyanomaly_edited.html#module-pyanomaly.jkp">module</a>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.globals">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyanomaly.log
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.log">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyanomaly.numba_support
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#module-pyanomaly.numba_support">module</a>
 </li>
       </ul></li>
       <li>
@@ -1044,47 +1241,51 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.rank">rank() (in module pyanomaly.numba_support)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS.read_data">read_data() (pyanomaly.wrdsdata.WRDS static method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.fileio.read_from_file">read_from_file() (in module pyanomaly.fileio)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.regression">regression() (in module pyanomaly.numba_support)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.analytics.relabel_class">relabel_class() (in module pyanomaly.analytics)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDQ.remove_duplicates">remove_duplicates() (pyanomaly.characteristics.FUNDQ method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.remove_rawdata">remove_rawdata() (pyanomaly.panel.FCPanel method)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.remove_rows">remove_rows() (pyanomaly.panel.Panel method)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.rename">rename() (pyanomaly.panel.Panel method)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.returns">returns() (pyanomaly.portfolio.Portfolio method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.reverse_map">reverse_map (pyanomaly.panel.Panel attribute)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.rename_chars">rename_chars() (pyanomaly.panel.FCPanel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.returns">returns() (pyanomaly.portfolio.Portfolio method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.roll_mean">roll_mean() (in module pyanomaly.numba_support)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.roll_std">roll_std() (in module pyanomaly.numba_support)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.roll_sum">roll_sum() (in module pyanomaly.numba_support)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.roll_var">roll_var() (in module pyanomaly.numba_support)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.rolling">rolling() (pyanomaly.panel.Panel method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.rolling_apply">rolling_apply() (in module pyanomaly.datatools)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.rolling_apply_m">rolling_apply_m() (pyanomaly.characteristics.CRSPD static method)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.rolling_apply_np">rolling_apply_np() (in module pyanomaly.datatools)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.rolling_beta">rolling_beta() (in module pyanomaly.analytics)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.rolling_regression">rolling_regression() (in module pyanomaly.numba_support)</a>
 
       <ul>
-        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.rolling_beta">(pyanomaly.panel.Panel method)</a>
+        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.rolling_regression">(pyanomaly.panel.Panel method)</a>
 </li>
       </ul></li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.rolling_regression">rolling_regression() (pyanomaly.panel.Panel method)</a>
-</li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.save">save() (pyanomaly.characteristics.CRSPD method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.save">save() (pyanomaly.panel.FCPanel method)</a>
 
       <ul>
         <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.save">(pyanomaly.panel.Panel method)</a>
@@ -1096,29 +1297,41 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolios.set">set() (pyanomaly.portfolio.Portfolios method)</a>
 </li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.config.set_config">set_config() (in module pyanomaly.config)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.set_log_path">set_log_path() (in module pyanomaly.log)</a>
+</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.tcost.TimeVaryingCost.set_params">set_params() (pyanomaly.tcost.TimeVaryingCost method)</a>
 
       <ul>
         <li><a href="pyanomaly_edited.html#pyanomaly.tcost.TransactionCost.set_params">(pyanomaly.tcost.TransactionCost method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.set_position">set_position() (pyanomaly.portfolio.Portfolio method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.set_return_type">set_return_type() (pyanomaly.portfolio.Portfolio method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.set_to_nan">set_to_nan() (in module pyanomaly.numba_support)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.sharpe_ratio">sharpe_ratio() (pyanomaly.portfolio.Portfolio method)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.shift">shift() (pyanomaly.panel.Panel method)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.shift">shift() (in module pyanomaly.datatools)</a>
+
+      <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.numba_support.shift">(in module pyanomaly.numba_support)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.show_available_functions">show_available_functions() (pyanomaly.panel.Panel method)</a>
+        <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.shift">(pyanomaly.panel.Panel method)</a>
+</li>
+      </ul></li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.panel.FCPanel.show_available_chars">show_available_chars() (pyanomaly.panel.FCPanel method)</a>
+</li>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.start_timer">start_timer() (in module pyanomaly.log)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.std_return">std_return() (pyanomaly.portfolio.Portfolio method)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.portfolio.Portfolio.succdown">succdown() (pyanomaly.portfolio.Portfolio method)</a>
-</li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.panel.Panel.sum">sum() (pyanomaly.panel.Panel method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1126,7 +1339,7 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.t_value">t_value() (in module pyanomaly.analytics)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.t_stat">t_stat() (in module pyanomaly.analytics)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.analytics.time_series_average">time_series_average() (in module pyanomaly.analytics)</a>
 </li>
@@ -1142,8 +1355,6 @@
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.datatools.trim">trim() (in module pyanomaly.datatools)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.trim_data">trim_data() (in module pyanomaly.datatools)</a>
-</li>
       <li><a href="pyanomaly_edited.html#pyanomaly.analytics.two_dim_sort">two_dim_sort() (in module pyanomaly.analytics)</a>
 </li>
   </ul></td>
@@ -1157,6 +1368,8 @@
       <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPD.update_variables">update_variables() (pyanomaly.characteristics.CRSPD method)</a>
 
       <ul>
+        <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPDRaw.update_variables">(pyanomaly.characteristics.CRSPDRaw method)</a>
+</li>
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.CRSPM.update_variables">(pyanomaly.characteristics.CRSPM method)</a>
 </li>
         <li><a href="pyanomaly_edited.html#pyanomaly.characteristics.FUNDA.update_variables">(pyanomaly.characteristics.FUNDA method)</a>
@@ -1182,13 +1395,13 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.weighted_mean">weighted_mean() (in module pyanomaly.analytics)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.log.warn">warn() (in module pyanomaly.log)</a>
 </li>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.winsorize">winsorize() (in module pyanomaly.datatools)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.analytics.weighted_mean">weighted_mean() (in module pyanomaly.analytics)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.winsorize_data">winsorize_data() (in module pyanomaly.datatools)</a>
+      <li><a href="pyanomaly_edited.html#pyanomaly.datatools.winsorize">winsorize() (in module pyanomaly.datatools)</a>
 </li>
       <li><a href="pyanomaly_edited.html#pyanomaly.wrdsdata.WRDS">WRDS (class in pyanomaly.wrdsdata)</a>
 </li>
@@ -1206,7 +1419,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
+    <p>&#169; Copyright 2024, Chulwoo Han and Jongho Kang.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
