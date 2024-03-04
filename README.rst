@@ -2,13 +2,6 @@
 PyAnomaly
 ==========
 
-Important Notice
-================
-
-``DataFrame.pad()`` has been deprecated in Pandas 2.0 or higher and this will cause an error in the library. Please install Pandas < 2.0 until the library is upgraded, 
-which is expected to happen soon.
-
-
 PyAnomaly is a comprehensive python library for asset pricing research with a focus on firm characteristic and factor generation.
 It covers the majority of the firm characteristics published in the literature and contains various analytic tools that are
 commonly used in asset pricing research, such as quantile portfolio construction, factor regression, and cross-sectional regression.
