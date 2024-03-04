@@ -1,4 +1,7 @@
+import time
+
 import matplotlib.pyplot as plt
+import pandas as pd
 
 from pyanomaly.globals import *
 
@@ -8,7 +11,7 @@ from pyanomaly.globals import *
 
 from pyanomaly.fileio import read_from_file
 from pyanomaly.characteristics import FUNDA, FUNDQ, CRSPM, CRSPD, Merge
-from pyanomaly.jkp import make_factor_portfolios
+from pyanomaly.factors import make_all_factor_portfolios
 from pyanomaly.tcost import TransactionCost, TimeVaryingCost
 from pyanomaly.analytics import *
 from pyanomaly.wrdsdata import WRDS
@@ -35,22 +38,23 @@ def example1():
 
     # Generate characteristics in 'jkp' column in mapping.xlsx.
     alias = 'jkp'
+    alias = None
     # Start date. Set to None to create characteristics from as early as possible.
-    sdate = '1950-01-01'
+    sdate = None
 
-    ###################################
-    # Data download
-    ###################################
-    drawline()  # This will print a line in the log file. Only for visual effect.
-    log('DOWNLOADING DATA')
-    drawline()
-
-    wrds = WRDS(wrds_username)  # Use your WRDS user id.
-    # Download all necessary data.
-    wrds.download_all(run_in_executer=False)  # run_in_executer=True will download faster but consumes more memory.
-    # Create crspm(d) from m(d)sf and m(d)seall and add gvkey to them.
-    wrds.preprocess_crsp()
-
+    # ###################################
+    # # Data download
+    # ###################################
+    # drawline()  # This will print a line in the log file. Only for visual effect.
+    # log('DOWNLOADING DATA')
+    # drawline()
+    #
+    # wrds = WRDS(wrds_username)  # Use your WRDS user id.
+    # # Download all necessary data.
+    # wrds.download_all(run_in_executer=False)  # run_in_executer=True will download faster but consumes more memory.
+    # # Create crspm(d) from m(d)sf and m(d)seall and add gvkey to them.
+    # wrds.preprocess_crsp()
+    #
     ###################################
     # Factor generation
     ###################################
@@ -59,8 +63,7 @@ def example1():
     log('FACTOR PORTFOLIOS')
     drawline()
 
-    make_factor_portfolios(monthly=True)  # Monthly factors
-    make_factor_portfolios(monthly=False)  # Daily factors
+    make_all_factor_portfolios(monthly=True, daily=True)  # Monthly and daily factors
 
     ###################################
     # CRSPM
@@ -78,22 +81,25 @@ def example1():
     crspm.filter_data()
     # Fill missing months by populating the data.
     # There are only few missing data and the results aren't affected much by this.
-    crspm.populate(freq=MONTHLY, method=None)
+    crspm.populate(method=None)
+
     # Some preprocessing, e.g., creating frequently used variables.
     crspm.update_variables()
+
     # Merge crspm with the factors created earlier.
     crspm.merge_with_factors()
 
     # Display what characteristics will be generated. Just for information.
-    crspm.show_available_functions()
+    crspm.show_available_chars()
     # Create characteristics.
     crspm.create_chars()
 
     # Postprocessing: delete temporary variables, etc.
     crspm.postprocess()
+    # crspm.remove_rawdata(excl_columns=['me', 'ret', 'exret', 'rf', 'primary', 'me_company', 'gvkey'])
     # Saves the results. You can give a file name if you wish. Otherwise, the file name will be the lower-case class
     # name, i.e., crspm. The file can later be loaded using the method, crspm.load().
-    crspm.save()
+    # crspm.save()
 
     ###################################
     # CRSPD
@@ -112,11 +118,13 @@ def example1():
     crspd.update_variables()
     crspd.merge_with_factors()
 
-    crspd.show_available_functions()
+    crspd.show_available_chars()
     crspd.create_chars()
 
     crspd.postprocess()
-    crspd.save()
+    del crspd.cd  # delete rawdata to save memory.
+
+    # crspd.save()
 
     ###################################
     # FUNDQ
@@ -135,16 +143,16 @@ def example1():
     # Convert values in another currency (currently only CAD) to USD values.
     fundq.convert_currency()
     # Populate data to monthly.
-    fundq.convert_to_monthly()
+    fundq.populate(MONTHLY, limit=3, lag=4, new_date_col='date')
     # Make quarterly variables from ytd variables and use them to fill missing quarterly variables.
     fundq.create_qitems_from_yitems()
     fundq.update_variables()
 
-    fundq.show_available_functions()
+    fundq.show_available_chars()
     fundq.create_chars()
 
     fundq.postprocess()
-    fundq.save()
+    # fundq.save()
 
     ###################################
     # FUNDA
@@ -159,18 +167,18 @@ def example1():
     funda.load_data(sdate)
 
     funda.convert_currency()
-    funda.convert_to_monthly()
+    funda.populate(MONTHLY, limit=12, lag=4, new_date_col='date')
     # Generate quarterly-updated funda data from fundq and merge them with funda.
     funda.merge_with_fundq(fundq)
     funda.update_variables()
     # Add the market equity of crspm to funda.
     funda.add_crsp_me(crspm)
 
-    funda.show_available_functions()
+    funda.show_available_chars()
     funda.create_chars()
 
     funda.postprocess()
-    funda.save()
+    # funda.save()
 
     ###################################
     # Merge
@@ -180,23 +188,25 @@ def example1():
     log('PROCESSING MERGE')
     drawline()
 
-    merge = Merge()
+    merge = Merge(alias)
     # Merge all data together.
     merge.preprocess(crspm, crspd, funda, fundq)
 
-    merge.show_available_functions()
-    merge_chars = merge.get_available_chars()
-    merge.create_chars(merge_chars)
+    merge.show_available_chars()
+    merge.create_chars()
 
     merge.postprocess()
     # By default, `Panel.save()` saves all the columns of `Panel.data`.
     # If you want to save only the variables you need to save the disc space, you can do, e.g.:
-    # columns = ['gvkey', 'datadate', 'primary', 'me', 'ret', 'exret', 'rf']
-    # merge.save(other_columns=columns)
+    # columns = ['gvkey', 'datadate', 'primary', 'exchcd', 'me', 'ret', 'exret', 'rf']
+    columns = ['gvkey', 'datadate', 'primary', 'me', 'ret', 'exret', 'rf']
+
+    merge.save(other_columns=columns)
+
     # Then, all firm characteristics plus the columns in `columns` will be saved.
-    merge.save()
 
     elapsed_time('End of Example 1.')
+    return merge
 
 
 """
@@ -284,14 +294,14 @@ def example3():
     # USD stocks only. This is equivalent to funda.data = funda.data[funda.data['curcd'] == 'USD']
     funda.filter(('curcd', '==', 'USD'))
 
-    funda.convert_to_monthly(lag=6)  # lag=6 means funda is available 6 months later.
+    funda.populate(MONTHLY, limit=12, lag=6, new_date_col='date')  # lag=6 means funda is available 6 months later.
     funda.update_variables()
 
     # Add year-end market equity to funda.
     funda.add_crsp_me(crspm, method='year_end')
 
     # Generate firm characteristics.
-    funda.show_available_functions()
+    funda.show_available_chars()
     funda.create_chars()
 
     # Postprocess and save results.
@@ -320,7 +330,7 @@ class MyCRSPM(CRSPM):
     def c_excess_ret_change(self):
         """Change of excess return over the market return."""
         # Make a short (one-line) docstring for description.
-        # This is displayed when `show_available_functions()` is called.
+        # This is displayed when `show_available_chars()` is called.
 
         cm = self.data
 
@@ -353,7 +363,7 @@ def example4():
     crspm.merge_with_factors()
 
     # Let's see if 'excess_ret_change' has been added.
-    crspm.show_available_functions()
+    crspm.show_available_chars()
 
     # Let's create the characteristic!
     crspm.create_chars(chars)
@@ -382,7 +392,7 @@ This example demonstrates how to construct quantile portfolios and carry out 1-D
 
 See also `pyanomaly.jkp` module for factor and characteristic portfolio creation replicating JKP's SAS code.
 
-Process time: approx. 24 seconds.
+Process time: approx. 13 seconds.
 """
 
 def example5():
@@ -406,10 +416,10 @@ def example5():
 
     # If you want to exclude bottom 20% based on NYSE size...
     data['nyse_me'] = np.where(data.exchcd == 1, data[weight_col], np.nan)  # NYSE me
-    data = filter(data, weight_col, (0.2, None), by='nyse_me')
+    data = filter(data, weight_col, (0.2, None), ginfo='date', by='nyse_me')
 
     # Make the future return. If it's already in the data, this step can be skipped.
-    data[ret_col] = make_future_return(data['exret'])  # Excess return
+    data[ret_col] = future_return(data['exret'])  # Excess return
 
     # Note that the future return at t is the return between t and t+1 and other values are as of t.
     # If you want the return at t to be the return between t-1 and t and all other values as of t-1,
@@ -421,7 +431,7 @@ def example5():
     # 1-D sort
     ###################################
     # Classify stocks based on char.
-    data[char_class] = classify(data[char], split, ascending=False)
+    data[char_class] = classify(data[char], split, ascending=False, ginfo='date')
 
     # Make quantile portfolios.
     # qpfs will have index = date/classes and columns = ['futret']
@@ -459,7 +469,7 @@ def example5():
     labels2 = ['S', 2, 3, 4, 'B', 'S-B']
 
     # Classify stocks based on char2 in ascending order.
-    data[char_class2] = classify(data[char2], split2, ascending=True)
+    data[char_class2] = classify(data[char2], split2, ascending=True, ginfo='date')
 
     # Make 5x5 portfolios.
     # qpfs2 will have index = date/char_class/char_class2 and columns = ['futret'].
@@ -555,7 +565,7 @@ def example6():
     ###################################
     char = 'ret_12_1'  # 12-month momentum
     char_class = char + '_class'  # Group column: portfolio-stock mapping
-    ret_col = 'futret'  # Future return column
+    ret_col = 'ret'  # Future return column
     weight_col = 'me'  # Market equity column
     split = 3  # Tercile. You can also do split = [0.2, 0.8] for 2:6:2 split.
     labels = ['H', 'M', 'L', 'H-L']  # Portfolio names: 'H-L' for long short.
@@ -568,12 +578,11 @@ def example6():
 
     data['nyse_me'] = np.where(data.exchcd == 1, data[weight_col], np.nan)  # NYSE me
 
-    # Make the future return. If it's already in the data, this step can be skipped.
-    data[ret_col] = make_future_return(data['ret'])
-
     # Let's just keep the data we need. Below is the same as `data = data[[char, ret_col, weight_col]]`
     # but faster and more memroy efficient.
     keep_columns(data, [char, ret_col, weight_col, 'nyse_me'])
+
+    data = shift(data, 1, excl_cols=[ret_col])
 
     # Risk-free rates.
     # Don't forget to set `month_end=True` since the crspm date has also been shifted to month end.
@@ -593,24 +602,15 @@ def example6():
 
     # Here, we remove small-cap stocks after setting the cost function.
     # This is because `TimeVaryingCost` requires all firms' me as the input.
-    data = filter(data, weight_col, (0.2, None), by='nyse_me')
+    data = filter(data, weight_col, (0.2, None), by='nyse_me', ginfo='date')
 
     ###################################
     # Make portfolios
     ###################################
     # Classify data on char. The highest momentum stock will be labeled 0 and the lowest 2.
-    data[char_class] = classify(data[char], split, ascending=False)
+    data[char_class] = classify(data[char], split, ascending=False, ginfo='date')
 
-    # Make position data.
-    # `make_position()` converts data to position data that is used as input to `Portfolio` class.
-    # In `data`, the future return at t is the return between t and t+1, whereas in the position data, dates are shifted
-    # so that the future return at t is the return between t-1 and t.
-    # Set weight_col = None for equally-weighted portfolios.
-    # `other_cols` are the columns you want to keep in the output.
-    position = make_position(data, ret_col, weight_col, char_class, other_cols=None)
-
-    # Make portfolios. `portfolios` will have four portfolios, 'H', 'M', 'L', and 'H-L'.
-    portfolios = make_quantile_portfolios(position, char_class, rf=rf, costfcn=costfcn, labels=labels)
+    portfolios = make_quantile_portfolios(data, char_class, ret_col, weight_col, rf=rf, costfcn=costfcn, names=labels)
 
     ###################################
     # Evaluate the portfolios
@@ -635,7 +635,7 @@ def example6():
     plt.show()
 
     # Evaluate the portfolio for a sub-period ignoring transaction costs.
-    pfperfs1, pfvals1 = portfolios.eval(sdate='2001-01-01', edate='2010-12-31', annualize_factor=12, consider_cost=False)
+    pfperfs1, pfvals1 = portfolios.eval(sdate='2001-01-01', edate='2010-12-31', annualize_factor=12, return_type='gross')
     print('\nPerformance: 2001-01 - 2010-12')
     print(pfperfs1)
     pfvals1['cumret'][['H', 'L', 'H-L']].plot()
@@ -675,11 +675,11 @@ def example7():
 
     # Download the entire table asynchronously.
     # This downloads data every `interval` years. For a small size data, this can be slower than `download_table()`.
-    wrds.download_table_async('comp', 'secm', date_col='datadate', date_cols=['datadate'], interval=5)
+    wrds.download_table_async('comp', 'secm', date_col='datadate', interval=5)
 
     # When you need only some fields, they can be given in `sql` as follows.
     sql = 'datadate, gvkey, cshoq, prccm'
-    wrds.download_table_async('comp', 'secm', sql=sql, date_col='datadate', date_cols=['datadate'])
+    wrds.download_table_async('comp', 'secm', sql=sql, date_col='datadate')
 
     # You can also download data using a complete query statement.
     # Below is equivalent to the above.
@@ -689,18 +689,62 @@ def example7():
         FROM comp.secm
         WHERE datadate between '{{}}' and '{{}}'
     """
-    wrds.download_table_async('comp', 'secm', sql=sql, date_cols=['datadate'])
+    wrds.download_table_async('comp', 'secm', sql=sql)
 
     elapsed_time('End of Example 7.')
 
 
 if __name__ == '__main__':
-    wrds_username = 'pyanomaly'  # Change to your wrds username.
+    # set_config(disable_jit=True)
+    from pyanomaly.characteristics import CRSPDRaw
+    wrds_username = 'fehouse'  # Change to your wrds username.
 
-    example1()
+    # example1()
     # example2()
+    # example3()
     # example4()
     # example5()
     # example6()
     # example7()
+
+    # crspm = CRSPM().load()
+    # crspd = CRSPD().load()
+    # fundq = FUNDQ().load()
+    # funda = FUNDA().load()
+    #
+    # merge = Merge(alias)
+    # merge.preprocess(crspm, crspd, funda, fundq)
+    # merge.create_chars()
+    # merge.postprocess()
+    # columns = ['gvkey', 'datadate', 'primary', 'me', 'ret', 'exret', 'rf']
+    # merge.save(other_columns=columns)
+
+    for table in ('crspm', 'crspd'):
+        df1 = pd.read_pickle(f'input/{table}.pickle')
+        df2 = pd.read_pickle(f'../pyanomaly_test2/input/{table}.pickle')
+        # df1 = pd.read_pickle(f'output/{table}.pickle')
+        # df2 = pd.read_pickle(f'../pyanomaly_test2/output/{table}.pickle')
+        # df2 = pd.read_pickle(f'output/{table}_all.pickle')
+        print(df1.shape, df2.shape)
+        # comp, data = compare_data(df1, df2)
+        if df1[df2.columns].equals(df2):
+            print(True)
+        else:
+            for col in df2:
+                print(col)
+                print(df1[col].compare(df2[col]))
+
+    # df1.loc[df1.index.get_level_values(1) == '353444', 'ret']
+
+    # cols = ['gp_at', 'ni_be', 'ni_at', 'ocf_at', 'gp_sale', 'oaccruals_at']
+    # x_cols = [col + '_x' for col in cols]
+    # y_cols = [col + '_y' for col in cols]
+    #
+    # print(data.loc[:, x_cols+y_cols])
+    # cols = ['qmj_prof_x', 'qmj_prof_y']
+    # df = data[cols]
+    # print(df.isna().sum())
+    # df['dif'] = (df.iloc[:, 0] - df.iloc[:, 1]).abs()
+    # print(df.sort_values('dif', ascending=False))
+    # data.loc[df.index.get_level_values(-1)==14891, 'ret_x']
 

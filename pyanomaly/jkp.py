@@ -7,7 +7,7 @@ from pyanomaly.globals import *
 
 from pyanomaly.analytics import *
 from pyanomaly.fileio import write_to_file, read_from_file
-from pyanomaly.characteristics import CRSPM, CRSPD, FUNDQ, FUNDA, Merge
+from pyanomaly.characteristics import CRSPM, CRSPDRaw, FUNDQ, FUNDA, Merge
 
 ################################################################################
 #
@@ -102,7 +102,7 @@ def generate_firm_characterisitcs(fname=None):
     # Preprocess data.
     fundq.remove_duplicates()
     fundq.convert_currency()
-    fundq.convert_to_monthly()
+    fundq.populate(MONTHLY, limit=3, lag=4, new_date_col='date')
     fundq.create_qitems_from_yitems()
     fundq.update_variables()
 
@@ -127,7 +127,7 @@ def generate_firm_characterisitcs(fname=None):
 
     # Preprocess data.
     funda.convert_currency()
-    funda.convert_to_monthly()
+    funda.populate(MONTHLY, limit=12, lag=4, new_date_col='date')
     funda.merge_with_fundq(fundq)
     funda.update_variables()
     funda.add_crsp_me(crspm)
@@ -166,7 +166,7 @@ def generate_firm_characterisitcs(fname=None):
 #
 ################################################################################
 
-def prepare_data_for_factors(monthly=True, sdate=None):
+def prepare_data_for_factors(monthly=True, daily=True, sdate=None):
     """Create characteristics needed to make factors.
 
     Args:
@@ -178,14 +178,16 @@ def prepare_data_for_factors(monthly=True, sdate=None):
     crspm.load_data(sdate)
 
     crspm.filter_data()
+    crspm.populate(method=None)
     crspm.update_variables()
+    keep_columns(crspm.data, ['gvkey', 'rf', 'exchcd', 'primary', 'me', 'me_company', 'exret'])
 
     fundq = FUNDQ()
     fundq.load_data(sdate)
 
     fundq.remove_duplicates()
     fundq.convert_currency()
-    fundq.convert_to_monthly()
+    fundq.populate(MONTHLY, limit=3, lag=4, new_date_col='date')
     fundq.create_qitems_from_yitems()
     fundq.update_variables()
 
@@ -195,40 +197,57 @@ def prepare_data_for_factors(monthly=True, sdate=None):
     funda.load_data(sdate)
 
     funda.convert_currency()
-    funda.convert_to_monthly()
+    funda.populate(MONTHLY, limit=12, lag=4, new_date_col='date')
     funda.merge_with_fundq(fundq)
     funda.update_variables()
     funda.add_crsp_me(crspm)
 
     funda.create_chars(['at_gr1', 'be_me'])
 
-    if not monthly:
-        crspd = CRSPD()
+    keep_columns(funda.data,['at_gr1', 'be_me'])
+    keep_columns(fundq.data, ['niq_be'])
+
+    if monthly:
+        mdata = crspm.data
+        mdata.reset_index(inplace=True)
+        mdata.set_index(['date', 'gvkey'], inplace=True)
+
+        mdata = merge(mdata, funda.data, on=['date', 'gvkey'], how='left')
+        mdata = merge(mdata, fundq.data, on=['date', 'gvkey'], how='left')
+
+        mdata.reset_index(inplace=True)
+        mdata.set_index(['date', 'permno'], inplace=True)
+    else:
+        mdata = None
+
+    if daily:
+        crspd = CRSPDRaw()
         crspd.load_data(sdate)
 
         crspd.filter_data()
         crspd.update_variables()
-
         keep_columns(crspd.data, ['gvkey', 'rf', 'exchcd', 'primary', 'me', 'me_company', 'exret', 'ym'])
-        data = crspd.data.reset_index()
 
-        data = data.merge(funda.data[['at_gr1', 'be_me']], left_on=['ym', 'gvkey'], right_on=['date', 'gvkey'], how='left')
-        data = data.merge(fundq.data[['niq_be']], left_on=['ym', 'gvkey'], right_on=['date', 'gvkey'], how='left')
+        ddata = crspd.data
+        ddata.reset_index(inplace=True)
+        ddata.set_index(['ym', 'gvkey'], inplace=True)
+
+        ddata = merge(ddata, funda.data, on=['ym', 'gvkey'], right_on=['date', 'gvkey'], how='left')
+        ddata = merge(ddata, fundq.data, on=['ym', 'gvkey'], right_on=['date', 'gvkey'], how='left')
+
+        ddata.reset_index(inplace=True)
+        ddata.set_index(['date', 'permno'], inplace=True)
     else:
-        keep_columns(crspm.data, ['gvkey', 'rf', 'exchcd', 'primary', 'me', 'me_company', 'exret'])
-        data = crspm.data.reset_index()
+        ddata = None
 
-        data = data.merge(funda.data[['at_gr1', 'be_me']], on=['date', 'gvkey'], how='left')
-        data = data.merge(fundq.data[['niq_be']], on=['date', 'gvkey'], how='left')
-
-    return data.set_index(['date', 'permno']).sort_index(level=[1, 0])
+    return mdata, ddata
 
 
 def make_factor_portfolio(data, char, ret_col, size_class, weight_col=None):
     """Make a factor portfolio.
 
     Args:
-        data: Dataframe with index = date/id. Its columns should include `char`, `ret_col`, `size_class`, and
+        data: DataFrame with index = date/id. Its columns should include `char`, `ret_col`, `size_class`, and
             `weight_col` (optional).
         char: Characteristic column to make a factor portfolio from.
         ret_col: Return column.
@@ -236,7 +255,7 @@ def make_factor_portfolio(data, char, ret_col, size_class, weight_col=None):
         weight_col: Weight column. If None, stocks are equally weighted.
 
     Returns:
-        Dataframe of (size x `char`) factor portfolios. Index = 'date',
+        DataFrame of (size x `char`) factor portfolios. Index = 'date',
         columns: ['bh', 'bl', 'bm', 'sh', 'sl', 'sm', 'hml', 'smb'].
     """
 
@@ -245,8 +264,8 @@ def make_factor_portfolio(data, char, ret_col, size_class, weight_col=None):
     char_class = char + '_class'  # Class (group) column.
 
     # Classify stocks on `char`.
-    data[char_by] = np.where(data.exchcd == 1, data[char], np.nan)  # Keep only NYSE stocks.
-    data[char_class] = classify(data[char], char_split, ascending=False, by_array=data[char_by])
+    data[char_by] = data[char].where(data.exchcd == 1)  # Keep only NYSE stocks.
+    data[char_class] = classify(data, char_split, ascending=False, on=char, by=char_by)
 
     # 2-D sort. factors index = date/char_class/size_class, columns = [ret].
     factors = two_dim_sort(data, char_class, size_class, ret_col, weight_col=weight_col, output_dim=2)
@@ -266,7 +285,7 @@ def make_factor_portfolio(data, char, ret_col, size_class, weight_col=None):
     return factors
 
 
-def make_factor_portfolios(monthly=True, sdate=None):
+def make_factor_portfolios_(data):
     """Make factor portfolios.
 
     FF 3 and HXZ 4 factors are generated. The result is saved to `config.factors_monthly(daily)_fname`.
@@ -279,16 +298,12 @@ def make_factor_portfolios(monthly=True, sdate=None):
         Factor portfolio dataframe with index = 'date' and columns = ['mktrf', 'rf', 'smb_ff', 'hml', 'inv', 'roe',
         'smb_hxz'].
     """
-    elapsed_time('make_factor_portfolios')
-
-    data = prepare_data_for_factors(monthly, sdate)
-    # data = read_jkp_data()
 
     ret_col = 'futret'  # t+1 excess return
-    size_col = 'me' # We use security level me following JKP but think we should use me_company.
+    size_col = 'me'  # We use security level me following JKP but think we should use me_company.
 
     # One-period ahead return.
-    data[ret_col] = make_future_return(data.exret)
+    data[ret_col] = future_return(data.exret)
     # The futret at t is the return from t to t+1. Shift one period so that the return is from t-1 to t and
     # other variables are as of t.
     data = data.groupby(level=-1).shift(1)  # Shift data forward.
@@ -296,8 +311,8 @@ def make_factor_portfolios(monthly=True, sdate=None):
     ########################################
     # Filtering
     ########################################
-    data = data.dropna(subset=[ret_col, size_col])  # non-missing return and me
-    data = data[data.primary == True]  # primary securities only
+    data.dropna(subset=[ret_col, size_col], inplace=True)  # non-missing return and me
+    data = data[data.primary]  # primary securities only
 
     ########################################
     # Size split
@@ -305,13 +320,13 @@ def make_factor_portfolios(monthly=True, sdate=None):
     size_split = [0.5, 1.0]
     size_class = 'size_class'
 
-    data['nyse_me'] = np.where(data.exchcd == 1, data[size_col], np.nan)  # Keep only NYSE stocks.
-    data[size_class] = classify(data[size_col], size_split, ascending=True, by_array=data['nyse_me'])
+    data['nyse_me'] = data[size_col].where(data.exchcd == 1)  # Keep only NYSE stocks.
+    data[size_class] = classify(data, size_split, ascending=True, on=size_col, by='nyse_me')
 
     ########################################
     # Factor portfolios
     ########################################
-    # mMrket pf.
+    # Market pf.
     factors = weighted_mean(data, ret_col, size_col, 'date')
     factors.rename(columns={ret_col: 'mktrf'}, inplace=True)
     factors['rf'] = data.groupby('date').rf.first()
@@ -327,14 +342,43 @@ def make_factor_portfolios(monthly=True, sdate=None):
     factors['roe'] = roe['hml']
     factors['smb_hxz'] = (inv['smb'] + roe['smb']) / 2
 
-    # Save results.
-    if monthly:
-        write_to_file(factors, config.factors_monthly_fname)
-    else:
-        write_to_file(factors, config.factors_daily_fname)
-
     return factors
 
+
+def make_factor_portfolios(monthly=True, daily=True, sdate=None):
+    """Make factor portfolios.
+
+    FF 3 and HXZ 4 factors are generated. The result is saved to `config.factors_monthly(daily)_fname`.
+
+    Args:
+        monthly: If True (False), generate data monthly (daily).
+        sdate: Start date ('yyyy-mm-dd').
+
+    Returns:
+        Factor portfolio dataframe with index = 'date' and columns = ['mktrf', 'rf', 'smb_ff', 'hml', 'inv', 'roe',
+        'smb_hxz'].
+    """
+    mdata, ddata = prepare_data_for_factors(monthly, daily, sdate)
+    # mdata = pd.read_pickle('mdata.pickle')
+    # ddata = pd.read_pickle('ddata.pickle')
+
+    # data = read_jkp_data()
+    if monthly:
+        elapsed_time('making factor portfolios monthly...')
+        mfactors = make_factor_portfolios_(mdata)
+        write_to_file(mfactors, config.factors_monthly_fname)
+
+    if daily:
+        elapsed_time('making factor portfolios daily...')
+        dfactors = make_factor_portfolios_(ddata)
+        write_to_file(dfactors, config.factors_daily_fname)
+
+    if monthly and daily:
+        return mfactors, dfactors
+    elif monthly:
+        return mfactors
+    elif daily:
+        return dfactors
 
 ################################################################################
 #
@@ -360,7 +404,7 @@ def make_char_portfolios(data, char_list, weighting):
     size_col = 'me'  # We use security level me following JKP but think we should use me_company.
 
     # One-period ahead return.
-    data[ret_col] = make_future_return(data.exret)
+    data[ret_col] = future_return(data.exret)
     # The futret at t is the return from t to t+1. Shift one period so that the return is from t-1 to t and
     # other variables are as of t.
     data = data.groupby(level=-1).shift(1)  # Shift data forward.
@@ -392,7 +436,7 @@ def make_char_portfolios(data, char_list, weighting):
     # Add identifier for the bottom 20%.
     size_split = [0.2, 1.0]
     size_class = 'size_class'
-    data[size_class] = classify(data[size_col], size_split, ascending=True, by_array=data['nyse_me'])
+    data[size_class] = classify(data, size_split, ascending=True, on=size_col, by='nyse_me')
 
     split = 3
     char_by = 'char_by'
@@ -401,10 +445,10 @@ def make_char_portfolios(data, char_list, weighting):
 
     char_portfolios = []
     for char in char_list:
-        data[char_by] = np.where(data[size_class] > 0, data[char], np.nan)  # NYSE-characteristic
+        data[char_by] = data[char].where(data[size_class] > 0)  # NYSE-characteristic
 
         # Classify data on char.
-        data[group_col] = classify(data[char], split, ascending=False, by_array=data[char_by])
+        data[group_col] = classify(data, split, ascending=False, on=char, by=char_by)
 
         # Make quantile portfolios.
         portfolios = one_dim_sort(data, group_col, ret_col, weight_col=weight_col)
