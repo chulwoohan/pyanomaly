@@ -29,8 +29,6 @@ You need to install the required packages:
     - numba
     - openpyxl
     - matplotlib
-    - scikit-learn
-    - pyarrow
 
 You can install these packages one by one or run ``setup.bat`` to install them at once.
 
@@ -42,8 +40,7 @@ To confirm the package is installed correctly, try the following code:
     >>> print(y)
     [1, 2, 3, 5]
 
-We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes,
-please contact us.
+We strongly discourage changing the source as it can be updated from time to time. If you have suggestions of changes, please contact us.
 
 
 
@@ -73,8 +70,6 @@ It is worth noting that:
   many times to validate the result. You can generate other firm characteristics only once and save them.
   Then, you can load them from files instead of generating them every time you generate the new characteristic.
 
-.. _sec-mapping file:
-
 Mapping File
 ------------
 
@@ -89,19 +84,19 @@ description
     original definition.
 
 function
-    This column shows the associated functions (methods). If function is 'idiovol', the firm characteristic is implemented
-    in the function (method) ``c_idiovol()``: the actual function name always starts with ``c_``.
+    This column shows the associated functions. If function is 'idiovol', the firm characteristic is implemented in
+    the function ``c_idiovol()``: the actual function name always starts with ``c_``.
     If function is missing, it means the corresponding firm characteristic is not yet available.
 
 ghz, jkp, hxz, cz
     These columns respectively show the aliases of the firm characteristics used in GHZ, JKP, HXZ, and CZ.
-    If you set ``alias='ghz'`` when initializing ``FCPanel`` or its derived class, only the characteristics defined
+    If you set ``alias='ghz'`` when initializing ``Panel`` or its derived class, only the characteristics defined
     in 'ghz' column will be generated. Similarly, setting ``alias`` to 'jkp', 'hxz', or 'cz' will generate firm
     characteristics defined in these columns.
-    If you set ``alias=None``, all available firm characteristics will be generated.
+    If you set ``alias=None``, all available characteristics will be generated.
 
 my chars
-    You can add a new column in the file to define which characteristics to generate and their aliases.
+    You can add a new column in the file to define what characteristics to generate and their aliases.
     For example, if you add a column 'my chars' as shown in the table and set ``alias='my chars'``, only
     'Idiosyncratic volatility (Org, JKP)' and 'Illiquidity' will be generated.
 
@@ -113,21 +108,20 @@ my chars
 Output Files
 ------------
 
-``FCPanel`` and its derived classes (``FUNDA``, ``FUNDQ``, ``CRSPM``, ``CRSPD``, and ``Merge``) have an attribute
-``data``, which is a DataFrame that contains the raw data and the firm characteristics. An exception is ``CRSPD``.
-``CRSPD.data`` only contains firm characteristics and the raw crspd data is stored in ``CRSPD.cd.data``.
-``CRSPD.cd`` is an object of ``CRSPDRaw``, a class derived from ``FCPanel``. We separate firm characteristics from the raw data
-in crspd because the raw data have a daily frequency, whereas the firm characteristics have a monthly frequency.
-The column names of the firm characteristics are their function names (without ``c_``). When ``data``
-is saved to a file by calling ``FCPanel.save()``, the column names will be replaced by their aliases.
-When a saved file is loaded back to a class by calling ``FCPanel.load()``, the column names will be replaced by
+``Panel`` and its derived classes (``FUNDA``, ``FUNDQ``, ``CRSPM``, ``CRSPD``, and ``Merge``) have an attribute
+``data``, which is a DataFrame that contains the raw data and the firm characteristics. An exception is ``CRSPD``,
+which saves the firm characterisitcs in another attribute, ``chars``. This is because the raw data have a daily frequency,
+whereas the firm characteristics have a monthly frequency.
+The column names of the firm characteristics are their function names (without ``c_``). When ``data`` or ``chars``
+is saved to a file by calling ``Panel.save()``, the column names will be replaced with the aliases.
+When a saved file is loaded back to a class by calling ``Panel.load()``, the column names will be replaced with
 the function names. In summary, the column names of the firm characteristics are the function names in
-the ``data`` attribute, whereas the column names are the aliases in saved files.
+``data`` and ``chars`` attributes, whereas the column names are the aliases in saved files.
 
 The ``data`` attribute has a MultiIndex of 'date' and 'permno' in ``CRSPM``, ``CRSPD``, and ``Merge``, whereas
 it has a MultiIndex of 'datadate' and 'gvkey` in ``FUNDA`` and ``FUNDQ``. Once the data in ``FUNDA`` and ``FUNDQ``
-are populated monthly, the index changes to 'date' and 'gvkey', and 'datadate' remains as a column.
-Note that the dates in 'date' are shifted to month-end to be compatible with 'datadate'.
+are populated monthly, the index changes to ``date`` and ``gvkey`` and 'datadate' remains as a column.
+Note that the dates in 'date' are shifted to month-end.
 
 The easiest way to get started is going through examples.
 The next section presents several examples to help you get familiarized with PyAnomaly.

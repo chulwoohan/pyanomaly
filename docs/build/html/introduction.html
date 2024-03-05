@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About &mdash; PyAnomaly 1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
-
-  
+  <title>About &mdash; PyAnomaly 0.931 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=f2a433a1"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,15 +28,11 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="index.html" class="icon icon-home">
-            PyAnomaly
+            <a href="index.html" class="icon icon-home"> PyAnomaly
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -63,7 +56,6 @@
 <li class="toctree-l1"><a class="reference internal" href="#references">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#useful-links">Useful Links</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#glossary">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#contributors">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#featured-in">Featured In</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
@@ -96,8 +88,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">About</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>About</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -108,57 +100,44 @@
            <div itemprop="articleBody">
              
   <section id="about">
-<span id="id1"></span><h1>About<a class="headerlink" href="#about" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>About<a class="headerlink" href="#about" title="Permalink to this headline"></a></h1>
 <p>PyAnomaly is a comprehensive python library for asset pricing research with a focus on firm characteristic and factor generation.
 It covers the majority of the firm characteristics published in the literature and contains various analytic tools that are
 commonly used in asset pricing research, such as quantile portfolio construction, factor regression, and cross-sectional regression.
 The purpose of PyAnomaly is <em>NOT</em> to generate firm characteristics in a fixed manner. Rather, we aim to build
-a package that can serve as a standard library for asset pricing research and help reduce <em>non-standard errors</em><a class="footnote-reference brackets" href="#id13" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>.</p>
-<p>The current list of the firm characteristics supported by PyAnomaly can be found in <a class="reference internal" href="#coverage">Coverage</a>.
+a package that can serve as a standard library for asset pricing research and help reduce <em>non-standard errors</em><a class="footnote-reference brackets" href="#id13" id="id2">5</a>.</p>
+<p>The current list of firm characteristics supported by PyAnomaly can be found in <a class="reference internal" href="#coverage">Coverage</a>.
 PyAnomaly is a live project and we plan to add more firm characteristics and functionalities going forward. We also welcome contributions
 from other scholars.</p>
 <p>PyAnomaly is very efficient, comprehensive, and flexible.</p>
 <blockquote>
 <div><dl class="simple">
-<dt>Efficiency</dt><dd><p>PyAnomaly can generate over 200 characteristics from 1950 under one hour (tested on a desktop with
-12th Gen Intel(R) Core(TM) i9-12900KS and 128GB RAM and 1GB network). Once the data have been downloaded from
-WRDS, the processing time is under 15 minutes.
-To achieve this, PyAnomaly utilizes numba, multiprocessing, and asyncio packages when possible, but not too
-heavily to maximize readability of the code.
-The library is slower on the first run due to caching of numba jitted functions.</p>
+<dt>Efficiency</dt><dd><p>PyAnomaly can generate over 200 characteristics from 1950 in around one hour including the time to download data from WRDS.
+To achieve this, PyAnomaly utilizes numba, multiprocessing, and asyncio packages when possible, but not too heavily to maximize readability of the code.</p>
 </dd>
 <dt>Comprehensiveness</dt><dd><p>PyAnomaly supports over 200 firm characteristics published in the literature. It covers most characteristics in
-Green et al. (2017)<a class="footnote-reference brackets" href="#id10" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and Jensen et al. (2021)<a class="footnote-reference brackets" href="#id12" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>, except those that use IBES data. It also provides
+Green et al. (2017)<a class="footnote-reference brackets" href="#id10" id="id3">2</a> and Jensen et al. (2021)<a class="footnote-reference brackets" href="#id12" id="id4">4</a>, except those that use IBES data. It also provides
 various tools for asset pricing research.</p>
 </dd>
 <dt>Flexibility</dt><dd><p>PyAnomaly adopts the object-oriented programming design philosophy and is easy to customize or add functionalities.
 This means users can easily change the definition of an existing characteristic, add a new characteristic, or
 change configurations to run the program. For instance, a user can choose whether to update annual accounting
 variables quarterly (using Compustat.fundq) or annually (using Compustat.funda), or whether
-to use the latest market equity or the year-end market equity when generating firm characteristics.</p>
+to use the latest market equity or the year-end market equity, when generating firm characteristics.</p>
 </dd>
 </dl>
 </div></blockquote>
 </section>
 <section id="main-features">
-<h1>Main Features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h1>
+<h1>Main Features<a class="headerlink" href="#main-features" title="Permalink to this headline"></a></h1>
 <ul>
 <li><p>Efficient data download from WRDS using asynco.</p></li>
 <li><p>Over 200 firm characteristics generation. You can choose which firm characteristics to generate.</p></li>
-<li><p>Factor models</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Fama-French 3-factor model</p></li>
-<li><p>Fama-French 5-factor model</p></li>
-<li><p>Hou-Xue-Zhang 4-factor model</p></li>
-<li><p>Stambaugh-Yuan 4-factor model</p></li>
-</ul>
-</div></blockquote>
-</li>
+<li><p>Fama-French 3-factor and Hou-Xue-Zhang 4-factor portfolios.</p></li>
 <li><p>Analytics</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Cross-sectional regression</p></li>
+<li><p>Cross-section regression</p></li>
 <li><p>1-D sort</p></li>
 <li><p>2-D sort</p></li>
 <li><p>Rolling regression</p></li>
@@ -171,30 +150,28 @@ to use the latest market equity or the year-end market equity when generating fi
 <li><p>Data tools</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Filtering</p></li>
+<li><p>Data filtering</p></li>
 <li><p>Winsorizing</p></li>
 <li><p>Trimming</p></li>
-<li><p>Grouping</p></li>
-<li><p>Population</p></li>
-<li><p>And more…</p></li>
+<li><p>Data population</p></li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
 </section>
 <section id="coverage">
-<h1>Coverage<a class="headerlink" href="#coverage" title="Link to this heading"></a></h1>
+<h1>Coverage<a class="headerlink" href="#coverage" title="Permalink to this headline"></a></h1>
 <section id="markets">
-<h2>Markets<a class="headerlink" href="#markets" title="Link to this heading"></a></h2>
+<h2>Markets<a class="headerlink" href="#markets" title="Permalink to this headline"></a></h2>
 <p>PyAnomaly currently supports analysis of the firms listed in the US stock market.</p>
 </section>
 <section id="firm-characteristics">
-<h2>Firm Characteristics<a class="headerlink" href="#firm-characteristics" title="Link to this heading"></a></h2>
+<h2>Firm Characteristics<a class="headerlink" href="#firm-characteristics" title="Permalink to this headline"></a></h2>
 <p>The table below lists firm characteristics that are currently supported by PyAnomaly. The characteristics without a function
 are not yet available but may be added in the future. For a mapping between the functions and the firm characteristics in
-Chen and Zimmermann (2022)<a class="footnote-reference brackets" href="#id9" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, Green et al. (2017)<a class="footnote-reference brackets" href="#id10" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, Hou et al. (2020)<a class="footnote-reference brackets" href="#id11" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, and Jensen et al. (2023)<a class="footnote-reference brackets" href="#id12" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>,
+Chen and Zimmermann (2020)<a class="footnote-reference brackets" href="#id9" id="id5">1</a>, Green et al. (2017)<a class="footnote-reference brackets" href="#id10" id="id6">2</a>, Hou et al. (2020)<a class="footnote-reference brackets" href="#id11" id="id7">3</a>, and Jensen et al. (2021)<a class="footnote-reference brackets" href="#id12" id="id8">4</a>,
 refer to the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a>,</p>
-<table class="docutils align-default">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 5%" />
 <col style="width: 45%" />
@@ -2417,76 +2394,65 @@ Scherbina</p></td>
 </section>
 </section>
 <section id="structure">
-<h1>Structure<a class="headerlink" href="#structure" title="Link to this heading"></a></h1>
+<h1>Structure<a class="headerlink" href="#structure" title="Permalink to this headline"></a></h1>
 <p>PyAnomaly consists of various modules and the core modules you are likely to use are as follows.
-The full list of the modules and their details can be found in <a class="reference internal" href="pyanomaly_edited.html#pyanomaly"><span class="std std-ref">API</span></a>.</p>
+The full list of the modules and their details can be found in the API documentation (<a class="reference internal" href="pyanomaly_edited.html#pyanomaly"><span class="std std-ref">pyanomaly</span></a>).</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">wrdsdata.py</span></code>: <code class="docutils literal notranslate"><span class="pre">WRDS</span></code>, a class for downloading WRDS data, is defined here.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">panel.py</span></code>: <code class="docutils literal notranslate"><span class="pre">Panel</span></code>, a base class for panel data analysis, and <code class="docutils literal notranslate"><span class="pre">FCPanel</span></code>, a base class for firm characteristic generation, are defined here.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.py</span></code>: Classes for firm characteristic generation are defined here. These classes are derived from <code class="docutils literal notranslate"><span class="pre">FCPanel</span></code>.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">wrdsdata.py</span></code>: <code class="docutils literal notranslate"><span class="pre">WRDS</span></code>, a class to handle data downloading from WRDS is defined here.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">panel.py</span></code>: <code class="docutils literal notranslate"><span class="pre">Panel</span></code>, a base class to handle panel data is defined here.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characteristics.py</span></code>: Classes to generate firm characteristics are defined here. These classes are derived from <code class="docutils literal notranslate"><span class="pre">Panel</span></code>.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>: Class to generate firm characteristics from funda.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>: Class to generate firm characteristics from fundq.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>: Class to generate firm characteristics from crspm.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>: Class to generate firm characteristics from crspd.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Merge</span></code>: Class to generate firm characteristics from a merged dataset of funda, fundq, crspm, and crspd.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FUNDA</span></code>: A class to generate firm characteristics from funda.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FUNDQ</span></code>: A class to generate firm characteristics from fundq.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CRSPM</span></code>: A class to generate firm characteristics from crspm.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CRSPD</span></code>: A class to generate firm characteristics from crspd.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Merge</span></code>: A class to generate firm characteristics from a merged dataset of funda, fundq, crspm, and crspd.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">analytics.py</span></code>: Analytic functions such as 1-D sort, cross-sectional regression, and time-series regression are defined here.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">datatools.py</span></code>: Data handling functions such as grouping, trimming, and winsorization are defined here.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">analytics.py</span></code>: A module that defines functions for analytics, such as 1-D sort, cross-sectional regression, and time-series regression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datatools.py</span></code>: A module that defines functions for data handling, such as data filtering, trimming, and winsorizing.</p></li>
 </ul>
 </section>
 <section id="system-requirement">
-<h1>System Requirement<a class="headerlink" href="#system-requirement" title="Link to this heading"></a></h1>
+<h1>System Requirement<a class="headerlink" href="#system-requirement" title="Permalink to this headline"></a></h1>
 <dl class="simple">
 <dt>Recommendation</dt><dd><ul class="simple">
-<li><p>Disc space: minimum 50 GB</p></li>
+<li><p>Disc space: minimum 100 GB</p></li>
 <li><p>Memory: minimum 64 GB</p></li>
 </ul>
 </dd>
 </dl>
-<p>The minimum system requirement depends on the configuration, e.g., which characteristics to generate or the sample period.</p>
+<p>The minimum system requirement depends on the configuration, e.g., what characteristics to generate or the sample period.</p>
 <dl class="simple">
-<dt>Disc space</dt><dd><p>The raw data downloaded from WRDS (until 2022.12) take up about 29 GB (if pickle file format is used) or
-3.5 GB (if parquet file format is used) of the disc space. The final output file can take
-up to 14 GB (pickle) or 7 GB (parquet) if all the firm characteristics are generated and the raw data are saved
-together. The sizes can be almost halved if float32 is used instead of float64
-(<code class="docutils literal notranslate"><span class="pre">set_config(float_type='float32')</span></code>). The size of the output file can also be significantly reduced if only the
-firm characteristics are saved (less than 5 GB). In general, 100 GB should be sufficient for all types of tasks and
-even when interim results are saved.</p>
+<dt>Disc space</dt><dd><p>The raw data downloaded from WRDS take up about 27 GB of the disc space. The final output file can take
+up to 15 GB if all characteristics are generated and the raw data are saved together.
+The size of the output file can be significantly reduced if only the firm characteristics are saved (less than 5 GB).
+In general, 100GB should be sufficient in all types of tasks and even when interim results are saved.</p>
 </dd>
-<dt>Memory</dt><dd><p>Generating firm characteristics from daily data such as crspd consumes a significant amount of memory.
-During firm characteristics generation, the memory usage can reach as high as 43 GB (31 GB if float32 is used).
-This, however, does not mean a physical memory of this size is required. Most OS will use Paging File to allocate
-some of the disc space as memory, although using Paging File will increase the running time.</p>
-</dd>
-<dt>Note on file format</dt><dd><p>A parquet file can be significantly smaller than a pickle file of the same data,
-especially when there are many duplicate values in columns.
-However, it tends to be slower to read and write and takes significantly more memory in some cases for unknown
-reasons (almost three times of the memory consumed by a pickle file of the same data).
-If parquet did not have a memory issue, we would have chosen it as the default file format.
-If you do not encounter the same issue in your environment, you may choose to use parquet to save disc space.
-To change the file format to parquet, do <code class="docutils literal notranslate"><span class="pre">set_config(file_format='parquet')</span></code>.</p>
+<dt>Memory</dt><dd><p>Generating firm characteristics from daily data such as crspd consumes a significant amount of memory. The memory
+usage can be as much as 50 GB at a peak. This does not mean you need a physical
+memory of this size. Most OS will use Paging File to allocate some of the disc space as memory,
+although using Paging File will increase the running time.</p>
 </dd>
 </dl>
 </section>
 <section id="comparison-to-other-sources">
-<h1>Comparison to Other Sources<a class="headerlink" href="#comparison-to-other-sources" title="Link to this heading"></a></h1>
-<p>PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2023), and also from the papers
-and documentations of Hou et al. (2020) and Chen and Zimmermann (2022).
-We generally follow the SAS codes of JKP and GHZ and validate our code against them. Nevertheless, if their implementation is
+<h1>Comparison to Other Sources<a class="headerlink" href="#comparison-to-other-sources" title="Permalink to this headline"></a></h1>
+<p>PyAnomaly benefits greatly from the SAS codes of Green et al. (2017) and Jensen et al. (2021), and also from the papers
+and documentations of Hou et al. (2020) and Chen and Zimmermann (2020).
+We generally follow the SAS codes of JKP and GHZ and validate our code against them, but when their implementation is
 significantly different from the original definition, we try to follow the original definition.
 When the implementation of a firm characteristic is significantly different between the two sources,
 we implement both implementations using different function names.
-We also find several mistakes in these codes. The mistakes we find and the differences between our implementation
-and theirs are documented in the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and comments in the code.
+We also found several mistakes in these codes. For those mistakes we found and the differences between our implementation
+and theirs, we make a note in the <a class="reference external" href="https://github.com/chulwoohan/pyanomaly/blob/master/mapping.xlsx">mapping file</a> and comments in the code.
 The SAS code of Jensen et al. (2021) has been updated several times
-while we develop PyAnomaly and some of our comments may no longer be valid.</p>
+while we develop PyAnomaly and some of the comments we documented may no longer be valid.</p>
 <section id="comparison-to-the-sas-code-of-jensen-et-al-2021">
-<h2>Comparison to the SAS code of Jensen et al. (2021)<a class="headerlink" href="#comparison-to-the-sas-code-of-jensen-et-al-2021" title="Link to this heading"></a></h2>
-<p>PyAnomaly can be configured so that it replicates JKP’s SAS code as closely as possible (<code class="docutils literal notranslate"><span class="pre">set_config(replicate_jkp=True</span></code>).
+<h2>Comparison to the SAS code of Jensen et al. (2021)<a class="headerlink" href="#comparison-to-the-sas-code-of-jensen-et-al-2021" title="Permalink to this headline"></a></h2>
+<p>PyAnomaly can be configured so that it replicates JKP’s SAS code as closely as possible.
 However, there are a few key differences that make our results differ from theirs.</p>
 <dl class="simple">
 <dt>Market equity</dt><dd><p>JKP use not only CRSP’s msf but also Compustat’s secm and secd to calculate market equity,
@@ -2495,48 +2461,40 @@ We only use the price and shares outstanding from CRSP to calculate the market e
 </dd>
 <dt>Merging FUNDA with FUNDQ</dt><dd><p>JKP quarterly-update annual accounting variables using comp.fundq. More specifically,
 JKP create same characteristics in funda and fundq separately and merge them. On the other hand, we merge the raw data
-first and then generate characteristics. Since some variables in funda are not available in fundq, e.g., ebitda,
-JKP synthesize those unavailable variables from other variables and create characteristics, even when they are
+first and then generate characteristics. Since some variables in funda are not available in fundq, eg, ebitda,
+JKP make those unavailable variables from other variables and create characteristics, even when they are
 available in funda. We prefer to merge funda with fundq at the raw data level and create characteristics from
 the merged data.</p>
 </dd>
 <dt>Share code filtering</dt><dd><p>JKP do not filter data using CRSP share code (shrcd), whereas we only use ordinary common stocks
 (shrcd = 10, 11, or 12). We find that some stocks’ shrcd changes over time. Therefore, this difference does not
-only affect the cross-section but also time-series. In PyAnomaly, filtering rules can easily be overriden by inheriting
-firm characteristic generation classes.</p>
+only affect the cross-section but also affects time-series.</p>
 </dd>
 </dl>
 </section>
 </section>
 <section id="references">
-<h1>References<a class="headerlink" href="#references" title="Link to this heading"></a></h1>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id9" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">1</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://cfr.pub/forthcoming/papers/chen2021open.pdf">Chen, A.Y. and Zimmermann, T., 2022. Open source cross-sectional asset pricing. Critical Finance Review, 27(2).</a></p>
-</aside>
-<aside class="footnote brackets" id="id10" role="note">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id6">2</a>)</span>
-<p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2262374">Green, J., Hand, J.R. and Zhang, X.F., 2017. The characteristics that provide independent information about average US monthly stock returns. The Review of Financial Studies, 30(12).</a></p>
-</aside>
-<aside class="footnote brackets" id="id11" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">3</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="http://theinvestmentcapm.com/uploads/1/2/2/6/122679606/houxuezhang2020rfs.pdf">Hou, K., Xue, C. and Zhang, L., 2020. Replicating anomalies. The Review of Financial Studies, 33(5).</a></p>
-</aside>
-<aside class="footnote brackets" id="id12" role="note">
-<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
-<p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3774514">Jensen, T.I., Kelly, B.T. and Pedersen, L.H., 2023. Is There A Replication Crisis In Finance? Journal of Finance, 78(5).</a></p>
-</aside>
-<aside class="footnote brackets" id="id13" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">5</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3961574">Menkveld, A.J. el al., 2024. Non-standard errors. Journal of Finance, Forthcoming.</a></p>
-</aside>
-</aside>
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h1>
+<dl class="footnote brackets">
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
+<dd><p><a class="reference external" href="https://cfr.pub/forthcoming/papers/chen2021open.pdf">Chen, A.Y. and Zimmermann, T., 2020. Open source cross-sectional asset pricing. Critical Finance Review, Forthcoming.</a></p>
+</dd>
+<dt class="label" id="id10"><span class="brackets">2</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id6">2</a>)</span></dt>
+<dd><p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2262374">Green, J., Hand, J.R. and Zhang, X.F., 2017. The characteristics that provide independent information about average US monthly stock returns. The Review of Financial Studies, 30(12), pp.4389-4436.</a></p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id7">3</a></span></dt>
+<dd><p><a class="reference external" href="http://theinvestmentcapm.com/uploads/1/2/2/6/122679606/houxuezhang2020rfs.pdf">Hou, K., Xue, C. and Zhang, L., 2020. Replicating anomalies. The Review of Financial Studies, 33(5), pp.2019-2133.</a></p>
+</dd>
+<dt class="label" id="id12"><span class="brackets">4</span><span class="fn-backref">(<a href="#id4">1</a>,<a href="#id8">2</a>)</span></dt>
+<dd><p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3774514">Jensen, T.I., Kelly, B.T. and Pedersen, L.H., 2021. Is There A Replication Crisis In Finance? Journal of Finance, Forthcoming.</a></p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id2">5</a></span></dt>
+<dd><p><a class="reference external" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3961574">Menkveld, A.J., Dreber, A., Holzmeister, F., Huber, J., Johannesson, M., Kirchler, M., Neusüss, S., Razen, M. and Weitzel, U., 2021. Non-standard errors.</a></p>
+</dd>
+</dl>
 </section>
 <section id="useful-links">
-<h1>Useful Links<a class="headerlink" href="#useful-links" title="Link to this heading"></a></h1>
+<h1>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p>PyAnomaly repository: <a class="reference external" href="https://github.com/chulwoohan/pyanomaly">https://github.com/chulwoohan/pyanomaly</a></p></li>
 <li><p>JKP’s SAS code: <a class="reference external" href="https://github.com/bkelly-lab/ReplicationCrisis">https://github.com/bkelly-lab/ReplicationCrisis</a></p></li>
@@ -2545,28 +2503,20 @@ firm characteristic generation classes.</p>
 </ul>
 </section>
 <section id="glossary">
-<h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading"></a></h1>
+<h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p><strong>crspd</strong>: CRSP daily data created from dsf, dsenames, and dseall.</p></li>
 <li><p><strong>crspm</strong>: CRSP monthly data created from msf, msenames, and mseall.</p></li>
 <li><p><strong>funda</strong>: Compustat annual accounting data created from funda.</p></li>
 <li><p><strong>fundq</strong>: Compustat quarterly accounting data created from fundq.</p></li>
-<li><p><strong>CZ</strong>: Either the paper or the R/Stata code of Chen and Zimmermann (2022).</p></li>
+<li><p><strong>CZ</strong>: Either the paper or the R/Stata code of Chen and Zimmermann (2020).</p></li>
 <li><p><strong>GHZ</strong>: Either the paper or the SAS code of Green, Hand, and Zhang (2017).</p></li>
 <li><p><strong>HXZ</strong>: Hou, Xue, and Zhang (2020).</p></li>
-<li><p><strong>JKP</strong>: Either the paper or the SAS code of Jensen, Kelly, and Pedersen (2023).</p></li>
-</ul>
-</section>
-<section id="contributors">
-<h1>Contributors<a class="headerlink" href="#contributors" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p>Chulwoo Han</p></li>
-<li><p>Jongho Kang</p></li>
-<li><p>Byeongguk Kang</p></li>
+<li><p><strong>JKP</strong>: Either the paper or the SAS code of Jensen, Kelly, and Pedersen (2021).</p></li>
 </ul>
 </section>
 <section id="featured-in">
-<h1>Featured In<a class="headerlink" href="#featured-in" title="Link to this heading"></a></h1>
+<h1>Featured In<a class="headerlink" href="#featured-in" title="Permalink to this headline"></a></h1>
 </section>
 
 
@@ -2580,7 +2530,7 @@ firm characteristic generation classes.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Chulwoo Han and Jongho Kang.</p>
+    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

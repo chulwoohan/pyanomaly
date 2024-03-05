@@ -4,4 +4,4 @@ pyanomaly
 .. toctree::
    :maxdepth: 4
 
-   pyanomaly_edited
+   pyanomaly
