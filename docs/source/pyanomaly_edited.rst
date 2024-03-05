@@ -4,23 +4,37 @@ pyanomaly
 =========
 
 .. automodule:: pyanomaly
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
-pyanomaly.analytics
+.. autosummary::
+    pyanomaly.analytics
+    pyanomaly.characteristics
+    pyanomaly.config
+    pyanomaly.datatools
+    pyanomaly.factors
+    pyanomaly.ff
+    pyanomaly.fileio
+    pyanomaly.globals
+    pyanomaly.log
+    pyanomaly.numba_support
+    pyanomaly.panel
+    pyanomaly.portfolio
+    pyanomaly.tcost
+    pyanomaly.util
+    pyanomaly.wrdsdata
+
+analytics
 -------------------
 
 .. automodule:: pyanomaly.analytics
    :members:
    :undoc-members:
 
-pyanomaly.characteristics
+characteristics
 -------------------------
 
 .. automodule:: pyanomaly.characteristics
 
-pyanomaly.characteristics.FUNDA
+FUNDA
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyanomaly.characteristics.FUNDA
@@ -28,7 +42,7 @@ pyanomaly.characteristics.FUNDA
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.characteristics.FUNDQ
+FUNDQ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyanomaly.characteristics.FUNDQ
@@ -36,7 +50,7 @@ pyanomaly.characteristics.FUNDQ
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.characteristics.CRSPM
+CRSPM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyanomaly.characteristics.CRSPM
@@ -44,15 +58,20 @@ pyanomaly.characteristics.CRSPM
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.characteristics.CRSPD
+CRSPD
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: pyanomaly.characteristics.CRSPDRaw
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 .. autoclass:: pyanomaly.characteristics.CRSPD
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.characteristics.Merge
+Merge
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyanomaly.characteristics.Merge
@@ -60,42 +79,69 @@ pyanomaly.characteristics.Merge
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.datatools
+config
+-----------------
+
+.. automodule:: pyanomaly.config
+   :members:
+   :undoc-members:
+
+datatools
 -------------------
 
 .. automodule:: pyanomaly.datatools
    :members:
    :undoc-members:
 
-pyanomaly.ff
+factors
+------------
+
+.. automodule:: pyanomaly.factors
+   :members:
+
+ff
 ------------
 
 .. automodule:: pyanomaly.ff
    :members:
 
-pyanomaly.fileio
+fileio
 ----------------
 
 .. automodule:: pyanomaly.fileio
    :members:
    :undoc-members:
 
+globals
+-----------------
+
+.. automodule:: pyanomaly.globals
+   :members:
+   :undoc-members:
+
 .. _pyanomaly.jkp:
 
-pyanomaly.jkp
+log
 -------------
 
-.. automodule:: pyanomaly.jkp
+.. automodule:: pyanomaly.log
    :members:
 
-pyanomaly.panel
+numba_support
+-----------------------
+
+.. automodule:: pyanomaly.numba_support
+   :members:
+
+panel
 ---------------
 
 .. automodule:: pyanomaly.panel
    :members:
    :undoc-members:
+   :show-inheritance:
 
-pyanomaly.portfolio
+portfolio
 -------------------
 
 .. automodule:: pyanomaly.portfolio
@@ -104,7 +150,7 @@ pyanomaly.portfolio
 
 .. _pyanomaly.tcost:
 
-pyanomaly.tcost
+tcost
 ---------------
 
 .. automodule:: pyanomaly.tcost
@@ -112,7 +158,7 @@ pyanomaly.tcost
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.util
+util
 --------------
 
 .. automodule:: pyanomaly.util
@@ -120,7 +166,7 @@ pyanomaly.util
    :undoc-members:
    :show-inheritance:
 
-pyanomaly.wrdsdata
+wrdsdata
 ------------------
 
 .. automodule:: pyanomaly.wrdsdata

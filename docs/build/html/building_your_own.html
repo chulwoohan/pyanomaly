@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bulding Your Own &mdash; PyAnomaly 0.931 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <title>Bulding Your Own &mdash; PyAnomaly 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=14fdb342" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +31,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PyAnomaly
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyAnomaly
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#references">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#useful-links">Useful Links</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#glossary">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#contributors">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html#featured-in">Featured In</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to Use</span></p>
@@ -58,6 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Bulding Your Own</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#coding-rule">Coding Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-tips">Performance Tips</a></li>
 </ul>
 </li>
 </ul>
@@ -84,8 +93,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Bulding Your Own</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Bulding Your Own</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/building_your_own.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -96,14 +105,14 @@
            <div itemprop="articleBody">
              
   <section id="bulding-your-own">
-<h1>Bulding Your Own<a class="headerlink" href="#bulding-your-own" title="Permalink to this headline"></a></h1>
+<h1>Bulding Your Own<a class="headerlink" href="#bulding-your-own" title="Link to this heading"></a></h1>
 <p>PyAnomaly is highly configurable and customizable, and you can easily add new firm characteristics or functions.
 When you make modifications, do not change the original source directly. Rather, add new modules (files) and define subclasses if necessary.
 This is because the library can be updated in the future, and if you change the original source, you will lose the changes you made when you
 update the library.</p>
 <p>If you want some of your modules to be added to PyAnomaly, please contact us.</p>
 <section id="coding-rule">
-<h2>Coding Rule<a class="headerlink" href="#coding-rule" title="Permalink to this headline"></a></h2>
+<h2>Coding Rule<a class="headerlink" href="#coding-rule" title="Link to this heading"></a></h2>
 <p>There are a few coding rules we follow and we suggest you follow them when developing your own library based on PyAnomaly.</p>
 <ol class="arabic">
 <li><dl>
@@ -119,7 +128,7 @@ persistence and predictability and <code class="docutils literal notranslate"><s
 persistence and predictability, respectively.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_ni_ar1_ivol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Earnings persistence and predictability&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Earnings persistence and predictability&quot;&quot;&quot;</span>
 
     <span class="n">fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># window size</span>
@@ -133,7 +142,7 @@ persistence and predictability, respectively.</p></li>
     <span class="n">fa</span><span class="p">[</span><span class="s1">&#39;ni_ivol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ivol</span>
 
 <span class="k">def</span> <span class="nf">c_ni_ar1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Earnings persistence. Francis et al. (2004)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Earnings persistence. Francis et al. (2004)&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="s1">&#39;ni_ar1&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ni_ar1_ivol</span><span class="p">()</span>
@@ -141,7 +150,7 @@ persistence and predictability, respectively.</p></li>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ni_ar1&#39;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">c_ni_ivol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Earnings predictability. Francis et al. (2004)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Earnings predictability. Francis et al. (2004)&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="s1">&#39;ni_ivol&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ni_ar1_ivol</span><span class="p">()</span>
@@ -171,6 +180,15 @@ methods, and attributes).</p>
 </li>
 </ol>
 </section>
+<section id="performance-tips">
+<h2>Performance Tips<a class="headerlink" href="#performance-tips" title="Link to this heading"></a></h2>
+<p>Jitted functions (a function with <code class="docutils literal notranslate"><span class="pre">&#64;njit</span></code> decorator) can be slow at the first call due to compile time.
+While most jitted functions are cached to minimize overhead, <code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_jit()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">datatools.apply_to_groups_reduce_jit()</span></code> cannot be cached as they receive a function as an argument.
+Therefore, functions that utilize these functions, e.g., <code class="docutils literal notranslate"><span class="pre">datatools.classify()</span></code>, <code class="docutils literal notranslate"><span class="pre">datatools.trim()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">datatools.filter()</span></code>, and <code class="docutils literal notranslate"><span class="pre">datatools.winsorize()</span></code>, can be slow at the first call. If these functions are used
+only once, disabling jit (<code class="docutils literal notranslate"><span class="pre">set_config(disable_jit=True)</span></code>) may increase the speed.</p>
+</section>
 </section>
 
 
@@ -184,7 +202,7 @@ methods, and attributes).</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Chulwoo Han and Jongho Kang.</p>
+    <p>&#169; Copyright 2024, Chulwoo Han and Jongho Kang.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
