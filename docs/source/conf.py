@@ -69,7 +69,7 @@ html_css_files = [
 
 todo_include_todos = False
 
-autodoc_mock_imports = ['numpy', 'pandas', 'wrds', 'numba', 'scipy', 'statsmodels', 'openpyxl', 'matplotlib']
+autodoc_mock_imports = ['numpy', 'pandas', 'wrds', 'numba', 'scipy', 'statsmodels', 'openpyxl', 'matplotlib', 'sklearn']
 
 # -- rst prolog
 # Substitutions
