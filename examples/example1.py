@@ -257,5 +257,6 @@ def example1():
 
 if __name__ == '__main__':
     os.chdir('../')
-    wrds_username = 'fehouse'  # Your wrds username
+    wrds_username = ''  # Your wrds username
+
     example1()
