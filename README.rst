@@ -214,3 +214,8 @@ See the examples in Cookbook for changes.
       age doesn't decrease when funda data is missing.
     - ``panel.Panel.rolling()``: When `lag` > 0, shifted rows were not properly removed. This bug has been fixed.
 
+
+v1.01 - 2024.03.13
+--------------------
+
+Minor bug fix in ``analytics.time_series_average()``.
