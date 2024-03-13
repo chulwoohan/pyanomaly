@@ -298,7 +298,7 @@ def t_stat(data, cov_type='nonrobust', cov_kwds=None):
         cov_kwds: Parameters required for the chosen covariance estimator: e.g., {'maxlags: 12} for `cov_type` = 'HAC'.
 
     Returns:
-        `t`-stat. Float (if `data` is one dimensional) or Series with index = `data.columns`.
+        `t`-stat. Float (if `data` is one dimensional) or (1 x K) ndarray, where K is the number of columns of `data`.
 
     Note:
         See `statsmodels.api.OLS.fit`_ for possible values of `cov_type` and `cov_kwds`.
@@ -306,17 +306,19 @@ def t_stat(data, cov_type='nonrobust', cov_kwds=None):
         .. _statsmodels.api.OLS.fit: https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.fit.html.
     """
 
+    if not isinstance(data, np.ndarray):
+        data = data.to_numpy()
+    data = np.squeeze(data)
+
     x = np.ones([len(data), 1])
-    if isinstance(data, pd.Series) or isinstance(data, np.ndarray):
+    if data.ndim == 1:
         est = sm.OLS(data, x, missing='drop').fit(cov_type=cov_type, cov_kwds=cov_kwds)
-        return est.tvalues.iloc[0]
+        return est.tvalues[0]
     else:  # DataFrame
-        res = {}
-        for col in data.columns:
-            est = sm.OLS(data[col], x, missing='drop').fit(cov_type=cov_type, cov_kwds=cov_kwds)
-            res[col] = est.tvalues.iloc[0]
-        res = pd.Series(res)
-        res.index = res.index.set_names(data.columns.names)
+        res = np.zeros((1, data.shape[1]))
+        for j in range(data.shape[1]):
+            est = sm.OLS(data[:, j], x, missing='drop').fit(cov_type=cov_type, cov_kwds=cov_kwds)
+            res[0, j] = est.tvalues[0]
         return res
 
 
@@ -328,7 +330,7 @@ def time_series_average(data, cov_type='nonrobust', cov_kwds=None):
     t-statistic are calculated for each id.
 
     Args:
-        data: DataFrame. Data to analyze. If MultiIndex, the first index must be date.
+        data: DataFrame, Series, or ndarray. Data to analyze. If MultiIndex, the first index must be date.
         cov_type: Covariance estimator. See :func:`t_stat`.
         cov_kwds: Parameters required for the chosen covariance estimator. See :func:`t_stat`.
 
@@ -336,25 +338,46 @@ def time_series_average(data, cov_type='nonrobust', cov_kwds=None):
         * mean (DataFrame).
         * `t`-stat (DataFrame).
 
-        If `data` has MultiIndex, mean (`t`-stat) has index = `data.index[1:]` and columns = `data.columns`.
+        If `data` has MultiIndex, mean (`t`-stat) has index = level 1 index of `data` and columns = `data.columns`.
         Otherwise, mean (`t`-stat) has index = `data.columns` and columns = 'mean' ('t-stat').
     """
 
-    if not isinstance(data.index, pd.MultiIndex):  # single (date) index
-        mean = data.mean().to_frame(name='mean')
-        tval = t_stat(data, cov_type, cov_kwds).to_frame(name='t-stat')
-        return mean, tval
-    else:  # MultiIndex.
-        data = data.reset_index(level=0, drop=True)
-        index = data.index.unique()
-        if is_numeric(index):  # unique() can change the order when there are missing classes.
-            index = index.sort_values()  # => Sort the classes.
+    if isinstance(data, pd.Series):
+        if isinstance(data.index, pd.MultiIndex):
+            gb = data.groupby(level=1, sort=False)
+            mean = gb.mean().to_frame(name='mean')
+            tstat = apply_to_groups(data, gb, t_stat, cov_type, cov_kwds)
+            mean['t-stat'] = tstat
+            return mean[['mean']], mean[['t-stat']]
+        else:
+            mean = data.mean()
+            tstat = t_stat(data, cov_type, cov_kwds)
+            mean = pd.DataFrame({'mean': mean, 't-stat': tstat}, index=[data.name or 0])
+            return mean[['mean']], mean[['t-stat']]
 
-        mean = data.groupby(index.names).mean()
-        tval = data.groupby(index.names).apply(t_stat, cov_type, cov_kwds)
-        if isinstance(data, pd.DataFrame):
-            tval.columns.names = mean.columns.names
-        return mean.reindex(index), tval.reindex(index)  # reindex to keep the order of index
+    if isinstance(data, pd.DataFrame):
+        if isinstance(data.index, pd.MultiIndex):
+            gb = data.groupby(level=1, sort=False)
+            mean = gb.mean()
+            tstat = apply_to_groups(data, gb, t_stat, cov_type, cov_kwds)
+            tstat = pd.DataFrame(tstat, columns=mean.columns, index=mean.index)
+            return mean, tstat  # reindex to keep the order of index
+        else:
+            mean = data.mean().to_frame(name='mean')
+            mean['t-stat'] = np.squeeze(t_stat(data, cov_type, cov_kwds))
+            return mean[['mean']], mean[['t-stat']]
+
+    if isinstance(data, np.ndarray):
+        if data.ndim == 1:
+            mean = np.nanmean(data)
+            tstat = t_stat(data, cov_type, cov_kwds)
+            mean = pd.DataFrame({'mean': mean, 't-stat': tstat}, index=[0])
+            return mean[['mean']], mean[['t-stat']]
+        else:
+            mean = np.squeeze(np.nanmean(data, axis=0))
+            tstat = np.squeeze(t_stat(data, cov_type, cov_kwds))
+            mean = pd.DataFrame({'mean': mean, 't-stat': tstat}, index=np.arange(data.shape[1]))
+            return mean[['mean']], mean[['t-stat']]
 
 
 def grs_test(assets, factors):
@@ -419,7 +442,7 @@ def crosssectional_regression(data, endo_col, exog_cols, add_constant=True, cov_
 
     Returns:
         * mean (DataFrame). Time-series means of coefficients with index = ('const' +) `exog_cols` and columns = 'mean'.
-        * tval (DataFrame). `t`-statistics of coefficients with index = ('const' +) `exog_cols` and columns = 't-stat'.
+        * `t`-stat (DataFrame). `t`-statistics of coefficients with index = ('const' +) `exog_cols` and columns = 't-stat'.
         * coefs (DataFrame). Coefficient time-series with index = dates and columns = ('const' +) `exog_cols`.
     """
 
@@ -438,9 +461,9 @@ def crosssectional_regression(data, endo_col, exog_cols, add_constant=True, cov_
     coefs = pd.DataFrame(coefs).T
 
     # time series means and t-values of the cross-sectional regression coefficients
-    mean, tval = time_series_average(coefs, cov_type, cov_kwds)
+    mean, tstat = time_series_average(coefs, cov_type, cov_kwds)
 
-    return mean, tval, coefs
+    return mean, tstat, coefs
 
 
 ################################################################################

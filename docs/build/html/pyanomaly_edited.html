@@ -295,7 +295,7 @@ and the class label of the long-short is set to N.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p>mean (DataFrame). Time-series means of coefficients with index = (‘const’ +) <cite>exog_cols</cite> and columns = ‘mean’.</p></li>
-<li><p>tval (DataFrame). <cite>t</cite>-statistics of coefficients with index = (‘const’ +) <cite>exog_cols</cite> and columns = ‘t-stat’.</p></li>
+<li><p><cite>t</cite>-stat (DataFrame). <cite>t</cite>-statistics of coefficients with index = (‘const’ +) <cite>exog_cols</cite> and columns = ‘t-stat’.</p></li>
 <li><p>coefs (DataFrame). Coefficient time-series with index = dates and columns = (‘const’ +) <cite>exog_cols</cite>.</p></li>
 </ul>
 </p>
@@ -516,7 +516,7 @@ integers starting from 0. The <cite>data</cite> is relabeled in-place.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><cite>t</cite>-stat. Float (if <cite>data</cite> is one dimensional) or Series with index = <cite>data.columns</cite>.</p>
+<dd class="field-even"><p><cite>t</cite>-stat. Float (if <cite>data</cite> is one dimensional) or (1 x K) ndarray, where K is the number of columns of <cite>data</cite>.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -535,7 +535,7 @@ t-statistic are calculated for each id.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – DataFrame. Data to analyze. If MultiIndex, the first index must be date.</p></li>
+<li><p><strong>data</strong> – DataFrame, Series, or ndarray. Data to analyze. If MultiIndex, the first index must be date.</p></li>
 <li><p><strong>cov_type</strong> – Covariance estimator. See <a class="reference internal" href="#pyanomaly.analytics.t_stat" title="pyanomaly.analytics.t_stat"><code class="xref py py-func docutils literal notranslate"><span class="pre">t_stat()</span></code></a>.</p></li>
 <li><p><strong>cov_kwds</strong> – Parameters required for the chosen covariance estimator. See <a class="reference internal" href="#pyanomaly.analytics.t_stat" title="pyanomaly.analytics.t_stat"><code class="xref py py-func docutils literal notranslate"><span class="pre">t_stat()</span></code></a>.</p></li>
 </ul>
@@ -545,7 +545,7 @@ t-statistic are calculated for each id.</p>
 <li><p>mean (DataFrame).</p></li>
 <li><p><cite>t</cite>-stat (DataFrame).</p></li>
 </ul>
-<p>If <cite>data</cite> has MultiIndex, mean (<cite>t</cite>-stat) has index = <cite>data.index[1:]</cite> and columns = <cite>data.columns</cite>.
+<p>If <cite>data</cite> has MultiIndex, mean (<cite>t</cite>-stat) has index = level 1 index of <cite>data</cite> and columns = <cite>data.columns</cite>.
 Otherwise, mean (<cite>t</cite>-stat) has index = <cite>data.columns</cite> and columns = ‘mean’ (‘t-stat’).</p>
 </p>
 </dd>

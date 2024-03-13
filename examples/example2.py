@@ -82,12 +82,9 @@ def example2():
     print(qpfs)
 
     # Calculate the time-series mean and t-value of the returns of the quantile portfolios.
-    avg, tval = time_series_average(qpfs[ret_col], cov_type='HAC', cov_kwds={'maxlags': 12})
-
-    # Put them together to make a nice table.
-    qpfs_mean = pd.concat([avg, tval], axis=1, keys=['mean', 't-val'])
+    mean, tval = time_series_average(qpfs[ret_col], cov_type='HAC', cov_kwds={'maxlags': 12})
     print(f'\n Mean of portfolio returns sorted on {char}')
-    print(qpfs_mean)
+    print(pd.concat([mean, tval], axis=1))
 
     elapsed_time('1D sort end.')
 
@@ -114,10 +111,10 @@ def example2():
     relabel_class(qpfs2, labels2, axis=1)
 
     # Calculate the time-series mean and t-value of the returns of the quantile portfolios.
-    avg, tval = time_series_average(qpfs2, cov_type='HAC', cov_kwds={'maxlags': 12})
+    mean, tval = time_series_average(qpfs2, cov_type='HAC', cov_kwds={'maxlags': 12})
     print(f'\nMean of portfolio returns sorted on {char} and {char2}')
     print('\nMean')
-    print(avg)
+    print(mean)
     print('\nt-stat')
     print(tval)
 
@@ -134,12 +131,12 @@ def example2():
     y_col = ret_col
     X_cols = [char, char2]
 
-    # Run the regressions. Output: average coefficients, t-values, and coefficient time-series.
-    avg, tval, coef = crosssectional_regression(data, y_col, X_cols, add_constant=True, cov_type='HAC',
+    # Run the regressions. Output: mean coefficients, t-values, and coefficient time-series.
+    mean, tval, coef = crosssectional_regression(data, y_col, X_cols, add_constant=True, cov_type='HAC',
                                                 cov_kwds={'maxlags': 12})
 
     print('\nMean of the coefficients')
-    print(pd.concat([avg, tval], axis=1))
+    print(pd.concat([mean, tval], axis=1))
     print('\nCoefficients time-series')
     print(coef)
 
