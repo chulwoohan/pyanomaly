@@ -4,7 +4,7 @@
 """
 
 __title__ = 'pyanomaly'
-__version__ = '1.0'
+__version__ = '1.01'
 __author__ = 'Chulwoo Han and Jongho Kang'
 __copyright__ = '2024 @ Chulwoo Han and Jongho Kang'
 
